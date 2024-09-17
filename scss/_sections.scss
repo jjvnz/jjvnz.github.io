@@ -1,0 +1,47 @@
+
+@import 'variables';
+
+.section {
+    padding: 60px 0;
+    text-align: center;
+}
+
+.tech-grid, .work-grid {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.tech-item, .work-item {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: $border-radius;
+    width: calc(33.33% - 40px);
+}
+
+.tech-item img, .work-item img {
+    max-width: 100%;
+    border-radius: $border-radius;
+}
+
+@media (max-width: 768px) {
+    .tech-item, .work-item {
+        width: calc(50% - 40px);
+    }
+}
+
+@media (max-width: 480px) {
+    .tech-item, .work-item {
+        width: 100%;
+    }
+}
+
+.contact-section form input, 
+.contact-section form textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: $border-radius;
+    border: 1px solid #333;
+}
