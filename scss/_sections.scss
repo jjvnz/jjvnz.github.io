@@ -1,47 +1,205 @@
+@import 'variables'; // Importa variables antes de usarlas
 
-@import 'variables';
-
+// Estilos Base para Móviles
 .section {
-    padding: 60px 0;
-    text-align: center;
+  padding: 30px 15px;
+  text-align: center;
+
+  .container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
 }
 
-.tech-grid, .work-grid {
+// About Section
+.about-section {
+  .about-content {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+
+    .profile-img {
+      width: 100%;
+      height: auto;
+      border-radius: $border-radius;
+    }
+
+    p {
+      margin: 0;
+      text-align: center;
+    }
+  }
+}
+
+// Tech Stack Section
+.stack-section {
+  .tech-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .tech-item {
+      background: #1a1a1a;
+      padding: 15px;
+      border-radius: $border-radius;
+      width: 100%;
+      box-sizing: border-box;
+
+      img {
+        max-width: 100%;
+        border-radius: $border-radius;
+      }
+
+      h3 {
+        margin-top: 10px;
+        font-size: 1.1rem;
+      }
+
+      p {
+        font-size: 0.8rem;
+      }
+    }
+  }
+}
+
+// Work Showcase Section
+.work-section {
+  .work-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .work-item {
+      background: #1a1a1a;
+      padding: 15px;
+      border-radius: $border-radius;
+      width: 100%;
+      box-sizing: border-box;
+
+      img {
+        max-width: 100%;
+        border-radius: $border-radius;
+      }
+
+      h3 {
+        margin-top: 10px;
+        font-size: 1.1rem;
+      }
+
+      p {
+        font-size: 0.8rem;
+      }
+
+      .button {
+        margin-top: 10px;
+      }
+    }
+  }
+}
+
+// Certifications Section
+.certifications-section {
+  .certifications-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .certification-item {
+      background: #1a1a1a;
+      padding: 15px;
+      border-radius: $border-radius;
+      width: 100%;
+      box-sizing: border-box;
+
+      h3 {
+        margin-top: 10px;
+        font-size: 1.1rem;
+      }
+
+      p {
+        font-size: 0.8rem;
+      }
+    }
+  }
+}
+
+// Contact Section
+.contact-section {
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+
+    .social-icon {
+      width: 35px;
+      height: 35px;
+    }
+  }
+}
+
+// Media Queries for Larger Screens
+@media (min-width: 481px) {
+  .about-content {
+    flex-direction: row;
+    align-items: center;
+
+    p {
+      text-align: left;
+    }
+  }
+
+  .stack-section .tech-grid,
+  .work-section .work-grid,
+  .certifications-section .certifications-grid {
+    flex-direction: row;
     flex-wrap: wrap;
     gap: 20px;
-}
 
-.tech-item, .work-item {
-    background: #1a1a1a;
-    padding: 20px;
-    border-radius: $border-radius;
-    width: calc(33.33% - 40px);
-}
-
-.tech-item img, .work-item img {
-    max-width: 100%;
-    border-radius: $border-radius;
-}
-
-@media (max-width: 768px) {
-    .tech-item, .work-item {
-        width: calc(50% - 40px);
+    .tech-item,
+    .work-item,
+    .certification-item {
+      width: calc(50% - 20px); // Dos elementos por fila
     }
+  }
 }
 
-@media (max-width: 480px) {
-    .tech-item, .work-item {
-        width: 100%;
+@media (min-width: 769px) {
+  .stack-section .tech-grid,
+  .work-section .work-grid,
+  .certifications-section .certifications-grid {
+    .tech-item,
+    .work-item,
+    .certification-item {
+      width: calc(33.33% - 20px); // Tres elementos por fila
     }
+  }
 }
 
-.contact-section form input, 
-.contact-section form textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: $border-radius;
-    border: 1px solid #333;
+@media (min-width: 1200px) {
+  .section {
+    padding: 60px 30px; // Aumenta el padding para pantallas grandes
+  }
+
+  .container {
+    max-width: 1200px; // Máximo ancho del contenedor
+  }
+}
+
+// Estilo para Encabezado (h1)
+h1 {
+  font-size: 2rem; // Tamaño base para móviles
+}
+
+@media (min-width: 769px) {
+  h1 {
+    font-size: 2.5rem; // Tamaño más grande para pantallas medianas
+  }
+}
+
+@media (min-width: 1200px) {
+  h1 {
+    font-size: 3rem; // Tamaño aún mayor para pantallas grandes
+  }
 }

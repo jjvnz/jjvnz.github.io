@@ -1,16 +1,27 @@
 @import 'variables'; // Importa variables antes de usarlas
 
 .main-header {
-  background: var(--header-background);
-  padding: 20px 0;
-  text-align: center;
-  color: var(--text-color);
+  background: $header-background;
+  color: $text-color;
+  padding: 20px 0; // Espacio alrededor del header
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
 
   .main-nav {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px; // Mayor espacio entre el menú y la sección del héroe
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: $text-color;
+    }
 
     ul {
       display: flex;
@@ -18,22 +29,25 @@
 
       li {
         margin: 0 15px;
-      }
 
-      a {
-        color: var(--text-color);
-        transition: color 0.3s ease;
+        a {
+          color: $text-color;
+          transition: color 0.3s ease;
+        }
       }
     }
 
     a:hover {
-      color: var(--secondary-color);
+      color: $secondary-color;
     }
   }
 
   .hero {
-    margin-top: 20px;
+    background-color: $hero-background; // Nuevo color de fondo para la sección del héroe
+    color: $text-color;
     text-align: center;
+    padding: 60px 15px; // Agregar más padding para dar espacio alrededor del contenido
+    margin-top: 20px;
 
     h1 {
       font-size: 3rem;
@@ -41,16 +55,89 @@
     }
 
     .button {
-      background-color: var(--primary-color);
-      color: var(--background-color);
+      background-color: $primary-color;
+      color: $background-color;
       padding: 10px 20px;
-      border-radius: var(--border-radius);
+      border-radius: $border-radius;
       margin-top: 20px;
-      transition: background 0.3s ease;
+      transition: background-color 0.3s ease;
 
       &:hover {
-        background-color: var(--secondary-color);
+        background-color: $secondary-color;
       }
     }
+  }
+}
+
+// Estilos Base (Móviles)
+
+// Media Queries para Pantallas de Tabletas y Pantallas Pequeñas de Escritorio
+@media (min-width: 481px) {
+  .about-content {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+
+    p {
+      text-align: left;
+    }
+  }
+
+  .stack-section .tech-grid,
+  .work-section .work-grid,
+  .certifications-section .certifications-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    .tech-item,
+    .work-item,
+    .certification-item {
+      width: calc(50% - 20px); // Dos elementos por fila
+    }
+  }
+}
+
+// Media Queries para Pantallas de Escritorio Grandes
+@media (min-width: 769px) {
+  .stack-section .tech-grid,
+  .work-section .work-grid,
+  .certifications-section .certifications-grid {
+    .tech-item,
+    .work-item,
+    .certification-item {
+      width: calc(33.33% - 20px); // Tres elementos por fila
+    }
+  }
+
+  .hero {
+    padding: 60px 15px; // Ajusta el padding para pantallas más grandes
+  }
+
+  .hero h1 {
+    font-size: 2.5rem; // Aumenta el tamaño del texto del título
+  }
+
+  .main-nav ul {
+    flex-direction: row; // Navegación horizontal en pantallas grandes
+  }
+
+  .main-nav li {
+    margin: 0 15px;
+  }
+}
+
+// Media Queries para Pantallas de Escritorio Extra Grandes
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1200px; // Máximo ancho del contenedor
+  }
+
+  .section {
+    padding: 80px 30px; // Ajusta el padding para pantallas muy grandes
+  }
+
+  .hero h1 {
+    font-size: 3rem; // Aumenta aún más el tamaño del texto del título
   }
 }

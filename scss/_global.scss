@@ -1,5 +1,6 @@
-@import 'variables'; // Asegúrate de importar variables si las usas aquí
+@import 'variables'; // Importa variables antes de usarlas
 
+// Reseteo Global
 * {
   margin: 0;
   padding: 0;
@@ -11,13 +12,70 @@ body {
   line-height: 1.6;
   background-color: $background-color;
   color: $text-color;
+  overflow-x: hidden; // Evita el desplazamiento horizontal
 }
 
+// Enlaces
 a {
   text-decoration: none;
   color: $primary-color;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: $secondary-color;
+  }
 }
 
-a:hover {
-  color: $secondary-color;
+// Footer
+footer {
+  background-color: $header-background; // Mismo color de fondo que el header
+  color: $text-color;
+  text-align: center;
+  padding: 20px 15px; // Ajusta el padding para pantallas más pequeñas
+  position: relative;
+  width: 100%;
+  margin-top: 20px; // Añade espacio encima del footer si es necesario
+
+  @media (min-width: 481px) {
+    padding: 30px 15px; // Aumenta el padding para pantallas medianas
+  }
+
+  @media (min-width: 769px) {
+    padding: 40px 30px; // Aumenta el padding para pantallas grandes
+  }
+}
+
+// Ejemplo de Media Queries para Pantallas Adicionales
+
+// Pantallas de Tabletas y Pantallas Pequeñas de Escritorio
+@media (min-width: 481px) {
+  body {
+    font-size: 1rem; // Tamaño base de fuente para pantallas medianas
+  }
+
+  a {
+    font-size: 1rem; // Ajusta el tamaño de fuente de los enlaces
+  }
+}
+
+// Pantallas de Escritorio Grandes
+@media (min-width: 769px) {
+  body {
+    font-size: 1.1rem; // Aumenta el tamaño de fuente para pantallas grandes
+  }
+
+  a {
+    font-size: 1.1rem; // Ajusta el tamaño de fuente de los enlaces
+  }
+}
+
+// Pantallas de Escritorio Extra Grandes
+@media (min-width: 1200px) {
+  body {
+    font-size: 1.2rem; // Aumenta el tamaño de fuente para pantallas muy grandes
+  }
+
+  a {
+    font-size: 1.2rem; // Ajusta el tamaño de fuente de los enlaces
+  }
 }
