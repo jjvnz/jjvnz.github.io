@@ -13,22 +13,24 @@
 }
 
 // About Section
+/* Estilos para la sección "Sobre Mí" */
 .about-section {
   .about-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
+    display: flex; // Usa Flexbox para alinear los elementos en paralelo
+    flex-direction: column; // Dirección por defecto en móviles
+    align-items: center; // Alinea verticalmente los elementos en el centro
+    gap: 15px; // Espacio entre la imagen y el texto
 
     .profile-img {
+      max-width: 200px; // Ajusta el tamaño de la imagen según sea necesario
       width: 100%;
       height: auto;
-      border-radius: $border-radius;
+      border-radius: 8px; // Opcional: agrega bordes redondeados
     }
 
     p {
-      margin: 0;
-      text-align: center;
+      margin: 0; // Elimina el margen predeterminado
+      text-align: center; // Centra el texto en móviles
     }
   }
 }
@@ -141,12 +143,20 @@
 
 // Media Queries for Larger Screens
 @media (min-width: 481px) {
-  .about-content {
-    flex-direction: row;
-    align-items: center;
+  .about-section {
+    .about-content {
+      flex-direction: row; // Cambia a fila en pantallas más grandes
+      align-items: center;
+      gap: 20px; // Espacio entre imagen y texto
 
-    p {
-      text-align: left;
+      .profile-img {
+        width: 50%; // Ajusta el tamaño de la imagen para pantallas más grandes
+      }
+
+      p {
+        text-align: left; // Alinea el texto a la izquierda en pantallas más grandes
+        flex: 1; // El texto ocupa el espacio restante
+      }
     }
   }
 
@@ -166,9 +176,11 @@
 }
 
 @media (min-width: 769px) {
+
   .stack-section .tech-grid,
   .work-section .work-grid,
   .certifications-section .certifications-grid {
+
     .tech-item,
     .work-item,
     .certification-item {

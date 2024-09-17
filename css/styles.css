@@ -1,3 +1,4 @@
+@charset "UTF-8";
 * {
   margin: 0;
   padding: 0;
@@ -197,6 +198,7 @@ footer {
   padding: 0 15px;
 }
 
+/* Estilos para la sección "Sobre Mí" */
 .about-section .about-content {
   display: flex;
   flex-direction: column;
@@ -204,9 +206,10 @@ footer {
   gap: 15px;
 }
 .about-section .about-content .profile-img {
+  max-width: 200px;
   width: 100%;
   height: auto;
-  border-radius: 5px;
+  border-radius: 8px;
 }
 .about-section .about-content p {
   margin: 0;
@@ -295,12 +298,17 @@ footer {
 }
 
 @media (min-width: 481px) {
-  .about-content {
+  .about-section .about-content {
     flex-direction: row;
     align-items: center;
+    gap: 20px;
   }
-  .about-content p {
+  .about-section .about-content .profile-img {
+    width: 50%;
+  }
+  .about-section .about-content p {
     text-align: left;
+    flex: 1;
   }
   .stack-section .tech-grid,
   .work-section .work-grid,
