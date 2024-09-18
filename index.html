@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portafolio de un desarrollador Full Stack con experiencia en diversas tecnologías y soluciones innovadoras.">
-    <meta name="keywords" content="Full Stack, Desarrollador, Web, UI/UX, JavaScript, Node.js, Python, React">
-    <meta name="author" content="Tu Nombre">
-    <title>Desarrollador Full Stack del Futuro</title>
+    <meta name="description"
+        content="Portafolio de Juan Villalobos, un desarrollador Full Stack con experiencia en Python, Go, Spring Boot y React.">
+    <meta name="keywords" content="Full Stack, Desarrollador, Python, Go, Spring Boot, React, Microservicios, APIs">
+    <meta name="author" content="Juan Villalobos">
+    <title>Juan Villalobos - Desarrollador Full Stack</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -18,7 +19,13 @@
         <div class="container">
             <nav class="main-nav">
                 <a href="#" class="logo">Juan Villalobos</a>
-                <ul>
+                <!-- Icono de menú para mobile -->
+                <div class="menu-toggle" id="mobile-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="nav-list">
                     <li><a href="#about">Sobre Mí</a></li>
                     <li><a href="#tech-stack">Stack Tecnológico</a></li>
                     <li><a href="#work-showcase">Proyectos</a></li>
@@ -29,7 +36,8 @@
             <div class="hero">
                 <div class="hero-content">
                     <h1>Desarrollador Full Stack del Futuro</h1>
-                    <p>Diseño y desarrollo de soluciones tecnológicas innovadoras con experiencia en tecnologías avanzadas.</p>
+                    <p>Diseño y desarrollo de soluciones tecnológicas innovadoras con experiencia en tecnologías
+                        avanzadas.</p>
                     <a href="#work-showcase" class="button">Explora Mis Proyectos</a>
                 </div>
             </div>
@@ -41,10 +49,13 @@
         <div class="container">
             <h2>Sobre Mí</h2>
             <div class="about-content">
-                <img src="assets/image/profile.png" alt="Foto de Perfil" class="profile-img" 
+                <img src="assets/image/profile.png" alt="Foto de Perfil" class="profile-img"
                     srcset="assets/image/profile.png 1x, assets/image/profile.png 2x"
                     sizes="(max-width: 600px) 100vw, 50vw">
-                <p>Soy un desarrollador Full Stack con experiencia en crear aplicaciones web y móviles completas, desde el front-end hasta el back-end. Con una sólida formación en [tu formación], y experiencia práctica en tecnologías como JavaScript, Python y más, me dedico a entregar soluciones innovadoras y eficientes.</p>
+                <p>Soy un desarrollador Full Stack con experiencia en crear aplicaciones web y móviles completas, desde
+                    el front-end hasta el back-end. Con una sólida formación en Ingeniería en Sistemas, y experiencia
+                    práctica en tecnologías como Python, Go, Spring Boot y React, me dedico a entregar soluciones
+                    innovadoras y eficientes.</p>
             </div>
         </div>
     </section>
@@ -55,25 +66,25 @@
             <h2>Mi Stack Tecnológico</h2>
             <div class="tech-grid">
                 <article class="tech-item">
-                    <img src="assets/image/ui-web-app.avif" alt="Tecnología Front-End"
-                         srcset="assets/image/ui-web-app.avif 1x"
-                         sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw">
+                    <img src="assets/image/Monitoy-Proyect-Flask-HTML-Tailwind-CSS.png" alt="Tecnología Front-End"
+                        srcset="assets/image/Monitoy-Proyect-Flask-HTML-Tailwind-CSS.png 1x"
+                        sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw">
                     <h3>Front-End</h3>
                     <p>Experiencia con HTML, CSS, JavaScript, React, y herramientas de diseño responsivo.</p>
                 </article>
                 <article class="tech-item">
-                    <img src="assets/image/ui.avif" alt="Tecnología Back-End"
-                         srcset="assets/image/ui.avif 1x"
-                         sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw">
+                    <img src="assets/image/ui.avif" alt="Tecnología Back-End" srcset="assets/image/ui.avif 1x"
+                        sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw">
                     <h3>Back-End</h3>
-                    <p>Desarrollo de APIs con Node.js, Python, y frameworks como Express y Django.</p>
+                    <p>Desarrollo de APIs con Python, Go, Spring Boot, y frameworks como Django y Express.</p>
                 </article>
                 <article class="tech-item">
-                    <img src="assets/image/ui-web-app.avif" alt="Soluciones Full-Stack"
-                         srcset="assets/image/ui-web-app.avif 1x"
-                         sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw">
+                    <img src="assets/image/Monitoy-Proyect-Flask-HTML-Tailwind-CSS.png" alt="Soluciones Full-Stack"
+                        srcset="assets/image/Monitoy-Proyect-Flask-HTML-Tailwind-CSS.png 1x"
+                        sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw">
                     <h3>Full-Stack</h3>
-                    <p>Creación de soluciones completas, integrando front-end y back-end, optimizando el flujo de trabajo.</p>
+                    <p>Creación de soluciones completas, integrando front-end y back-end, optimizando el flujo de
+                        trabajo.</p>
                 </article>
             </div>
         </div>
@@ -85,32 +96,37 @@
             <h2>Proyectos Destacados</h2>
             <div class="work-grid">
                 <article class="work-item">
-                    <img src="assets/image/ui-web-app.avif" alt="Proyecto 1"
-                         srcset="assets/image/ui-web-app.avif 1x"
-                         sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw">
-                    <h3>Aplicación de Gestión de Tareas</h3>
-                    <p>Una aplicación web para la gestión eficiente de tareas, desarrollada con React y Node.js.</p>
+                    <img src="assets/image/project-math.png" alt="Project Math"
+                        srcset="assets/image/project-math.png 1x"
+                        sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw">
+                    <h3>Project Math</h3>
+                    <p>Aplicación web para calcular integrales definidas, desarrollada con Next.js y JavaScript. Lideré
+                        un equipo de desarrollo, logrando la entrega anticipada del proyecto.</p>
                     <a href="https://github.com/tuusuario/proyecto1" target="_blank" class="button">Ver en GitHub</a>
                 </article>
                 <article class="work-item">
-                    <img src="assets/image/ui.avif" alt="Proyecto 2"
-                         srcset="assets/image/ui.avif 1x"
-                         sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw">
-                    <h3>Plataforma de E-Commerce</h3>
-                    <p>Desarrollo de una plataforma de e-commerce con funcionalidades completas, utilizando Python y Django.</p>
-                    <a href="https://github.com/tuusuario/proyecto2" target="_blank" class="button">Ver en GitHub</a>
+                    <img src="assets/image/skillForge-academy.jpeg" alt="SkillForge Academy"
+                        srcset="assets/image/skillForge-academy.jpeg 1x"
+                        sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw">
+                    <h3>SkillForge Academy</h3>
+                    <p>Desarrollo de backend con Spring Boot y frontend con React y TypeScript. Implementación de
+                        microservicios en Go, optimizando rendimiento y escalabilidad.</p>
+                    <a href="https://github.com/gioleon/skillForgeAcademy" target="_blank" class="button">Ver en
+                        GitHub</a>
                 </article>
                 <article class="work-item">
-                    <img src="assets/image/ui-web-app.avif" alt="Proyecto 3"
-                         srcset="assets/image/ui-web-app.avif 1x"
-                         sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw">
-                    <h3>Aplicación Móvil para Seguimiento de Salud</h3>
-                    <p>Aplicación móvil para el seguimiento de la salud y bienestar, creada con React Native.</p>
-                    <a href="https://github.com/tuusuario/proyecto3" target="_blank" class="button">Ver en GitHub</a>
+                    <img src="assets/image/Monitoy-Proyect-Flask-HTML-Tailwind-CSS.png" alt="Monitory"
+                        srcset="assets/image/Monitoy-Proyect-Flask-HTML-Tailwind-CSS.png 1x"
+                        sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw">
+                    <h3>Monitory</h3>
+                    <p>El Monitor de Sistema es una aplicación web diseñada para supervisar y visualizar en tiempo real
+                        el uso de recursos del sistema, incluyendo la CPU, la memoria y el disco.</p>
+                    <a href="https://github.com/jjvnz/monitory" target="_blank" class="button">Ver en GitHub</a>
                 </article>
             </div>
         </div>
     </section>
+
 
     <!-- Certificaciones y Educación -->
     <section id="certifications" class="section certifications-section">
@@ -118,19 +134,19 @@
             <h2>Certificaciones y Educación</h2>
             <div class="certifications-grid">
                 <article class="certification-item">
-                    <h3>Certificación en JavaScript Avanzado</h3>
-                    <p>Institución: [Nombre de la Institución]</p>
-                    <p>Año: 2023</p>
+                    <h3>Scrum Foundation Professional Certification - SFPC™</h3>
+                    <p>Institución: CertiProf</p>
+                    <p>Año: 2024</p>
                 </article>
                 <article class="certification-item">
-                    <h3>Certificación en Desarrollo de APIs con Node.js</h3>
-                    <p>Institución: [Nombre de la Institución]</p>
-                    <p>Año: 2022</p>
+                    <h3>Data Analysis Using Pyspark</h3>
+                    <p>Institución: Universidad Distrital Francisco José de Caldas</p>
+                    <p>Año: 2024</p>
                 </article>
                 <article class="certification-item">
-                    <h3>Licenciatura en Ingeniería en Sistemas</h3>
-                    <p>Institución: [Nombre de la Universidad]</p>
-                    <p>Año: 2021</p>
+                    <h3>Ingeniería en Sistemas</h3>
+                    <p>Institución: Fundación Universitaria Tecnológico Comfenalco</p>
+                    <p>Año: 2021 - 2025</p>
                 </article>
             </div>
         </div>
@@ -141,10 +157,10 @@
         <div class="container">
             <h2>Contacto</h2>
             <div class="social-icons">
-                <a href="https://github.com/tuusuario" target="_blank" aria-label="GitHub">
+                <a href="https://github.com/jjvnz" target="_blank" aria-label="GitHub">
                     <img src="assets/icons/github.svg" alt="GitHub" class="social-icon">
                 </a>
-                <a href="https://linkedin.com/in/tuusuario" target="_blank" aria-label="LinkedIn">
+                <a href="https://linkedin.com/in/jjvnz" target="_blank" aria-label="LinkedIn">
                     <img src="assets/icons/linkedin.svg" alt="LinkedIn" class="social-icon">
                 </a>
             </div>
@@ -154,7 +170,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2024 Desarrollador Full Stack del Futuro</p>
+            <p>&copy; 2024 Juan Villalobos</p>
         </div>
     </footer>
 
@@ -162,6 +178,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
     <script src="js/scripts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.getElementById('mobile-menu');
+            const navList = document.querySelector('.nav-list');
+
+            // Verifica si los elementos están disponibles
+            if (menuToggle && navList) {
+                menuToggle.addEventListener('click', () => {
+                    menuToggle.classList.toggle('active');
+                    navList.classList.toggle('active');
+                });
+            } else {
+                console.error('Elementos no encontrados: Asegúrate de que los ID y clases coincidan con el HTML.');
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -45,9 +45,7 @@ footer {
   }
 }
 
-// Ejemplo de Media Queries para Pantallas Adicionales
-
-// Pantallas de Tabletas y Pantallas Pequeñas de Escritorio
+// Media Queries para Pantallas Adicionales
 @media (min-width: 481px) {
   body {
     font-size: 1rem; // Tamaño base de fuente para pantallas medianas
@@ -58,7 +56,6 @@ footer {
   }
 }
 
-// Pantallas de Escritorio Grandes
 @media (min-width: 769px) {
   body {
     font-size: 1.1rem; // Aumenta el tamaño de fuente para pantallas grandes
@@ -69,7 +66,6 @@ footer {
   }
 }
 
-// Pantallas de Escritorio Extra Grandes
 @media (min-width: 1200px) {
   body {
     font-size: 1.2rem; // Aumenta el tamaño de fuente para pantallas muy grandes

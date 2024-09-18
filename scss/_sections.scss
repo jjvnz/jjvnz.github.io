@@ -13,7 +13,6 @@
 }
 
 // About Section
-/* Estilos para la sección "Sobre Mí" */
 .about-section {
   .about-content {
     display: flex; // Usa Flexbox para alinear los elementos en paralelo
@@ -176,11 +175,9 @@
 }
 
 @media (min-width: 769px) {
-
   .stack-section .tech-grid,
   .work-section .work-grid,
   .certifications-section .certifications-grid {
-
     .tech-item,
     .work-item,
     .certification-item {
@@ -196,22 +193,5 @@
 
   .container {
     max-width: 1200px; // Máximo ancho del contenedor
-  }
-}
-
-// Estilo para Encabezado (h1)
-h1 {
-  font-size: 2rem; // Tamaño base para móviles
-}
-
-@media (min-width: 769px) {
-  h1 {
-    font-size: 2.5rem; // Tamaño más grande para pantallas medianas
-  }
-}
-
-@media (min-width: 1200px) {
-  h1 {
-    font-size: 3rem; // Tamaño aún mayor para pantallas grandes
   }
 }

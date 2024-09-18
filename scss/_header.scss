@@ -15,7 +15,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px; // Mayor espacio entre el menú y la sección del héroe
+    margin-bottom: 30px;
+    position: relative; // Asegúrate de que el contenedor de navegación tenga posición relativa para manejar el menú desplegable
 
     .logo {
       font-size: 1.5rem;
@@ -23,17 +24,55 @@
       color: $text-color;
     }
 
-    ul {
-      display: flex;
+    .nav-list {
+      display: none; // Ocultar menú en pantallas pequeñas
       list-style: none;
+      flex-direction: column;
+      background-color: $header-background;
+      position: absolute;
+      top: 60px;
+      right: 0;
+      padding: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
 
       li {
-        margin: 0 15px;
+        margin: 10px 0;
 
         a {
           color: $text-color;
           transition: color 0.3s ease;
         }
+      }
+    }
+
+    .nav-list.active {
+      display: flex; // Mostrar el menú cuando está activo
+    }
+
+    .menu-toggle {
+      display: flex; // Mostrar ícono del menú en pantallas pequeñas
+      flex-direction: column;
+      cursor: pointer;
+
+      span {
+        background-color: $text-color;
+        height: 3px;
+        width: 25px;
+        margin: 3px 0;
+        transition: all 0.3s;
+      }
+
+      &.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+
+      &.active span:nth-child(2) {
+        opacity: 0;
+      }
+
+      &.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
       }
     }
 
@@ -43,14 +82,14 @@
   }
 
   .hero {
-    background-color: $hero-background; // Nuevo color de fondo para la sección del héroe
+    background-color: $hero-background;
     color: $text-color;
     text-align: center;
-    padding: 60px 15px; // Agregar más padding para dar espacio alrededor del contenido
+    padding: 60px 15px;
     margin-top: 20px;
 
     h1 {
-      font-size: 3rem;
+      font-size: 2.5rem;
       margin-bottom: 20px;
     }
 
@@ -69,75 +108,46 @@
   }
 }
 
-// Estilos Base (Móviles)
+// Media Queries
 
-// Media Queries para Pantallas de Tabletas y Pantallas Pequeñas de Escritorio
-@media (min-width: 481px) {
-  .about-content {
-    flex-direction: row;
-    align-items: center;
-    text-align: left;
-
-    p {
-      text-align: left;
-    }
+// Pantallas pequeñas (móviles)
+@media (max-width: 480px) {
+  .menu-toggle {
+    display: flex; // Mostrar ícono de menú en pantallas pequeñas
   }
 
-  .stack-section .tech-grid,
-  .work-section .work-grid,
-  .certifications-section .certifications-grid {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 20px;
-
-    .tech-item,
-    .work-item,
-    .certification-item {
-      width: calc(50% - 20px); // Dos elementos por fila
-    }
+  .nav-list {
+    display: none; // Ocultar menú por defecto
   }
 }
 
-// Media Queries para Pantallas de Escritorio Grandes
+// Pantallas medianas (tabletas)
+@media (min-width: 481px) and (max-width: 768px) {
+  .menu-toggle {
+    display: flex; // Mostrar ícono de menú en pantallas medianas
+  }
+
+  .nav-list {
+    display: none; // Ocultar menú por defecto
+  }
+}
+
+// Pantallas grandes (escritorios)
 @media (min-width: 769px) {
-  .stack-section .tech-grid,
-  .work-section .work-grid,
-  .certifications-section .certifications-grid {
-    .tech-item,
-    .work-item,
-    .certification-item {
-      width: calc(33.33% - 20px); // Tres elementos por fila
+  .nav-list {
+    display: flex; // Mostrar menú en pantallas grandes
+    flex-direction: row; // Menú en horizontal
+    position: static; // Revertir position absolute
+    background: none;
+    box-shadow: none;
+    padding: 0;
+
+    li {
+      margin: 0 15px;
     }
   }
 
-  .hero {
-    padding: 60px 15px; // Ajusta el padding para pantallas más grandes
-  }
-
-  .hero h1 {
-    font-size: 2.5rem; // Aumenta el tamaño del texto del título
-  }
-
-  .main-nav ul {
-    flex-direction: row; // Navegación horizontal en pantallas grandes
-  }
-
-  .main-nav li {
-    margin: 0 15px;
-  }
-}
-
-// Media Queries para Pantallas de Escritorio Extra Grandes
-@media (min-width: 1200px) {
-  .container {
-    max-width: 1200px; // Máximo ancho del contenedor
-  }
-
-  .section {
-    padding: 80px 30px; // Ajusta el padding para pantallas muy grandes
-  }
-
-  .hero h1 {
-    font-size: 3rem; // Aumenta aún más el tamaño del texto del título
+  .menu-toggle {
+    display: none; // Ocultar ícono de menú en pantallas grandes
   }
 }

@@ -1,4 +1,3 @@
-@charset "UTF-8";
 * {
   margin: 0;
   padding: 0;
@@ -81,22 +80,55 @@ footer {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
+  position: relative;
 }
 .main-header .main-nav .logo {
   font-size: 1.5rem;
   font-weight: 700;
   color: #e0e0e0;
 }
-.main-header .main-nav ul {
-  display: flex;
+.main-header .main-nav .nav-list {
+  display: none;
   list-style: none;
+  flex-direction: column;
+  background-color: #111;
+  position: absolute;
+  top: 60px;
+  right: 0;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
 }
-.main-header .main-nav ul li {
-  margin: 0 15px;
+.main-header .main-nav .nav-list li {
+  margin: 10px 0;
 }
-.main-header .main-nav ul li a {
+.main-header .main-nav .nav-list li a {
   color: #e0e0e0;
   transition: color 0.3s ease;
+}
+.main-header .main-nav .nav-list.active {
+  display: flex;
+}
+.main-header .main-nav .menu-toggle {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+.main-header .main-nav .menu-toggle span {
+  background-color: #e0e0e0;
+  height: 3px;
+  width: 25px;
+  margin: 3px 0;
+  transition: all 0.3s;
+}
+.main-header .main-nav .menu-toggle.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.main-header .main-nav .menu-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+.main-header .main-nav .menu-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
 }
 .main-header .main-nav a:hover {
   color: #1a936f;
@@ -109,7 +141,7 @@ footer {
   margin-top: 20px;
 }
 .main-header .hero h1 {
-  font-size: 3rem;
+  font-size: 2.5rem;
   margin-bottom: 20px;
 }
 .main-header .hero .button {
@@ -124,68 +156,36 @@ footer {
   background-color: #1a936f;
 }
 
-@media (min-width: 481px) {
-  .about-content {
-    flex-direction: row;
-    align-items: center;
-    text-align: left;
+@media (max-width: 480px) {
+  .menu-toggle {
+    display: flex;
   }
-  .about-content p {
-    text-align: left;
+  .nav-list {
+    display: none;
   }
-  .stack-section .tech-grid,
-  .work-section .work-grid,
-  .certifications-section .certifications-grid {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 20px;
+}
+@media (min-width: 481px) and (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
   }
-  .stack-section .tech-grid .tech-item,
-  .stack-section .tech-grid .work-item,
-  .stack-section .tech-grid .certification-item,
-  .work-section .work-grid .tech-item,
-  .work-section .work-grid .work-item,
-  .work-section .work-grid .certification-item,
-  .certifications-section .certifications-grid .tech-item,
-  .certifications-section .certifications-grid .work-item,
-  .certifications-section .certifications-grid .certification-item {
-    width: calc(50% - 20px);
+  .nav-list {
+    display: none;
   }
 }
 @media (min-width: 769px) {
-  .stack-section .tech-grid .tech-item,
-  .stack-section .tech-grid .work-item,
-  .stack-section .tech-grid .certification-item,
-  .work-section .work-grid .tech-item,
-  .work-section .work-grid .work-item,
-  .work-section .work-grid .certification-item,
-  .certifications-section .certifications-grid .tech-item,
-  .certifications-section .certifications-grid .work-item,
-  .certifications-section .certifications-grid .certification-item {
-    width: calc(33.33% - 20px);
-  }
-  .hero {
-    padding: 60px 15px;
-  }
-  .hero h1 {
-    font-size: 2.5rem;
-  }
-  .main-nav ul {
+  .nav-list {
+    display: flex;
     flex-direction: row;
+    position: static;
+    background: none;
+    box-shadow: none;
+    padding: 0;
   }
-  .main-nav li {
+  .nav-list li {
     margin: 0 15px;
   }
-}
-@media (min-width: 1200px) {
-  .container {
-    max-width: 1200px;
-  }
-  .section {
-    padding: 80px 30px;
-  }
-  .hero h1 {
-    font-size: 3rem;
+  .menu-toggle {
+    display: none;
   }
 }
 .section {
@@ -198,7 +198,6 @@ footer {
   padding: 0 15px;
 }
 
-/* Estilos para la sección "Sobre Mí" */
 .about-section .about-content {
   display: flex;
   flex-direction: column;
@@ -348,20 +347,6 @@ footer {
   }
   .container {
     max-width: 1200px;
-  }
-}
-h1 {
-  font-size: 2rem;
-}
-
-@media (min-width: 769px) {
-  h1 {
-    font-size: 2.5rem;
-  }
-}
-@media (min-width: 1200px) {
-  h1 {
-    font-size: 3rem;
   }
 }
 
