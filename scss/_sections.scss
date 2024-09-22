@@ -35,34 +35,17 @@
 }
 
 // Tech Stack Section
-.stack-section {
-  .tech-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
 
-    .tech-item {
-      background: #1a1a1a;
-      padding: 15px;
-      border-radius: $border-radius;
-      width: 100%;
-      box-sizing: border-box;
-
-      img {
-        max-width: 100%;
-        border-radius: $border-radius;
-      }
-
-      h3 {
-        margin-top: 10px;
-        font-size: 1.1rem;
-      }
-
-      p {
-        font-size: 0.8rem;
-      }
-    }
-  }
+.tech-item {
+  background-color:rgba(10, 31, 20, 0.377);
+  padding: 1rem;
+  border-radius: 5px;
+  text-align: center;
 }
 
 // Work Showcase Section

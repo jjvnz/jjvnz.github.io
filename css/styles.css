@@ -215,28 +215,17 @@ footer {
   text-align: center;
 }
 
-.stack-section .tech-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
 }
-.stack-section .tech-grid .tech-item {
-  background: #1a1a1a;
-  padding: 15px;
+
+.tech-item {
+  background-color: rgba(10, 31, 20, 0.377);
+  padding: 1rem;
   border-radius: 5px;
-  width: 100%;
-  box-sizing: border-box;
-}
-.stack-section .tech-grid .tech-item img {
-  max-width: 100%;
-  border-radius: 5px;
-}
-.stack-section .tech-grid .tech-item h3 {
-  margin-top: 10px;
-  font-size: 1.1rem;
-}
-.stack-section .tech-grid .tech-item p {
-  font-size: 0.8rem;
+  text-align: center;
 }
 
 .work-section .work-grid {
