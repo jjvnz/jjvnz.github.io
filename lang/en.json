@@ -1,0 +1,41 @@
+{
+    "nav.about": "About Me",
+    "nav.techStack": "Tech Stack",
+    "nav.projects": "Projects",
+    "nav.certifications": "Certifications",
+    "nav.contact": "Contact",
+  
+    "hero.title": "Full Stack Developer",
+    "hero.subtitle": "Transforming ideas into innovative technological solutions.",
+    "hero.cta": "Explore My Projects",
+  
+    "about.title": "About Me",
+    "about.description": "I am Juan Villalobos, a Full Stack developer with over 4 years of experience in creating scalable and secure web applications. Proficient in technologies such as Python, Go, Spring Boot, and React, my goal is to deliver efficient and innovative solutions in every project.",
+  
+    "techStack.title": "Tech Stack",
+  
+    "projects.title": "Featured Projects",
+    "projects.project1.title": "Pseudo-Compiler",
+    "projects.project1.description": "A web application for validating variable declaration statements using regular expressions.",
+    "projects.project2.title": "SkillForge Academy",
+    "projects.project2.description": "Backend development with Spring Boot and frontend with React and TypeScript. Implementation of microservices in Go, optimizing performance and scalability.",
+    "projects.project3.title": "Monitory",
+    "projects.project3.description": "A web application to monitor and visualize system resource usage in real-time, including CPU, memory, and disk.",
+    "projects.viewGithub": "View on GitHub",
+  
+    "certifications.title": "Certifications and Education",
+    "certifications.cert1.title": "Scrum Foundation Professional Certification - SFPC™",
+    "certifications.cert1.institution": "Institution: CertiProf",
+    "certifications.cert1.year": "Year: 2024",
+    "certifications.cert2.title": "Data Analysis Using Pyspark",
+    "certifications.cert2.institution": "Institution: Universidad Distrital Francisco José de Caldas",
+    "certifications.cert2.year": "Year: 2024",
+    "certifications.cert3.title": "Systems Engineering",
+    "certifications.cert3.institution": "Institution: Fundación Universitaria Tecnológico Comfenalco",
+    "certifications.cert3.year": "Year: 2021 - 2025",
+  
+    "contact.title": "Connect with Me",
+    "contact.description": "If you'd like to get in touch, feel free to connect with me on social media:",
+  
+    "footer.copyright": "© 2024 Juan Villalobos. All rights reserved."
+  }

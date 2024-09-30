@@ -1,0 +1,44 @@
+# Dependencias de Node
+node_modules/
+package-lock.json
+
+# Archivos de configuración del entorno
+.env
+.env.local
+.env.*.local
+
+# Archivos de compilación y distribución
+css/
+dist/
+build/
+
+# Archivos temporales y de caché
+*.log
+*.tmp
+*.cache
+*.swp
+*.DS_Store
+Thumbs.db
+
+# Archivos de Sass
+css/**/*.css
+*.css.map
+
+# Editor de código
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Archivos de sistema
+*.bak
+*.old
+*.orig
+
+# Archivos de Gulp
+gulpfile.js
+gulpfile.babel.js
+
+# Otros archivos que no deseas rastrear
+README.md
+LICENSE

@@ -1,155 +1,132 @@
 <!DOCTYPE html>
-<html lang="es">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Portafolio de Juan Villalobos, un desarrollador Full Stack con experiencia en Python, Go, Spring Boot y React.">
-    <meta name="keywords" content="Full Stack, Desarrollador, Python, Go, Spring Boot, React, Microservicios, APIs">
+    <meta name="description" content="Portfolio of Juan Villalobos, a Full Stack developer with experience in Python, Go, Spring Boot, and React.">
+    <meta name="keywords" content="Full Stack, Developer, Python, Go, Spring Boot, React, Microservices, APIs">
     <meta name="author" content="Juan Villalobos">
-    <title>Juan Villalobos - Desarrollador Full Stack</title>
+    <title>Juan Villalobos - Full Stack Developer</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" type="module"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" type="module"></script>
-          
     <link rel="stylesheet" href="css/styles.css">
 </head>
-
 <body>
-    <!-- Header: Navegación y presentación -->
     <header class="main-header">
-        <div class="container">
-            <nav class="main-nav">
-                <a href="#" class="logo">Juan Villalobos</a>
-                <!-- Icono de menú para mobile -->
-                <div class="menu-toggle" id="mobile-menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-                <ul class="nav-list">
-                    <li><a href="#about">Sobre Mí</a></li>
-                    <li><a href="#tech-stack">Stack Tecnológico</a></li>
-                    <li><a href="#work-showcase">Proyectos</a></li>
-                    <li><a href="#certifications">Certificaciones</a></li>
-                    <li><a href="#contact">Contacto</a></li>
-                </ul>
-            </nav>
-            <div class="hero">
-                <div class="hero-content">
-                    <h1>Desarrollador Full Stack del Futuro</h1>
-                    <p>Diseño y desarrollo de soluciones tecnológicas innovadoras con experiencia en tecnologías
-                        avanzadas.</p>
-                    <a href="#work-showcase" class="button">Explora Mis Proyectos</a>
-                </div>
+        <nav class="main-nav">
+            <a href="#" class="logo">Juan Villalobos</a>
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
-        </div>
+            <ul class="nav-list">
+                <li><a href="#about" data-i18n="nav.about">About Me</a></li>
+                <li><a href="#tech-stack" data-i18n="nav.techStack">Tech Stack</a></li>
+                <li><a href="#work-showcase" data-i18n="nav.projects">Projects</a></li>
+                <li><a href="#certifications" data-i18n="nav.certifications">Certifications</a></li>
+                <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+            </ul>
+            <div class="language-switch">
+                <button id="lang-en" class="lang-button active" aria-label="Switch to English">
+                    EN
+                </button>
+                <button id="lang-es" class="lang-button" aria-label="Cambiar a Español">
+                    ES
+                </button>
+            </div>            
+        </nav>
     </header>
 
-    <!-- Sección Sobre Mí -->
-    <section id="about" class="section about-section">
-        <div class="container">
-            <h2>Sobre Mí</h2>
+    <main>
+        <div class="hero">
+            <h1 data-i18n="hero.title">Full Stack Developer</h1>
+            <p data-i18n="hero.subtitle">Transforming ideas into innovative technological solutions.</p>
+            <a href="#work-showcase" class="button" data-i18n="hero.cta">Explore My Projects</a>
+        </div>
+
+        <section id="about" class="section about-section">
+            <h2 data-i18n="about.title">About Me</h2>
             <div class="about-content">
-                <img src="assets/image/profile.png" alt="Foto de Perfil" class="profile-img"
-                    srcset="assets/image/profile.png 1x, assets/image/profile.png 2x"
-                    sizes="(max-width: 600px) 100vw, 50vw">
-                <p>Soy un desarrollador Full Stack con experiencia en crear aplicaciones web y móviles completas, desde
-                    el front-end hasta el back-end. Con una sólida formación en Ingeniería en Sistemas, y experiencia
-                    práctica en tecnologías como Python, Go, Spring Boot y React, me dedico a entregar soluciones
-                    innovadoras y eficientes.</p>
+                <img src="assets/image/profile.png" alt="Profile Picture" class="profile-img">
+                <p data-i18n="about.description">I am Juan Villalobos, a Full Stack developer with over 4 years of experience in creating scalable and secure web applications. Proficient in technologies such as Python, Go, Spring Boot, and React, my goal is to deliver efficient and innovative solutions in every project.</p>
             </div>
-        </div>
-    </section>
+        </section>
 
-<!-- Sección de Stack Tecnológico -->
-<section id="tech-stack" class="section work-section">
-    <div class="container">
-        <h2>Stack Tecnológico</h2>
-        <div class="tech-grid">
-            <div class="tech-item"><i class="devicon-python-plain"></i> Python</div>
-            <div class="tech-item"><i class="devicon-go-plain"></i> Go</div>
-            <div class="tech-item"><i class="devicon-spring-plain"></i> Spring Boot</div>
-            <div class="tech-item"><i class="devicon-react-original"></i> React</div>
-            <div class="tech-item"><i class="devicon-amazonwebservices-plain"></i> AWS</div>
-            <div class="tech-item"><i class="devicon-docker-plain"></i> Docker</div>
-            <div class="tech-item"><i class="devicon-postgresql-plain"></i> PostgreSQL</div>
-            <div class="tech-item"><i class="devicon-html5-plain"></i> HTML</div>
-            <div class="tech-item"><i class="devicon-css3-plain"></i> CSS</div>
-            <div class="tech-item"><i class="devicon-javascript-plain"></i> JavaScript</div>
-        </div>
-    </div>  
-</section>
+        <section id="tech-stack" class="section tech-stack">
+            <h2 data-i18n="techStack.title">Tech Stack</h2>
+            <div class="tech-grid">
+                <div class="tech-item"><i class="devicon-python-plain"></i> Python</div>
+                <div class="tech-item"><i class="devicon-go-plain"></i> Go</div>
+                <div class="tech-item"><i class="devicon-spring-plain"></i> Spring Boot</div>
+                <div class="tech-item"><i class="devicon-react-original"></i> React</div>
+                <div class="tech-item"><i class="devicon-amazonwebservices-plain"></i> AWS</div>
+                <div class="tech-item"><i class="devicon-docker-plain"></i> Docker</div>
+                <div class="tech-item"><i class="devicon-postgresql-plain"></i> PostgreSQL</div>
+                <div class="tech-item"><i class="devicon-html5-plain"></i> HTML</div>
+                <div class="tech-item"><i class="devicon-css3-plain"></i> CSS</div>
+                <div class="tech-item"><i class="devicon-javascript-plain"></i> JavaScript</div>
+                <div class="tech-item"><i class="devicon-pandas-plain"></i> Pandas</div>
+                <div class="tech-item"><i class="devicon-numpy-plain"></i> NumPy</div>
+                <div class="tech-item"><i class="devicon-opencv-plain"></i> OpenCV</div>
+                <div class="tech-item"><i class="devicon-cplusplus-plain"></i> C++</div>
+                <div class="tech-item"><i class="devicon-selenium-plain"></i> Selenium</div>
+                <div class="tech-item"><i class="devicon-cucumber-plain"></i> Cucumber</div>
+            </div>
+        </section>
 
-
-    <!-- Proyectos Destacados -->
-    <section id="work-showcase" class="section work-section">
-        <div class="container">
-            <h2>Proyectos Destacados</h2>
+        <section id="work-showcase" class="section work-showcase">
+            <h2 data-i18n="projects.title">Featured Projects</h2>
             <div class="work-grid">
                 <article class="work-item">
-                    <img src="assets/image/Analizador-Lexico.png" alt="Pseudo-Compiler"
-                        srcset="assets/image/Analizador-Lexico.png 1x"
-                        sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw">
-                    <h3>Pseudo-Compiler</h3>
-                    <p>Este proyecto es una aplicación web para validar sentencias de declaración de variables utilizando expresiones regulares.</p>
-                    <a href="https://github.com/jjvnz/AnalizadorLexico" target="_blank" class="button">Ver en GitHub</a>
+                    <img src="assets/image/Analizador-Lexico.png" alt="Pseudo-Compiler">
+                    <h3 data-i18n="projects.project1.title">Pseudo-Compiler</h3>
+                    <p data-i18n="projects.project1.description">A web application for validating variable declaration statements using regular expressions.</p>
+                    <a href="https://github.com/jjvnz/AnalizadorLexico" target="_blank" class="button" data-i18n="projects.viewGithub">View on GitHub</a>
                 </article>
                 <article class="work-item">
-                    <img src="assets/image/skillForge-academy.jpeg" alt="SkillForge Academy"
-                        srcset="assets/image/skillForge-academy.jpeg 1x"
-                        sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw">
-                    <h3>SkillForge Academy</h3>
-                    <p>Desarrollo de backend con Spring Boot y frontend con React y TypeScript. Implementación de
-                        microservicios en Go, optimizando rendimiento y escalabilidad.</p>
-                    <a href="https://github.com/gioleon/skillForgeAcademy" target="_blank" class="button">Ver en
-                        GitHub</a>
+                    <img src="assets/image/skillForge-academy.jpeg" alt="SkillForge Academy">
+                    <h3 data-i18n="projects.project2.title">SkillForge Academy</h3>
+                    <p data-i18n="projects.project2.description">Backend development with Spring Boot and frontend with React and TypeScript. Implementation of microservices in Go, optimizing performance and scalability.</p>
+                    <a href="https://github.com/gioleon/skillForgeAcademy" target="_blank" class="button" data-i18n="projects.viewGithub">View on GitHub</a>
                 </article>
                 <article class="work-item">
-                    <img src="assets/image/Monitoy-Proyect-Flask-HTML-Tailwind-CSS.png" alt="Monitory"
-                        srcset="assets/image/Monitoy-Proyect-Flask-HTML-Tailwind-CSS.png 1x"
-                        sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw">
-                    <h3>Monitory</h3>
-                    <p>El Monitor de Sistema es una aplicación web diseñada para supervisar y visualizar en tiempo real
-                        el uso de recursos del sistema, incluyendo la CPU, la memoria y el disco.</p>
-                    <a href="https://github.com/jjvnz/monitory" target="_blank" class="button">Ver en GitHub</a>
+                    <img src="assets/image/Monitoy-Proyect-Flask-HTML-Tailwind-CSS.png" alt="Monitory">
+                    <h3 data-i18n="projects.project3.title">Monitory</h3>
+                    <p data-i18n="projects.project3.description">A web application to monitor and visualize system resource usage in real-time, including CPU, memory, and disk.</p>
+                    <a href="https://github.com/jjvnz/monitory" target="_blank" class="button" data-i18n="projects.viewGithub">View on GitHub</a>
                 </article>
             </div>
-        </div>
-    </section>
+        </section>
 
-
-    <!-- Certificaciones y Educación -->
-    <section id="certifications" class="section certifications-section">
-        <div class="container">
-            <h2>Certificaciones y Educación</h2>
+        <section id="certifications" class="section certifications-section">
+            <h2 data-i18n="certifications.title">Certifications and Education</h2>
             <div class="certifications-grid">
                 <article class="certification-item">
-                    <h3>Scrum Foundation Professional Certification - SFPC™</h3>
-                    <p>Institución: CertiProf</p>
-                    <p>Año: 2024</p>
+                    <h3 data-i18n="certifications.cert1.title">Scrum Foundation Professional Certification - SFPC™</h3>
+                    <p data-i18n="certifications.cert1.institution">Institution: CertiProf</p>
+                    <p data-i18n="certifications.cert1.year">Year: 2024</p>
                 </article>
                 <article class="certification-item">
-                    <h3>Data Analysis Using Pyspark</h3>
-                    <p>Institución: Universidad Distrital Francisco José de Caldas</p>
-                    <p>Año: 2024</p>
+                    <h3 data-i18n="certifications.cert2.title">Data Analysis Using Pyspark</h3>
+                    <p data-i18n="certifications.cert2.institution">Institution: Universidad Distrital Francisco José de Caldas</p>
+                    <p data-i18n="certifications.cert2.year">Year: 2024</p>
                 </article>
                 <article class="certification-item">
-                    <h3>Ingeniería en Sistemas</h3>
-                    <p>Institución: Fundación Universitaria Tecnológico Comfenalco</p>
-                    <p>Año: 2021 - 2025</p>
+                    <h3 data-i18n="certifications.cert3.title">Systems Engineering</h3>
+                    <p data-i18n="certifications.cert3.institution">Institution: Fundación Universitaria Tecnológico Comfenalco</p>
+                    <p data-i18n="certifications.cert3.year">Year: 2021 - 2025</p>
+                </article>
+                <article class="certification-item">
+                    <h3 data-i18n="certifications.cert3.title">Software Development Technologist</h3>
+                    <p data-i18n="certifications.cert3.institution">Institution: Fundación Universitaria Tecnológico Comfenalco</p>
+                    <p data-i18n="certifications.cert3.year">Year: 2020 - 2024</p>
                 </article>
             </div>
-        </div>
-    </section>
-
-    <!-- Contacto -->
-    <section id="contact" class="section contact-section">
-        <div class="container">
-            <h2>Contacto</h2>
+        </section>
+        <section id="contact" class="section contact-section">
+            <h2 data-i18n="contact.title">Connect with Me</h2>
+            <p data-i18n="contact.description">If you'd like to get in touch, feel free to connect with me on social media:</p>
             <div class="social-icons">
                 <a href="https://github.com/jjvnz" target="_blank" aria-label="GitHub">
                     <img src="assets/icons/github.svg" alt="GitHub" class="social-icon">
@@ -158,32 +135,13 @@
                     <img src="assets/icons/linkedin.svg" alt="LinkedIn" class="social-icon">
                 </a>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 Juan Villalobos</p>
-        </div>
+        <p data-i18n="footer.copyright">&copy; 2024 Juan Villalobos. All rights reserved.</p>
     </footer>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const menuToggle = document.getElementById('mobile-menu');
-            const navList = document.querySelector('.nav-list');
 
-            // Verifica si los elementos están disponibles
-            if (menuToggle && navList) {
-                menuToggle.addEventListener('click', () => {
-                    menuToggle.classList.toggle('active');
-                    navList.classList.toggle('active');
-                });
-            } else {
-                console.error('Elementos no encontrados: Asegúrate de que los ID y clases coincidan con el HTML.');
-            }
-        });
-    </script>
+    <script src="js/main.js"></script>
 </body>
-
 </html>
