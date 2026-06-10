@@ -1,774 +1,1225 @@
-<!DOCTYPE html><html class="dark" lang="es"><head>
-<meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>Jair Villalobos — Infraestructura Backend para IA Escalable</title>
-<meta name="description" content="Consultoría independiente de infraestructura backend. Arquitectura de sistemas críticos con Go, Python y Cloud (AWS/GCP). 94% reducción en CI/CD, 1M+ msg/día.">
-<meta property="og:title" content="Jair Villalobos — Infraestructura Backend para IA Escalable">
-<meta property="og:description" content="Arquitectura backend de alto rendimiento para empresas que procesan millones de mensajes diarios. Reducción comprobada de costes cloud y latencia.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://jairvillalobos.dev">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Jair Villalobos — Infraestructura Backend">
-<meta name="twitter:description" content="Consultoría independiente de infraestructura backend. Sistemas críticos, latencia predecible, cero SPOF.">
-<link rel="canonical" href="https://jairvillalobos.dev">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Jair Villalobos","jobTitle":"Backend Infrastructure Consultant","url":"https://jairvillalobos.dev","knowsAbout":["Go","Python","Kubernetes","AWS","GCP","Microservices","Event-Driven Architecture","CI/CD","PostgreSQL","Redis","Kafka"]}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-<script defer src="js/i18n.js"></script>
-<script defer src="js/main.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "background": "#131313",
-                        "surface": "#181818",
-                        "surface-raised": "#242424",
-                        "surface-high": "#2a2a2a",
-                        "accent": "#E4582C",
-                        "on-accent": "#ffffff",
-                        "success": "#A9F600",
-                        "on-success": "#121f00",
-                        "on-surface": "#e5e2e1",
-                        "on-surface-variant": "#a88a81"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                    "spacing": {
-                        "container-max": "1440px",
-                        "margin-desktop": "80px",
-                        "gutter": "24px",
-                        "unit": "4px",
-                        "margin-mobile": "16px"
-                    },
-                    "fontFamily": {
-                        "body-lg": ["Inter"],
-                        "headline-lg": ["Orbitron"],
-                        "headline-md": ["Orbitron"],
-                        "body-md": ["Inter"],
-                        "label-sm": ["Inter"],
-                        "headline-lg-mobile": ["Orbitron"],
-                        "headline-sm": ["Orbitron"],
-                        "display-xl": ["Orbitron"]
-                    },
-                    "fontSize": {
-                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                        "headline-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
-                        "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "500"}],
-                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
-                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
-                        "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
-                        "headline-sm": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
-                        "display-xl": ["80px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
-                    }
-                },
-            },
-        }
-    </script>
-<style>
-        [x-cloak] { display: none !important; }
-        body {
-            background-color: #131313;
-            color: #e5e2e1;
-            scroll-behavior: smooth;
-        }
-        .bento-card {
-            background: rgba(24, 24, 24, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease-out;
-        }
-        .bento-card:hover {
-            border-color: rgba(255, 255, 255, 0.15);
-            background: rgba(28, 28, 28, 0.9);
-        }
-        .glow-accent {
-            box-shadow: 0 0 15px -2px #E4582C;
-        }
-        .glow-success {
-            box-shadow: 0 0 15px -2px #A9F600;
-        }
-        .metallic-text {
-            background: linear-gradient(135deg, #fbfbf8 0%, #c4b0a8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        *:focus-visible {
-            outline: 2px solid #E4582C;
-            outline-offset: 2px;
-        }
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                transition-duration: 0.01ms !important;
-            }
-            .bento-card {
-                opacity: 1 !important;
-                transform: translateY(0) !important;
-            }
-        }
-        .vertical-text {
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-        }
-        .skill-ring {
-            transition: stroke-dashoffset 1s ease-in-out;
-        }
-    </style>
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jair Villalobos — Backend & Platform Engineer · Go · Cloud-Native</title>
+  <meta name="description" content="Backend engineer with 5+ years building high-concurrency distributed systems for Fintech and Telco. Go, Kubernetes, AWS, GCP. Available for remote contracts.">
+  <meta property="og:title" content="Jair Villalobos — Backend Infrastructure Engineer">
+  <meta property="og:description" content="I build the backend infrastructure that lets products scale without breaking — event-driven pipelines, cloud architecture, CI/CD. Go, Kubernetes, AWS, GCP.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://jairvillalobos.dev">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Jair Villalobos — Backend Engineer · Go · Cloud">
+  <meta name="twitter:description" content="5+ years building high-concurrency distributed systems. Go, Kubernetes, Kafka, AWS, GCP. Available for remote contracts.">
+  <link rel="canonical" href="https://jairvillalobos.dev">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Jair Villalobos",
+    "jobTitle": "Senior Backend & Platform Engineer",
+    "url": "https://jairvillalobos.dev",
+    "email": "jjvnzdev@gmail.com",
+    "telephone": "+573013144203",
+    "address": { "@type": "PostalAddress", "addressLocality": "Cartagena", "addressCountry": "CO" },
+    "sameAs": ["https://github.com/jjvnz", "https://linkedin.com/in/jjvnz"],
+    "description": "Backend engineer specializing in high-concurrency distributed systems, event-driven architecture, and cloud infrastructure. Go, Python, Kubernetes, AWS, GCP.",
+    "knowsAbout": ["Go","Python","Kubernetes","AWS","GCP","Terraform","Kafka","NATS","PostgreSQL","Redis","gRPC","Event-Driven Architecture","CI/CD","Domain-Driven Design"],
+    "offers": {
+      "@type": "Service",
+      "serviceType": "Backend Engineering & Platform Consulting",
+      "description": "Architecture, implementation, and optimization of distributed backend systems.",
+      "areaServed": "Worldwide"
+    }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0a0a0a;
+      --surface:    #111111;
+      --surface-2:  #161616;
+      --border:     #1f1f1f;
+      --border-2:   #2a2a2a;
+      --text:       #f5f5f5;
+      --muted:      #737373;
+      --muted-2:    #4a4a4a;
+      --accent:     #f97316;
+      --accent-dim: rgba(249,115,22,0.10);
+      --green:      #22c55e;
+      --green-dim:  rgba(34,197,94,0.09);
+      --font-sans:  'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono:  'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+      --sidebar-w:  244px;
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .skip-link {
+      position: fixed; top: -100%; left: 1rem; z-index: 999;
+      background: var(--accent); color: #fff;
+      padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 600;
+      border-radius: 0 0 4px 4px; transition: top 0.2s;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* ── Layout ── */
+    .layout { display: flex; min-height: 100vh; }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      position: fixed; top: 0; left: 0; height: 100vh;
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      padding: 2rem 1.5rem;
+      background: var(--bg); z-index: 100;
+      overflow-y: auto;
+    }
+    .sidebar-name {
+      font-size: 0.8125rem; font-weight: 700;
+      letter-spacing: 0.02em; color: var(--text);
+      margin-bottom: 0.5rem; font-family: var(--font-mono);
+    }
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 0.375rem;
+      font-size: 0.6875rem; font-family: var(--font-mono);
+      color: var(--green); background: var(--green-dim);
+      border: 1px solid rgba(34,197,94,0.2);
+      padding: 0.25rem 0.625rem; border-radius: 2px; margin-bottom: 2rem;
+    }
+    .status-badge::before {
+      content: ''; display: block; width: 6px; height: 6px;
+      background: var(--green); border-radius: 50%;
+    }
+    .sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 0.125rem; margin-bottom: auto; }
+    .sidebar-nav a {
+      display: block; font-size: 0.8125rem; color: var(--muted);
+      text-decoration: none; padding: 0.375rem 0.5rem; border-radius: 3px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .sidebar-nav a:hover, .sidebar-nav a:focus-visible { color: var(--text); background: var(--surface); }
+    .sidebar-footer {
+      margin-top: 2rem; padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 0.625rem;
+    }
+    .sidebar-link {
+      font-size: 0.75rem; font-family: var(--font-mono);
+      color: var(--muted); text-decoration: none; transition: color 0.15s;
+    }
+    .sidebar-link:hover { color: var(--text); }
+
+    /* ── Mobile nav ── */
+    .mobile-nav {
+      display: none; position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100; background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0 1rem; height: 56px;
+      align-items: center; justify-content: space-between;
+    }
+    .mobile-nav-name { font-size: 0.8125rem; font-weight: 700; font-family: var(--font-mono); }
+    .mobile-menu-btn {
+      background: none; border: 1px solid var(--border);
+      color: var(--text); padding: 0.375rem 0.75rem;
+      font-size: 0.75rem; font-family: var(--font-mono);
+      cursor: pointer; border-radius: 3px;
+    }
+    .mobile-menu {
+      display: none; position: fixed; inset: 56px 0 0 0;
+      background: var(--bg); z-index: 99;
+      flex-direction: column; padding: 2rem 1.5rem; gap: 0.25rem;
+      border-top: 1px solid var(--border);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 1rem; color: var(--muted); text-decoration: none;
+      padding: 0.75rem 0; border-bottom: 1px solid var(--border);
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+
+    /* ── Main ── */
+    .main { margin-left: var(--sidebar-w); flex: 1; min-width: 0; }
+
+    section {
+      padding: 5rem 4rem;
+      border-bottom: 1px solid var(--border);
+      max-width: 900px;
+    }
+
+    /* ── Hero ── */
+    #hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      justify-content: center; padding-top: 6rem; padding-bottom: 4rem;
+    }
+    .hero-eyebrow {
+      font-size: 0.75rem; font-family: var(--font-mono);
+      color: var(--muted); letter-spacing: 0.08em;
+      text-transform: uppercase; margin-bottom: 1.25rem;
+    }
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 700;
+      line-height: 1.1; letter-spacing: -0.02em; color: var(--text);
+      margin-bottom: 1.25rem;
+    }
+    .hero-sub {
+      font-size: 1.0625rem; color: var(--muted);
+      max-width: 560px; line-height: 1.65; margin-bottom: 2.5rem;
+    }
+    .cta-group { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 4rem; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--accent); color: #fff;
+      font-size: 0.8125rem; font-weight: 600;
+      padding: 0.625rem 1.25rem; text-decoration: none;
+      border-radius: 3px; transition: opacity 0.15s;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: transparent; color: var(--text);
+      font-size: 0.8125rem; font-weight: 500;
+      padding: 0.625rem 1.25rem; text-decoration: none;
+      border: 1px solid var(--border-2); border-radius: 3px;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .btn-secondary:hover { border-color: var(--muted-2); background: var(--surface); }
+
+    .proof-strip {
+      display: flex; flex-direction: column; gap: 0.5rem;
+      padding: 1.5rem; background: var(--surface-2);
+      border: 1px solid var(--border); border-radius: 4px; max-width: 560px;
+    }
+    .proof-line {
+      font-size: 0.8125rem; font-family: var(--font-mono);
+      color: var(--muted); line-height: 1.5;
+    }
+    .c  { color: var(--muted-2); }
+    .pv { color: var(--text); }
+    .pa { color: var(--accent); }
+    .pg { color: var(--green); }
+
+    /* ── Section headers ── */
+    h2 {
+      font-size: 0.6875rem; font-family: var(--font-mono); font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+      margin-bottom: 2.5rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    h2::after { content: ''; flex: 1; height: 1px; background: var(--border); max-width: 120px; }
+    h3 { font-size: 1rem; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+
+    .section-intro {
+      font-size: 0.9375rem; color: var(--muted);
+      max-width: 560px; line-height: 1.7; margin-bottom: 2.5rem;
+    }
+
+    /* ── Case studies ── */
+    .case-list { display: flex; flex-direction: column; gap: 2px; }
+    .case-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 4px; overflow: hidden;
+    }
+    .case-header {
+      display: flex; align-items: baseline;
+      justify-content: space-between; gap: 1rem;
+      padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border);
+      cursor: pointer; user-select: none;
+    }
+    .case-header:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+    .case-company {
+      font-size: 0.8125rem; font-family: var(--font-mono);
+      font-weight: 600; color: var(--text);
+    }
+    .case-meta { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .case-role-tag {
+      font-size: 0.6875rem; font-family: var(--font-mono);
+      color: var(--muted); background: var(--surface-2);
+      border: 1px solid var(--border); padding: 0.2rem 0.5rem; border-radius: 2px;
+    }
+    .case-period { font-size: 0.6875rem; font-family: var(--font-mono); color: var(--muted-2); }
+    .case-toggle { font-size: 0.75rem; color: var(--muted-2); transition: transform 0.2s; flex-shrink: 0; }
+    .case-card.open .case-toggle { transform: rotate(180deg); }
+    .case-body { display: none; padding: 0 1.5rem 1.5rem; }
+    .case-card.open .case-body { display: block; }
+    .case-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1.5rem; margin-top: 1.5rem;
+    }
+    .lbl {
+      font-size: 0.625rem; font-family: var(--font-mono); font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted-2); margin-bottom: 0.5rem;
+    }
+    .case-text { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
+    .case-text strong { color: var(--text); font-weight: 500; }
+
+    .stack-tags { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-top: 0.25rem; }
+    .tag {
+      font-size: 0.6875rem; font-family: var(--font-mono);
+      color: var(--muted); background: var(--surface-2);
+      border: 1px solid var(--border); padding: 0.2rem 0.5rem; border-radius: 2px;
+    }
+
+    .result-block {
+      margin-top: 1.5rem; padding: 1rem 1.25rem;
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-left: 2px solid var(--green); border-radius: 0 3px 3px 0;
+    }
+    .result-row {
+      display: flex; align-items: baseline; gap: 0.75rem;
+      font-family: var(--font-mono); font-size: 0.8125rem;
+      margin-bottom: 0.375rem; line-height: 1.5;
+    }
+    .result-row:last-child { margin-bottom: 0; }
+    .rl { color: var(--muted-2); min-width: 130px; font-size: 0.6875rem; }
+    .rv { color: var(--green); }
+    .rc { color: var(--muted); font-size: 0.6875rem; }
+
+    /* ── How I Think ── */
+    .thinking-grid { display: flex; flex-direction: column; gap: 2.5rem; }
+    .thinking-title {
+      font-size: 0.8125rem; font-family: var(--font-mono);
+      font-weight: 600; color: var(--accent); margin-bottom: 0.875rem;
+    }
+    .thinking-text { font-size: 0.9375rem; color: var(--muted); line-height: 1.75; max-width: 640px; }
+    .thinking-text + .thinking-text { margin-top: 0.875rem; }
+    .thinking-text strong { color: var(--text); font-weight: 500; }
+
+    /* ── Stack inventory ── */
+    .stack-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+    .stack-group-label {
+      font-size: 0.625rem; font-family: var(--font-mono); font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted-2); margin-bottom: 1rem;
+    }
+    .stack-items { display: flex; flex-direction: column; gap: 0; }
+    .stack-item {
+      display: grid; grid-template-columns: 130px 1fr;
+      align-items: baseline; gap: 1rem;
+      padding: 0.5rem 0; border-bottom: 1px solid var(--border);
+      font-size: 0.8125rem;
+    }
+    .stack-item:last-child { border-bottom: none; }
+    .stack-tech { font-family: var(--font-mono); font-weight: 500; color: var(--text); }
+    .stack-qualifier { color: var(--muted); font-size: 0.75rem; }
+
+    /* ── Timeline ── */
+    .timeline {
+      display: flex; flex-direction: column; gap: 0;
+      border-left: 1px solid var(--border); margin-left: 0.25rem;
+    }
+    .tl-entry { padding: 0 0 2.25rem 2rem; position: relative; }
+    .tl-entry::before {
+      content: ''; position: absolute; left: -3px; top: 0.4rem;
+      width: 5px; height: 5px; background: var(--border-2); border-radius: 50%;
+    }
+    .tl-entry:last-child { padding-bottom: 0; }
+    .tl-current::before { background: var(--accent); }
+    .tl-date { font-size: 0.6875rem; font-family: var(--font-mono); color: var(--muted-2); margin-bottom: 0.25rem; }
+    .tl-title { font-size: 0.9375rem; font-weight: 600; color: var(--text); margin-bottom: 0.2rem; }
+    .tl-company { font-size: 0.8125rem; font-family: var(--font-mono); color: var(--muted); margin-bottom: 0.5rem; }
+    .tl-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+    .tl-metric {
+      display: inline-block; margin-top: 0.5rem;
+      font-size: 0.6875rem; font-family: var(--font-mono);
+      color: var(--green); background: var(--green-dim);
+      border: 1px solid rgba(34,197,94,0.2);
+      padding: 0.2rem 0.5rem; border-radius: 2px;
+    }
+
+    /* ── Certs ── */
+    .cert-grid { display: flex; flex-direction: column; gap: 0; }
+    .cert-item {
+      display: grid; grid-template-columns: 1fr auto;
+      align-items: baseline; gap: 1rem;
+      padding: 0.625rem 0; border-bottom: 1px solid var(--border);
+      font-size: 0.8125rem;
+    }
+    .cert-item:last-child { border-bottom: none; }
+    .cert-name { color: var(--text); font-weight: 500; }
+    .cert-issuer { font-size: 0.75rem; color: var(--muted); font-family: var(--font-mono); }
+    .cert-date { font-size: 0.6875rem; font-family: var(--font-mono); color: var(--muted-2); white-space: nowrap; }
+
+    /* ── Contact ── */
+    #contact { border-bottom: none; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+    .contact-process { display: flex; flex-direction: column; gap: 1.5rem; margin: 1.5rem 0 2rem; }
+    .process-step { display: grid; grid-template-columns: 2rem 1fr; gap: 0.75rem; align-items: start; }
+    .step-num {
+      font-size: 0.625rem; font-family: var(--font-mono); font-weight: 600;
+      color: var(--muted-2); background: var(--surface);
+      border: 1px solid var(--border);
+      width: 1.75rem; height: 1.75rem;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 2px; flex-shrink: 0;
+    }
+    .step-label { font-size: 0.75rem; font-weight: 600; color: var(--text); margin-bottom: 0.125rem; }
+    .step-desc { font-size: 0.8125rem; color: var(--muted); }
+    .email-block {
+      margin-top: 1.5rem; padding: 1rem 1.25rem;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 3px;
+    }
+    .email-label {
+      font-size: 0.625rem; font-family: var(--font-mono); color: var(--muted-2);
+      text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.375rem;
+    }
+    .email-link {
+      font-family: var(--font-mono); font-size: 0.875rem;
+      color: var(--accent); text-decoration: none; font-weight: 500;
+    }
+    .email-link:hover { text-decoration: underline; }
+    .calendar-wrap {
+      border: 1px solid var(--border); border-radius: 4px;
+      overflow: hidden; background: var(--surface);
+    }
+    .calendar-header {
+      padding: 0.75rem 1rem; border-bottom: 1px solid var(--border);
+      font-size: 0.6875rem; font-family: var(--font-mono); color: var(--muted);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .cal-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+    .calendar-wrap iframe { display: block; width: 100%; height: 500px; border: 0; }
+    .calendar-fallback { padding: 0.75rem 1rem; font-size: 0.8125rem; color: var(--muted); text-align: center; }
+    .calendar-fallback a { color: var(--accent); }
+
+    /* ── Divider ── */
+    .divider { width: 2rem; height: 1px; background: var(--border); margin: 0.5rem 0; }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .mobile-nav { display: flex; }
+      .main { margin-left: 0; padding-top: 56px; }
+      section { padding: 3rem 1.5rem; }
+      .case-grid { grid-template-columns: 1fr; }
+      .stack-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 1.875rem; }
+      .proof-strip { max-width: 100%; }
+    }
+    @media (max-width: 600px) {
+      section { padding: 2.5rem 1rem; }
+      .case-meta { flex-direction: column; align-items: flex-start; gap: 0.375rem; }
+      .stack-item { grid-template-columns: 110px 1fr; }
+    }
+
+    /* ── Scroll fade-in (CSS only) ── */
+    @media (prefers-reduced-motion: no-preference) {
+      .fade-in { opacity: 0; transform: translateY(10px); animation: fadeUp 0.5s ease forwards; }
+      @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .fade-in { opacity: 1; transform: none; animation: none; }
+    }
+
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    a { color: inherit; }
+    code {
+      font-family: var(--font-mono); font-size: 0.8125em;
+      background: var(--surface-2); border: 1px solid var(--border);
+      padding: 0.15em 0.4em; border-radius: 2px; color: var(--text);
+    }
+  </style>
 </head>
-<body class="font-body-md overflow-x-hidden" x-data="app()">
+<body>
 
-<a href="#main-content" class="fixed -translate-y-full focus:translate-y-0 top-0 left-0 z-[999] bg-accent text-on-accent px-4 py-2 text-sm font-bold transition-transform">Saltar al contenido principal</a>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 
-<nav class="fixed top-0 w-full z-50 bg-background/60 backdrop-blur-xl border-b border-white/10">
-<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
-<div class="font-headline-sm text-headline-sm font-bold text-on-surface tracking-tighter">
-                JAIR VILLALOBOS
-            </div>
-<div class="hidden md:flex gap-8 items-center">
-<a class="font-label-sm text-label-sm uppercase tracking-widest transition-colors duration-300" href="#servicios" :class="currentSection === 'servicios' ? 'text-accent' : 'text-on-surface-variant/70 hover:text-on-surface'" x-text="t('nav.services')"></a>
-<a class="font-label-sm text-label-sm uppercase tracking-widest transition-colors duration-300" href="#metricas" :class="currentSection === 'metricas' ? 'text-accent' : 'text-on-surface-variant/70 hover:text-on-surface'" x-text="t('nav.metrics')"></a>
-<a class="font-label-sm text-label-sm uppercase tracking-widest transition-colors duration-300" href="#proyectos" :class="currentSection === 'proyectos' ? 'text-accent' : 'text-on-surface-variant/70 hover:text-on-surface'" x-text="t('nav.projects')"></a>
-<a class="font-label-sm text-label-sm uppercase tracking-widest transition-colors duration-300" href="#trayectoria" :class="currentSection === 'trayectoria' ? 'text-accent' : 'text-on-surface-variant/70 hover:text-on-surface'" x-text="t('nav.experience')"></a>
-<a class="font-label-sm text-label-sm uppercase tracking-widest transition-colors duration-300" href="#agenda" :class="currentSection === 'agenda' ? 'text-accent' : 'text-on-surface-variant/70 hover:text-on-surface'" x-text="t('nav.contact')"></a>
-</div>
-<div @click="toggleLang()" class="hidden md:block font-label-sm text-label-sm uppercase tracking-widest text-accent font-bold cursor-pointer hover:opacity-80" x-text="currentLang === 'es' ? 'EN' : 'ES'">
-            </div>
-<button @click="menuOpen = !menuOpen" class="md:hidden flex items-center text-on-surface" aria-label="Menú de navegación">
-<span class="material-symbols-outlined text-2xl" x-text="menuOpen ? 'close' : 'menu'"></span>
-</button>
-</div>
-<div x-show="menuOpen" x-cloak x-transition:enter="transition duration-300 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition duration-200 ease-in" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-40 md:hidden bg-background/95 backdrop-blur-2xl flex flex-col items-center justify-center gap-10 px-margin-mobile" @click.self="menuOpen = false">
-<a @click="menuOpen = false" href="#servicios" class="text-2xl font-headline-sm uppercase tracking-[0.2em] text-on-surface hover:text-accent transition-colors" x-text="t('nav.services')"></a>
-<a @click="menuOpen = false" href="#metricas" class="text-2xl font-headline-sm uppercase tracking-[0.2em] text-on-surface hover:text-accent transition-colors" x-text="t('nav.metrics')"></a>
-<a @click="menuOpen = false" href="#proyectos" class="text-2xl font-headline-sm uppercase tracking-[0.2em] text-on-surface hover:text-accent transition-colors" x-text="t('nav.projects')"></a>
-<a @click="menuOpen = false" href="#trayectoria" class="text-2xl font-headline-sm uppercase tracking-[0.2em] text-on-surface hover:text-accent transition-colors" x-text="t('nav.experience')"></a>
-<a @click="menuOpen = false" href="#agenda" class="text-2xl font-headline-sm uppercase tracking-[0.2em] text-on-surface hover:text-accent transition-colors" x-text="t('nav.contact')"></a>
-<div class="w-16 h-px bg-white/10 my-2"></div>
-<div @click="toggleLang(); menuOpen = false" class="font-label-sm text-label-sm uppercase tracking-widest text-accent font-bold cursor-pointer text-lg" x-text="currentLang === 'es' ? 'EN — English' : 'ES — Español'">
-            </div>
-</div>
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar" aria-label="Site navigation">
+  <div class="sidebar-name">jair villalobos</div>
+  <span class="status-badge">Available for contracts</span>
+
+  <nav aria-label="Primary navigation">
+    <ul class="sidebar-nav">
+      <li><a href="#hero">Overview</a></li>
+      <li><a href="#case-studies">Case Studies</a></li>
+      <li><a href="#thinking">How I Think</a></li>
+      <li><a href="#stack">Stack</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#certifications">Certifications</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="sidebar-footer">
+    <a href="https://github.com/jjvnz" class="sidebar-link" target="_blank" rel="noopener noreferrer">github.com/jjvnz</a>
+    <a href="https://linkedin.com/in/jjvnz" class="sidebar-link" target="_blank" rel="noopener noreferrer">linkedin.com/in/jjvnz</a>
+    <a href="mailto:jjvnzdev@gmail.com" class="sidebar-link">jjvnzdev@gmail.com</a>
+  </div>
+</aside>
+
+<!-- ── MOBILE NAV ── -->
+<header class="mobile-nav" aria-label="Mobile navigation">
+  <span class="mobile-nav-name">jair villalobos</span>
+  <button class="mobile-menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mobileMenu" aria-label="Toggle menu">menu</button>
+</header>
+<nav id="mobileMenu" class="mobile-menu" aria-label="Mobile menu">
+  <a href="#hero"           onclick="closeMobileMenu()">Overview</a>
+  <a href="#case-studies"   onclick="closeMobileMenu()">Case Studies</a>
+  <a href="#thinking"       onclick="closeMobileMenu()">How I Think</a>
+  <a href="#stack"          onclick="closeMobileMenu()">Stack</a>
+  <a href="#experience"     onclick="closeMobileMenu()">Experience</a>
+  <a href="#certifications" onclick="closeMobileMenu()">Certifications</a>
+  <a href="#contact"        onclick="closeMobileMenu()">Contact</a>
 </nav>
 
-<main id="main-content">
-<section class="relative min-h-screen flex items-center justify-center pt-24 overflow-hidden">
-<div class="absolute inset-0 w-full h-full opacity-40" style="display:block;">
-<canvas id="shader-canvas-ANIMATION_4" style="display:block;width:100%;height:100%" width="1280" height="1024"></canvas>
-<script>
-(function() {
-  const canvas = document.getElementById('shader-canvas-ANIMATION_4');
-  function syncSize() {
-    const w = canvas.clientWidth  || 1280;
-    const h = canvas.clientHeight || 720;
-    if (canvas.width !== w || canvas.height !== h) {
-      canvas.width  = w;
-      canvas.height = h;
-    }
-  }
-  if (typeof ResizeObserver !== 'undefined') {
-    new ResizeObserver(syncSize).observe(canvas);
-  }
-  syncSize();
+<!-- ── MAIN ── -->
+<div class="layout">
+<main class="main" id="main-content">
 
-  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-  if (!gl) return;
-  const vs = `attribute vec2 a_position;
-varying vec2 v_texCoord;
-void main() {
-  v_texCoord = a_position * 0.5 + 0.5;
-  gl_Position = vec4(a_position, 0.0, 1.0);
-}`;
-  const fs = `precision highp float;
-uniform float u_time;
-uniform vec2 u_resolution;
-uniform vec2 u_mouse;
+  <!-- ═══════════════════════ HERO ═══════════════════════ -->
+  <section id="hero">
+    <p class="hero-eyebrow">Backend Engineer · Remote · Cartagena, Colombia</p>
 
-varying vec2 v_texCoord;
+    <h1>High-Concurrency Backend<br>for Fintech &amp; Telco</h1>
 
-float hash(vec2 p) {
-    p = fract(p * vec2(123.34, 456.21));
-    p += dot(p, p + 45.32);
-    return fract(p.x * p.y);
-}
+    <p class="hero-sub">
+      I build the distributed infrastructure that keeps payment platforms, messaging
+      pipelines, and cloud-native products running at scale — without accumulating
+      the operational debt that breaks them later.
+    </p>
 
-float noise(vec2 p) {
-    vec2 i = floor(p);
-    vec2 f = fract(p);
-    float a = hash(i);
-    float b = hash(i + vec2(1.0, 0.0));
-    float c = hash(i + vec2(0.0, 1.0));
-    float d = hash(i + vec2(1.0, 1.0));
-    vec2 u = f * f * (3.0 - 2.0 * f);
-    return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
-}
+    <div class="cta-group">
+      <a href="#case-studies" class="btn-primary">View Case Studies</a>
+      <a href="#contact" class="btn-secondary">Schedule a Call</a>
+    </div>
 
-void main() {
-    vec2 uv = v_texCoord;
-    vec2 p = (uv - 0.5) * 2.0;
-    p.x *= u_resolution.x / u_resolution.y;
+    <div class="proof-strip" aria-label="Key production results">
+      <div class="proof-line">
+        <span class="c">// </span><span class="pv">1M+ msg/day</span>
+        <span class="c"> — CPaaS platform, Go + NATS + Redis · IPCOM 2024–25</span>
+      </div>
+      <div class="proof-line">
+        <span class="c">// </span><span class="pa">−94% CI/CD pipeline</span>
+        <span class="c"> — </span><span class="pv">6 h → 20 min</span>
+        <span class="c"> · Upwork clients 2021–present</span>
+      </div>
+      <div class="proof-line">
+        <span class="c">// </span><span class="pg">−25% cloud costs</span>
+        <span class="c"> — right-sizing + Terraform, K8s · GCP/AWS</span>
+      </div>
+      <div class="proof-line">
+        <span class="c">// </span><span class="pg">99.5% uptime</span>
+        <span class="c"> — production microservices across multiple clients</span>
+      </div>
+    </div>
+  </section>
 
-    float t = u_time * 0.2;
-    vec3 color = vec3(0.07, 0.07, 0.07);
+  <!-- ═══════════════════════ CASE STUDIES ═══════════════════════ -->
+  <section id="case-studies" class="fade-in">
+    <h2>Case Studies</h2>
+    <p class="section-intro">
+      Three production systems where the architectural decisions had measurable business
+      consequences. Each shows the real constraint, the tradeoff made, and the outcome.
+    </p>
 
-    vec2 grid = fract(uv * 20.0 + 0.1 * sin(t));
-    float line = smoothstep(0.02, 0.0, abs(grid.x - 0.5)) + smoothstep(0.02, 0.0, abs(grid.y - 0.5));
-    color += line * 0.02;
+    <div class="case-list">
 
-    for(float i = 0.0; i < 8.0; i++) {
-        vec2 pos = vec2(sin(t + i * 1.5), cos(t * 0.8 + i * 2.1)) * 0.8;
-        float d = length(p - pos);
-        float brightness = 0.002 / d;
-        
-        vec3 glowColor = (mod(i, 2.0) == 0.0) ? vec3(0.89, 0.35, 0.17) : vec3(0.66, 0.96, 0.0);
-        color += glowColor * brightness * smoothstep(0.5, 0.0, d);
-    }
+      <!-- ── Case 1: IPCOM ── -->
+      <article class="case-card open">
+        <div class="case-header" role="button" tabindex="0"
+             aria-controls="case-body-1" aria-expanded="true"
+             onclick="toggleCase(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCase(this)">
+          <div class="case-company">IPCOM Telecomunicaciones — CPaaS Messaging Platform</div>
+          <div class="case-meta">
+            <span class="case-role-tag">Lead Backend Engineer</span>
+            <span class="case-period">Nov 2024 – May 2025</span>
+          </div>
+          <span class="case-toggle" aria-hidden="true">▲</span>
+        </div>
+        <div class="case-body" id="case-body-1">
+          <div class="case-grid">
+            <div>
+              <p class="lbl">Problem</p>
+              <p class="case-text">
+                IPCOM's CPaaS platform needed to handle real-time voice, WhatsApp, RCS,
+                and OTP delivery at 1M+ messages/day across integrations with Google,
+                Meta, ConceptoMovil, and Telcel. The legacy SIP stack had a ceiling
+                on concurrent sessions that the product was hitting at peak — every
+                provider integration was a custom point-to-point connection with no
+                shared reliability layer.
+              </p>
+            </div>
+            <div>
+              <p class="lbl">Constraints</p>
+              <p class="case-text">
+                <strong>Real-time latency:</strong> voice and messaging flows have hard
+                sub-second requirements — batch processing or polling was not acceptable.
+                <strong>Multi-provider coupling:</strong> Google, Meta, and Telcel each
+                have different auth schemes, rate limits, and message formats. A single
+                abstraction layer had to normalize them without leaking provider-specific
+                logic into business code.
+                <strong>Session stability:</strong> the SIP → PJSIP migration had to
+                happen without dropping active calls.
+              </p>
+            </div>
+            <div>
+              <p class="lbl">Solution</p>
+              <p class="case-text">
+                Built Go microservices with worker pools for inbound message distribution.
+                Introduced NATS for asynchronous internal routing between provider
+                adapters, decoupling ingestion from delivery. Redis rulesets replaced
+                synchronous DB lookups on the hot path, cutting per-message DB load.
+                Migrated streaming from SIP to PJSIP incrementally using a session
+                bridge, allowing concurrent traffic on both stacks during cutover.
+                ASR/TTS pipelines were cached at the Redis layer to avoid repeated
+                external API calls per session.
+              </p>
+            </div>
+            <div>
+              <p class="lbl">Stack</p>
+              <div class="stack-tags">
+                <span class="tag">Go</span>
+                <span class="tag">NATS</span>
+                <span class="tag">Redis</span>
+                <span class="tag">GCP</span>
+                <span class="tag">Kubernetes</span>
+                <span class="tag">Docker</span>
+                <span class="tag">OpenTelemetry</span>
+                <span class="tag">Grafana</span>
+                <span class="tag">GitHub Actions</span>
+                <span class="tag">PJSIP</span>
+              </div>
+            </div>
+          </div>
+          <div class="result-block">
+            <div class="result-row">
+              <span class="rl">Throughput</span>
+              <span class="rv">1M+ msg/day</span>
+              <span class="rc">sustained production traffic across all channels</span>
+            </div>
+            <div class="result-row">
+              <span class="rl">Session stability</span>
+              <span class="rv">+50%</span>
+              <span class="rc">concurrent sessions post SIP → PJSIP migration</span>
+            </div>
+            <div class="result-row">
+              <span class="rl">DB load (hot path)</span>
+              <span class="rv">−40%</span>
+              <span class="rc">Redis ruleset cache eliminated synchronous reads</span>
+            </div>
+          </div>
+        </div>
+      </article>
 
-    float n = noise(uv * 4.0 + t);
-    color += vec3(0.89, 0.35, 0.17) * smoothstep(0.48, 0.5, n) * 0.05;
+      <!-- ── Case 2: Tigo Money ── -->
+      <article class="case-card">
+        <div class="case-header" role="button" tabindex="0"
+             aria-controls="case-body-2" aria-expanded="false"
+             onclick="toggleCase(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCase(this)">
+          <div class="case-company">BYONDIT / Millicom — Tigo Money Digital Wallet</div>
+          <div class="case-meta">
+            <span class="case-role-tag">Backend Engineer</span>
+            <span class="case-period">Nov 2022 – Aug 2023</span>
+          </div>
+          <span class="case-toggle" aria-hidden="true">▼</span>
+        </div>
+        <div class="case-body" id="case-body-2" style="display:none">
+          <div class="case-grid">
+            <div>
+              <p class="lbl">Problem</p>
+              <p class="case-text">
+                Tigo Money Guatemala operated on a mix of legacy SOAP/REST services
+                for core wallet operations. Third-party integrations (bank transfers,
+                merchant payments, mobile top-ups) were each direct connections with
+                no shared gateway — adding a new integration took weeks of bespoke work.
+                There was no distributed tracing, so incident investigation meant
+                reading logs across isolated services with no correlation.
+              </p>
+            </div>
+            <div>
+              <p class="lbl">Constraints</p>
+              <p class="case-text">
+                <strong>Financial compliance:</strong> all transaction flows required
+                end-to-end auditability. Secrets for Oracle SQL, DynamoDB, and external
+                payment APIs were scattered in config files — hardening was mandatory
+                before any feature work.
+                <strong>Legacy parity:</strong> the KrakenD gateway layer had to proxy
+                existing SOAP/REST contracts without changes to downstream consumers
+                while new Go services replaced backend logic incrementally.
+              </p>
+            </div>
+            <div>
+              <p class="lbl">Solution</p>
+              <p class="case-text">
+                Built custom Go plugins for KrakenD that normalized SOAP/REST responses
+                behind a unified API surface — downstream clients saw no change while
+                the backend was replaced. Migrated secret management to AWS Secrets
+                Manager and Parameter Store, eliminating plaintext credentials.
+                Added OpenTelemetry instrumentation across all services, giving the team
+                trace-level visibility into every transaction path for the first time.
+                Serverless compute (AWS Lambda) handled low-frequency but latency-sensitive
+                flows like fraud checks, isolating them from the main transaction path.
+              </p>
+            </div>
+            <div>
+              <p class="lbl">Stack</p>
+              <div class="stack-tags">
+                <span class="tag">Go</span>
+                <span class="tag">Python (FastAPI)</span>
+                <span class="tag">KrakenD</span>
+                <span class="tag">AWS Lambda</span>
+                <span class="tag">DynamoDB</span>
+                <span class="tag">Oracle SQL</span>
+                <span class="tag">AWS Secrets Manager</span>
+                <span class="tag">OpenTelemetry</span>
+                <span class="tag">Grafana</span>
+              </div>
+            </div>
+          </div>
+          <div class="result-block">
+            <div class="result-row">
+              <span class="rl">Integration time</span>
+              <span class="rv">−30%</span>
+              <span class="rc">new third-party integrations via KrakenD plugin model</span>
+            </div>
+            <div class="result-row">
+              <span class="rl">MTTR</span>
+              <span class="rv">−35%</span>
+              <span class="rc">distributed tracing via OpenTelemetry across all services</span>
+            </div>
+          </div>
+        </div>
+      </article>
 
-    gl_FragColor = vec4(color, 1.0);
-}`;
-  function cs(type, src) {
-    const s = gl.createShader(type);
-    gl.shaderSource(s, src);
-    gl.compileShader(s);
-    return s;
-  }
-  const prog = gl.createProgram();
-  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
-  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
-  gl.linkProgram(prog);
-  gl.useProgram(prog);
-  const buf = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
-  const pos = gl.getAttribLocation(prog, 'a_position');
-  gl.enableVertexAttribArray(pos);
-  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
-  const uTime = gl.getUniformLocation(prog, 'u_time');
-  const uRes = gl.getUniformLocation(prog, 'u_resolution');
-  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+      <!-- ── Case 3: CI/CD ── -->
+      <article class="case-card">
+        <div class="case-header" role="button" tabindex="0"
+             aria-controls="case-body-3" aria-expanded="false"
+             onclick="toggleCase(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCase(this)">
+          <div class="case-company">Independent Consulting — CI/CD Pipeline Modernization</div>
+          <div class="case-meta">
+            <span class="case-role-tag">Senior Backend Consultant</span>
+            <span class="case-period">2021 – Present · Multiple clients</span>
+          </div>
+          <span class="case-toggle" aria-hidden="true">▼</span>
+        </div>
+        <div class="case-body" id="case-body-3" style="display:none">
+          <div class="case-grid">
+            <div>
+              <p class="lbl">Problem</p>
+              <p class="case-text">
+                Multiple clients running distributed Go service backends had CI pipelines
+                with 6-hour runtimes. The root cause was the same across projects:
+                undifferentiated pipelines that ran full test suites and container builds
+                for every service on every commit, regardless of what changed.
+                Engineers were batching PRs, running tests locally, and in some cases
+                bypassing CI entirely — the pipeline had become decorative.
+              </p>
+            </div>
+            <div>
+              <p class="lbl">Constraints</p>
+              <p class="case-text">
+                <strong>No new infrastructure budget:</strong> solutions had to work
+                within existing GitHub Actions runner quotas — adding more hardware
+                was not available as a lever.
+                <strong>Shared libraries:</strong> genuine cross-service dependencies
+                meant some full-rebuild scenarios were legitimate and had to be
+                distinguished from phantom dependency rebuilds.
+                <strong>No big-bang rewrite:</strong> pipelines had to migrate
+                incrementally without blocking ongoing releases.
+              </p>
+            </div>
+            <div>
+              <p class="lbl">Solution</p>
+              <p class="case-text">
+                Implemented dependency graph analysis at the pipeline level to trigger
+                only affected service builds per commit. Introduced remote artifact
+                caching so unchanged layers were never rebuilt across pipeline runs.
+                Parallelized independent service pipelines that had been running
+                sequentially. The architectural tradeoff was accepting more complex
+                pipeline configuration — a one-time cost — in exchange for build time
+                that scales with change scope, not repository size. Also migrated legacy
+                SOAP/XML service contracts to gRPC + REST in Go, reducing cloud
+                platform costs 20–25% per client via right-sized K8s workloads
+                and Terraform-managed reserved capacity.
+              </p>
+            </div>
+            <div>
+              <p class="lbl">Stack</p>
+              <div class="stack-tags">
+                <span class="tag">GitHub Actions</span>
+                <span class="tag">Go</span>
+                <span class="tag">Docker</span>
+                <span class="tag">Kubernetes</span>
+                <span class="tag">Terraform</span>
+                <span class="tag">GCP</span>
+                <span class="tag">AWS</span>
+                <span class="tag">gRPC</span>
+              </div>
+            </div>
+          </div>
+          <div class="result-block">
+            <div class="result-row">
+              <span class="rl">Build time</span>
+              <span class="rv">6 h → 20 min</span>
+              <span class="rc">−94%, same GitHub Actions quota, no new infra</span>
+            </div>
+            <div class="result-row">
+              <span class="rl">Cloud costs</span>
+              <span class="rv">−20 to −25%</span>
+              <span class="rc">per client, K8s + Terraform right-sizing</span>
+            </div>
+            <div class="result-row">
+              <span class="rl">Production uptime</span>
+              <span class="rv">99.5%</span>
+              <span class="rc">across production microservices, multiple clients</span>
+            </div>
+          </div>
+        </div>
+      </article>
 
-  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
-  window.addEventListener('mousemove', (event) => {
-    const rect = canvas.getBoundingClientRect();
-    if (rect.width && rect.height) {
-      const nx = (event.clientX - rect.left) / rect.width;
-      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
-      mouse.x = nx * canvas.width;
-      mouse.y = ny * canvas.height;
-    }
-  });
+    </div>
+  </section>
 
-  function render(t) {
-    if (typeof ResizeObserver === 'undefined') syncSize();
-    gl.viewport(0, 0, canvas.width, canvas.height);
-    if (uTime) gl.uniform1f(uTime, t * 0.001);
-    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
-    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-    requestAnimationFrame(render);
-  }
-  render(0);
-})();
-</script>
-</div>
-<div class="relative z-10 px-margin-mobile md:px-margin-desktop text-center max-w-4xl">
-<span class="inline-block px-4 py-1 border border-success text-success font-label-sm text-label-sm uppercase tracking-widest mb-6" x-text="t('hero.tag')"></span>
-<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg metallic-text mb-6 uppercase" x-html="t('hero.title')">
-            </h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant/80 mb-10 max-w-2xl mx-auto" x-text="t('hero.sub')">
-            </p>
-<div class="flex flex-col md:flex-row gap-4 justify-center">
-<a class="bg-accent text-on-accent px-8 py-4 font-label-sm text-label-sm uppercase font-bold hover:brightness-110 transition-all flex items-center justify-center gap-2" href="#servicios">
-                    <span x-text="t('hero.cta_services')"></span>
-                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
-</a>
-<a class="border border-on-surface/30 px-8 py-4 font-label-sm text-label-sm uppercase font-bold hover:bg-white/5 transition-all flex items-center justify-center gap-2" href="#agenda">
-                    <span x-text="t('hero.cta_contact')"></span>
-                    <span class="material-symbols-outlined text-sm">calendar_today</span>
-</a>
-</div>
-</div>
-<div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
-<span class="material-symbols-outlined text-on-surface-variant opacity-50">expand_more</span>
-</div>
-</section>
+  <!-- ═══════════════════════ HOW I THINK ═══════════════════════ -->
+  <section id="thinking" class="fade-in">
+    <h2>How I Think</h2>
+    <p class="section-intro">
+      Three engineering positions I hold and have applied in production.
+      Not principles from a book — observations from breaking things and fixing them.
+    </p>
 
-<section class="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto" id="metricas">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <div class="thinking-grid">
 
-<div class="bento-card p-10 md:p-12 flex flex-col justify-between min-h-[220px]">
-<span class="font-label-sm text-label-sm uppercase tracking-widest opacity-50 mb-2">CI/CD Pipeline</span>
-<div>
-<span class="font-display-xl text-display-xl text-accent" data-count="94">0</span><span class="font-display-xl text-display-xl text-accent">%</span>
-<p class="font-body-md text-on-surface-variant mt-2" x-text="t('metrics.1.title')"></p>
-</div>
-<div class="flex items-center gap-2 mt-4">
-<div class="w-2 h-2 rounded-full bg-success glow-success"></div>
-<span class="text-[12px] text-success font-bold tracking-wider" x-text="t('metrics.1.sub')"></span>
-</div>
-</div>
+      <div>
+        <p class="thinking-title">// On distributed systems</p>
+        <p class="thinking-text">
+          The most consistent mistake I see is teams distributing systems before they've
+          proven the domain boundary is stable. A microservice architecture doesn't reduce
+          complexity — it moves it from the code into the network and the deployment pipeline.
+          <strong>If the team can't draw the service boundary on a whiteboard without
+          arguing for 20 minutes, the boundary isn't ready to be a service boundary.</strong>
+        </p>
+        <p class="thinking-text">
+          At IPCOM, the right move was building Go worker pools with internal NATS routing
+          before any external service boundary — the traffic volume justified distribution,
+          but the domain had been running long enough that the message types were stable.
+          At Tigo Money, we used KrakenD as a seam: the old boundaries stayed intact
+          externally while we replaced internals. That's the pattern I default to —
+          strangle from a stable interface, never rewrite the interface mid-migration.
+        </p>
+      </div>
 
-<div class="bento-card p-10 md:p-12 flex flex-col justify-between min-h-[220px]">
-<span class="font-label-sm text-label-sm uppercase tracking-widest opacity-50 mb-2">Throughput</span>
-<div>
-<span class="font-display-xl text-display-xl text-accent">1M+</span>
-<p class="font-body-md text-on-surface-variant mt-2" x-text="t('metrics.3')"></p>
-</div>
-<div class="flex items-center gap-2 mt-4">
-<div class="w-2 h-2 rounded-full bg-success glow-success"></div>
-<span class="text-[12px] text-success font-bold uppercase">Streaming en tiempo real</span>
-</div>
-</div>
+      <div class="divider"></div>
 
-</div>
+      <div>
+        <p class="thinking-title">// On cloud costs</p>
+        <p class="thinking-text">
+          Cloud bills are a read of the architecture. Idle compute means synchronous
+          coupling somewhere upstream — something is holding a thread waiting for something
+          else. Storage costs growing faster than data volume usually means no retention
+          contract was ever defined. Unpredictable egress costs almost always mean
+          a service is materializing more data than it needs for a query.
+        </p>
+        <p class="thinking-text">
+          My default approach: instrument first, cut second. I've seen teams delete
+          "unused" resources that turned out to be critical to a secondary system with
+          no monitoring. The 25% cost reductions I've achieved came from Terraform
+          audits of provisioned vs. actual usage, right-sizing K8s resource requests to
+          real p95 consumption, and moving predictable workloads to committed use.
+          <strong>None of it required changing application code.</strong> The architecture
+          already contained the savings — they just weren't visible without the right tooling.
+        </p>
+      </div>
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="divider"></div>
 
-<div class="bento-card p-8 flex flex-col justify-between">
-<span class="font-label-sm text-label-sm uppercase tracking-widest opacity-50 mb-2 block">Cloud Economics</span>
-<div>
-<span class="font-headline-lg text-headline-lg text-accent" data-count="25">0</span><span class="font-headline-lg text-headline-lg text-accent">%</span>
-<p class="font-body-md text-on-surface-variant mt-1" x-text="t('metrics.2')"></p>
-</div>
-</div>
+      <div>
+        <p class="thinking-title">// On CI/CD</p>
+        <p class="thinking-text">
+          A pipeline that takes longer than 10 minutes will be bypassed.
+          Not by lazy engineers — by rational ones. If the feedback loop costs more
+          time than the confidence it buys, people stop using it. That's not a discipline
+          problem. That's a pipeline design problem.
+        </p>
+        <p class="thinking-text">
+          The specific technique most teams skip: <strong>scaling build time with
+          change scope instead of repository size.</strong> Running the full test suite
+          on every commit in a 30-service repo is a choice, not a requirement.
+          Dependency graph analysis at the CI layer is not exotic — it's available in
+          most modern build tools and in GitHub Actions with minimal configuration.
+          The resistance I encounter is usually not technical; it's that someone has
+          to own the pipeline the way a product team owns a product. That ownership
+          gap is where the 6-hour builds live.
+        </p>
+      </div>
 
-<div class="bento-card p-8 flex flex-col justify-between">
-<span class="font-label-sm text-label-sm uppercase tracking-widest opacity-50 mb-2 block">Database</span>
-<div>
-<span class="font-headline-lg text-headline-lg text-accent" data-count="40">0</span><span class="font-headline-lg text-headline-lg text-accent">%</span>
-<p class="font-body-md text-on-surface-variant mt-1" x-text="t('metrics.4.title')"></p>
-</div>
-<div class="mt-2 text-[11px] text-success font-bold tracking-wider" x-text="t('metrics.4.sub')"></div>
-</div>
+    </div>
+  </section>
 
-<div class="bento-card p-8 flex items-center justify-between">
-<div>
-<span class="font-label-sm text-label-sm uppercase tracking-widest opacity-50 block mb-2">MTTR</span>
-<div>
-<span class="font-headline-lg text-headline-lg text-accent" data-count="35">0</span><span class="font-headline-lg text-headline-lg text-accent">%</span>
-<p class="text-[11px] text-on-surface-variant mt-1" x-text="t('metrics.5')"></p>
-</div>
-</div>
-<span class="material-symbols-outlined text-4xl text-accent opacity-50">timer_off</span>
-</div>
+  <!-- ═══════════════════════ STACK ═══════════════════════ -->
+  <section id="stack" class="fade-in">
+    <h2>Stack</h2>
+    <p class="section-intro">
+      Technologies used in production across the projects above.
+      No percentages — each entry is backed by a shipped system.
+    </p>
 
-</div>
-</section>
+    <div class="stack-grid">
 
-<section class="py-24 bg-background" id="servicios">
-<div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-<div>
-<span class="text-accent font-label-sm text-label-sm uppercase tracking-widest mb-2 block" x-text="t('services.tag')"></span>
-<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg metallic-text uppercase" x-text="t('services.title')"></h2>
-</div>
-<p class="max-w-md text-on-surface-variant font-body-md opacity-80">
-                    Arquitectura de sistemas críticos. Consultoría independiente para startups y empresas de IA.
-                </p>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <p class="stack-group-label">Infrastructure &amp; Cloud</p>
+        <div class="stack-items">
+          <div class="stack-item">
+            <span class="stack-tech">Kubernetes</span>
+            <span class="stack-qualifier">GKE + EKS, HPA on custom metrics (Kafka lag, not CPU)</span>
+          </div>
+          <div class="stack-item">
+            <span class="stack-tech">Terraform</span>
+            <span class="stack-qualifier">IaC across all cloud resources, multi-env state</span>
+          </div>
+          <div class="stack-item">
+            <span class="stack-tech">GCP</span>
+            <span class="stack-qualifier">GKE, Cloud Run, Pub/Sub — primary cloud at IPCOM</span>
+          </div>
+          <div class="stack-item">
+            <span class="stack-tech">AWS</span>
+            <span class="stack-qualifier">Lambda, DynamoDB, Secrets Manager, EKS — Tigo Money</span>
+          </div>
+          <div class="stack-item">
+            <span class="stack-tech">Docker</span>
+            <span class="stack-qualifier">multi-stage builds, layer caching, remote artifact cache</span>
+          </div>
+          <div class="stack-item">
+            <span class="stack-tech">GitHub Actions</span>
+            <span class="stack-qualifier">CI/CD pipelines, affected-only builds, −94% build time</span>
+          </div>
+        </div>
+      </div>
 
-<div class="group bento-card p-10 hover:border-accent">
-<span class="material-symbols-outlined text-4xl text-accent mb-6 group-hover:scale-110 transition-transform">architecture</span>
-<h3 class="font-headline-sm text-headline-sm mb-4 uppercase" x-text="t('services.1.title')"></h3>
-<p class="text-on-surface-variant font-body-md leading-relaxed mb-6" x-text="t('services.1.desc')"></p>
-<ul class="space-y-2 text-[11px] font-label-sm uppercase tracking-wider text-on-surface/60">
-<li class="flex items-center gap-2"><span class="w-1 h-1 bg-accent rounded-full"></span> <span x-text="t('services.1.1')"></span></li>
-<li class="flex items-center gap-2"><span class="w-1 h-1 bg-accent rounded-full"></span> <span x-text="t('services.1.2')"></span></li>
-<li class="flex items-center gap-2"><span class="w-1 h-1 bg-accent rounded-full"></span> <span x-text="t('services.1.3')"></span></li>
-</ul>
-</div>
+      <div>
+        <p class="stack-group-label">Languages &amp; Runtimes</p>
+        <div class="stack-items">
+          <div class="stack-item">
+            <span class="stack-tech">Go</span>
+            <span class="stack-qualifier">primary language — microservices, gRPC, worker pools, plugins</span>
+          </div>
+          <div class="stack-item">
+            <span class="stack-tech">Python</span>
+            <span class="stack-qualifier">FastAPI services, data pipelines, stream processing</span>
+          </div>
+          <div class="stack-item">
+            <span class="stack-tech">gRPC</span>
+            <span class="stack-qualifier">SOAP/XML migration target — lower overhead vs REST at scale</span>
+          </div>
+          <div class="stack-item">
+            <span class="stack-tech">REST / GraphQL</span>
+            <span class="stack-qualifier">REST APIs via gqlgen (GraphQL) + standard net/http</span>
+          </div>
+        </div>
+      </div>
 
-<div class="group bento-card p-10 hover:border-accent">
-<span class="material-symbols-outlined text-4xl text-accent mb-6 group-hover:scale-110 transition-transform">rebase_edit</span>
-<h3 class="font-headline-sm text-headline-sm mb-4 uppercase" x-text="t('services.2.title')"></h3>
-<p class="text-on-surface-variant font-body-md leading-relaxed mb-6" x-text="t('services.2.desc')"></p>
-<ul class="space-y-2 text-[11px] font-label-sm uppercase tracking-wider text-on-surface/60">
-<li class="flex items-center gap-2"><span class="w-1 h-1 bg-accent rounded-full"></span> <span x-text="t('services.2.1')"></span></li>
-<li class="flex items-center gap-2"><span class="w-1 h-1 bg-accent rounded-full"></span> <span x-text="t('services.2.2')"></span></li>
-<li class="flex items-center gap-2"><span class="w-1 h-1 bg-accent rounded-full"></span> <span x-text="t('services.2.3')"></span></li>
-</ul>
-</div>
+      <div>
+        <p class="stack-group-label">Data &amp; Messaging</p>
+        <div class="stack-items">
+          <div class="stack-item">
+            <span class="stack-tech">NATS</span>
+            <span class="stack-qualifier">async internal routing, 1M+ msg/day at IPCOM</span>
+          </div>
+          <div class="stack-item">
+            <span class="stack-tech">Kafka</span>
+            <span class="stack-qualifier">event streaming, consumer group management</span>
+          </div>
+          <div class="stack-item">
+            <span class="stack-tech">Redis</span>
+            <span class="stack-qualifier">hot-path caching, rulesets, ASR/TTS cache, rate limiting</span>
+          </div>
+          <div class="stack-item">
+            <span class="stack-tech">PostgreSQL</span>
+            <span class="stack-qualifier">primary DB, query optimization, partitioning</span>
+          </div>
+          <div class="stack-item">
+            <span class="stack-tech">DynamoDB</span>
+            <span class="stack-qualifier">serverless transactional flows, Tigo Money wallet</span>
+          </div>
+          <div class="stack-item">
+            <span class="stack-tech">KrakenD</span>
+            <span class="stack-qualifier">API gateway — custom Go plugins for SOAP/REST normalization</span>
+          </div>
+        </div>
+      </div>
 
-<div class="group bento-card p-10 hover:border-accent">
-<span class="material-symbols-outlined text-4xl text-accent mb-6 group-hover:scale-110 transition-transform">speed</span>
-<h3 class="font-headline-sm text-headline-sm mb-4 uppercase" x-text="t('services.3.title')"></h3>
-<p class="text-on-surface-variant font-body-md leading-relaxed mb-6" x-text="t('services.3.desc')"></p>
-<ul class="space-y-2 text-[11px] font-label-sm uppercase tracking-wider text-on-surface/60">
-<li class="flex items-center gap-2"><span class="w-1 h-1 bg-accent rounded-full"></span> <span x-text="t('services.3.1')"></span></li>
-<li class="flex items-center gap-2"><span class="w-1 h-1 bg-accent rounded-full"></span> <span x-text="t('services.3.2')"></span></li>
-<li class="flex items-center gap-2"><span class="w-1 h-1 bg-accent rounded-full"></span> <span x-text="t('services.3.3')"></span></li>
-</ul>
-</div>
+      <div>
+        <p class="stack-group-label">Observability</p>
+        <div class="stack-items">
+          <div class="stack-item">
+            <span class="stack-tech">OpenTelemetry</span>
+            <span class="stack-qualifier">distributed tracing across all service boundaries</span>
+          </div>
+          <div class="stack-item">
+            <span class="stack-tech">Grafana</span>
+            <span class="stack-qualifier">operational dashboards, SLO tracking</span>
+          </div>
+          <div class="stack-item">
+            <span class="stack-tech">Prometheus</span>
+            <span class="stack-qualifier">metrics, alerting, custom exporters for business metrics</span>
+          </div>
+          <div class="stack-item">
+            <span class="stack-tech">DDD + Clean Arch</span>
+            <span class="stack-qualifier">domain boundary design, applied to Go service internals</span>
+          </div>
+        </div>
+      </div>
 
-</div>
-<div class="mt-12 text-center">
-<a class="inline-flex items-center gap-2 bg-accent text-on-accent px-8 py-4 font-label-sm text-label-sm uppercase font-bold hover:brightness-110 transition-all" href="#agenda">
-                <span x-text="t('services.cta')"></span>
-                <span class="material-symbols-outlined text-sm">calendar_today</span>
-</a>
-</div>
-</div>
-</section>
+    </div>
+  </section>
 
-<section class="py-24" id="proyectos">
-<div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg metallic-text text-center uppercase mb-16" x-text="t('projects.title')"></h2>
-<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-<div class="md:col-span-8 md:row-span-2 bento-card overflow-hidden group relative min-h-[300px]">
-<img class="w-full h-full absolute inset-0 object-contain p-6 opacity-30 group-hover:scale-105 transition-transform duration-700" src="images/tigomoney-app.png" alt="Tigo Money app">
-<div class="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
-<div class="absolute inset-0 p-8 flex flex-col justify-end">
-<div class="flex items-center gap-3 mb-3">
-<span class="text-[9px] border border-accent/30 text-accent px-2 py-0.5 uppercase tracking-wider" x-text="t('projects.1.company')"></span>
-<span class="text-[9px] border border-success/30 text-success px-2 py-0.5 uppercase tracking-wider" x-text="t('projects.1.role')"></span>
-</div>
-<h4 class="font-headline-sm text-headline-sm mb-2" x-text="t('projects.1.title')"></h4>
-<p class="font-body-md opacity-70" x-text="t('projects.1.desc')"></p>
-<div class="flex flex-wrap gap-2 mt-4">
-<span class="text-[9px] bg-white/5 px-2 py-1 uppercase border border-white/10" x-text="t('projects.1.b1')"></span>
-<span class="text-[9px] bg-white/5 px-2 py-1 uppercase border border-white/10" x-text="t('projects.1.b2')"></span>
-<span class="text-[9px] bg-white/5 px-2 py-1 uppercase border border-white/10" x-text="t('projects.1.b3')"></span>
-</div>
-<a href="https://play.google.com/store/apps/details?id=com.juvo.tigomoney&hl=es_CO" target="_blank" rel="noopener noreferrer" class="mt-4 text-[10px] text-accent hover:text-accent/80 flex items-center gap-1">
-                        <span x-text="t('projects.1.link')"></span>
-                        <span class="material-symbols-outlined text-xs">open_in_new</span>
-</a>
-</div>
-</div>
+  <!-- ═══════════════════════ EXPERIENCE ═══════════════════════ -->
+  <section id="experience" class="fade-in">
+    <h2>Experience</h2>
 
-<div class="md:col-span-4 bento-card p-8 flex flex-col justify-center border-l-4 border-success">
-<h4 class="font-headline-sm text-headline-sm mb-1" x-text="t('projects.2.title')"></h4>
-<p class="font-body-md opacity-70 mb-4" x-text="t('projects.2.desc')"></p>
-<div class="flex flex-wrap gap-2 mt-2">
-<span class="text-[9px] border border-white/20 px-2 py-1 uppercase" x-text="t('projects.2.b1')"></span>
-<span class="text-[9px] border border-white/20 px-2 py-1 uppercase" x-text="t('projects.2.b2')"></span>
-<span class="text-[9px] border border-white/20 px-2 py-1 uppercase" x-text="t('projects.2.b3')"></span>
-</div>
-<a href="https://ipcom.ai/sense/" target="_blank" rel="noopener noreferrer" class="mt-4 text-[10px] text-accent hover:text-accent/80 flex items-center gap-1">
-                    <span x-text="t('projects.2.link')"></span>
-                    <span class="material-symbols-outlined text-xs">open_in_new</span>
-</a>
-</div>
+    <div class="timeline">
 
-<div class="md:col-span-4 bento-card p-8 group overflow-hidden relative">
-<div class="absolute -right-4 -top-4 w-24 h-24 bg-accent/10 rounded-full blur-3xl"></div>
-<h4 class="font-headline-sm text-headline-sm mb-2" x-text="t('projects.3.title')"></h4>
-<p class="font-body-md opacity-70 mb-4" x-text="t('projects.3.desc')"></p>
-<div class="flex flex-wrap gap-2">
-<span class="text-[9px] border border-white/20 px-2 py-1 uppercase" x-text="t('projects.3.b1')"></span>
-<span class="text-[9px] border border-white/20 px-2 py-1 uppercase" x-text="t('projects.3.b2')"></span>
-</div>
-<a href="https://www.piliftconsultants.com/" target="_blank" rel="noopener noreferrer" class="mt-4 text-[10px] text-accent hover:text-accent/80 flex items-center gap-1">
-                    <span x-text="t('projects.3.link')"></span>
-                    <span class="material-symbols-outlined text-xs">open_in_new</span>
-</a>
-</div>
+      <div class="tl-entry tl-current">
+        <p class="tl-date">Jan 2021 – Present</p>
+        <p class="tl-title">Senior Backend Consultant / Cloud Architect</p>
+        <p class="tl-company">Independent · Upwork · Remote</p>
+        <p class="tl-desc">
+          Backend infrastructure consulting for distributed systems teams.
+          Migrated legacy SOAP/XML architectures to gRPC + REST in Go.
+          Designed cloud infrastructure on GCP and AWS using Kubernetes and Terraform.
+          Reduced CI/CD pipeline times from 6 hours to 20 minutes across multiple clients.
+        </p>
+        <span class="tl-metric">−94% CI/CD · −25% cloud costs · 99.5% uptime</span>
+      </div>
 
-<div class="md:col-span-4 bento-card p-8 flex flex-col justify-between">
-<div>
-<h4 class="font-headline-sm text-headline-sm mb-2" x-text="t('projects.4.title')"></h4>
-<p class="font-body-md opacity-70" x-text="t('projects.4.desc')"></p>
-</div>
-<div class="flex flex-wrap gap-2 mt-4">
-<span class="text-[9px] border border-white/20 px-2 py-1 uppercase" x-text="t('projects.4.b1')"></span>
-<span class="text-[9px] border border-white/20 px-2 py-1 uppercase" x-text="t('projects.4.b2')"></span>
-</div>
-<a href="https://www.fleks.works/" target="_blank" rel="noopener noreferrer" class="mt-4 text-[10px] text-accent hover:text-accent/80 flex items-center gap-1">
-                    <span x-text="t('projects.4.link')"></span>
-                    <span class="material-symbols-outlined text-xs">open_in_new</span>
-</a>
-</div>
+      <div class="tl-entry">
+        <p class="tl-date">Nov 2024 – May 2025</p>
+        <p class="tl-title">Lead Backend Engineer / Cell Leader</p>
+        <p class="tl-company">IPCOM Telecomunicaciones · Remote · Colombia</p>
+        <p class="tl-desc">
+          Led backend development for a CPaaS platform handling 1M+ daily messages
+          across voice, WhatsApp, RCS, and OTP flows. Built Go microservices with
+          NATS async distribution and Redis caching. Migrated SIP to PJSIP.
+          Led architecture reviews and peer code validation.
+        </p>
+        <span class="tl-metric">1M+ msg/day · +50% session stability · −40% DB load</span>
+      </div>
 
-<div class="md:col-span-4 bento-card p-8 bg-surface-high">
-<h4 class="font-headline-sm text-headline-sm mb-2" x-text="t('projects.5.title')"></h4>
-<p class="font-body-md opacity-70 mb-4" x-text="t('projects.5.desc')"></p>
-<div class="flex flex-wrap gap-2">
-<span class="text-[9px] border border-white/20 px-2 py-1 uppercase" x-text="t('projects.5.b1')"></span>
-<span class="text-[9px] border border-white/20 px-2 py-1 uppercase" x-text="t('projects.5.b2')"></span>
-</div>
-<a href="https://bouwmapp.com/" target="_blank" rel="noopener noreferrer" class="mt-4 text-[10px] text-accent hover:text-accent/80 flex items-center gap-1">
-                    <span x-text="t('projects.5.link')"></span>
-                    <span class="material-symbols-outlined text-xs">open_in_new</span>
-</a>
-</div>
+      <div class="tl-entry">
+        <p class="tl-date">Nov 2022 – Aug 2023</p>
+        <p class="tl-title">Backend Engineer — Fintech</p>
+        <p class="tl-company">BYONDIT · Tigo Money (Millicom) · Remote · Panama</p>
+        <p class="tl-desc">
+          Built Go plugins for KrakenD API Gateway connecting legacy SOAP/REST services
+          to digital wallet APIs for Tigo Money Guatemala. Implemented serverless compute
+          on AWS Lambda, hardened secret management via AWS Secrets Manager,
+          and introduced end-to-end distributed tracing with OpenTelemetry.
+        </p>
+        <span class="tl-metric">−30% integration time · −35% MTTR</span>
+      </div>
 
-</div>
-</div>
-</section>
+      <div class="tl-entry">
+        <p class="tl-date">Jun 2020 – Nov 2020</p>
+        <p class="tl-title">QA Automation Engineer</p>
+        <p class="tl-company">Elemento 43 · Internship · Cartagena, Colombia</p>
+        <p class="tl-desc">
+          Automated end-to-end and API test suites using Cypress, Cucumber (BDD), and
+          Selenium. Integrated regression suites into CI/CD. Reduced pre-production
+          defect rate by 25%.
+        </p>
+        <span class="tl-metric">−25% defect rate</span>
+      </div>
 
-<section class="py-24 bg-surface" id="trayectoria">
-<div class="px-margin-mobile md:px-margin-desktop max-w-4xl mx-auto">
-<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg metallic-text mb-16 uppercase text-center" x-text="t('experience.title')"></h2>
-<div class="relative border-l border-white/10 ml-4 md:ml-0">
+    </div>
+  </section>
 
-<div class="mb-12 relative pl-8">
-<div class="absolute -left-[9px] top-1 w-4 h-4 bg-accent rounded-full glow-accent"></div>
-<span class="font-label-sm text-label-sm text-accent mb-2 block tracking-widest" x-text="t('experience.1.date')"></span>
-<h3 class="font-headline-sm text-headline-sm mb-1 uppercase" x-text="t('experience.1.role')"></h3>
-<p class="text-on-surface-variant font-body-md mb-4 uppercase tracking-tighter text-sm">Cloud Architect &amp; Infrastructure</p>
-<p class="text-on-surface-variant/70 leading-relaxed" x-text="t('experience.1.desc')"></p>
-</div>
+  <!-- ═══════════════════════ CERTIFICATIONS ═══════════════════════ -->
+  <section id="certifications" class="fade-in">
+    <h2>Certifications</h2>
 
-<div class="mb-12 relative pl-8">
-<div class="absolute -left-[9px] top-1 w-4 h-4 bg-white/20 rounded-full"></div>
-<span class="font-label-sm text-label-sm text-on-surface-variant/50 mb-2 block tracking-widest" x-text="t('experience.2.date')"></span>
-<h3 class="font-headline-sm text-headline-sm mb-1 uppercase" x-text="t('experience.2.role')"></h3>
-<p class="text-on-surface-variant font-body-md mb-4 uppercase tracking-tighter text-sm">Sense Platform</p>
-<p class="text-on-surface-variant/70 leading-relaxed" x-text="t('experience.2.desc')"></p>
-</div>
+    <div class="cert-grid">
+      <div class="cert-item">
+        <div>
+          <div class="cert-name">AWS Academy Cloud Developing</div>
+          <div class="cert-issuer">Amazon Web Services</div>
+        </div>
+        <div class="cert-date">Feb 2026</div>
+      </div>
+      <div class="cert-item">
+        <div>
+          <div class="cert-name">Programming with Google Go</div>
+          <div class="cert-issuer">UC Irvine / Coursera</div>
+        </div>
+        <div class="cert-date">Mar 2026</div>
+      </div>
+      <div class="cert-item">
+        <div>
+          <div class="cert-name">AWS Certified Cloud Practitioner</div>
+          <div class="cert-issuer">TIDWIT</div>
+        </div>
+        <div class="cert-date">Dec 2025</div>
+      </div>
+      <div class="cert-item">
+        <div>
+          <div class="cert-name">Cybersecurity Fundamentals</div>
+          <div class="cert-issuer">IBM</div>
+        </div>
+        <div class="cert-date">Jun 2025</div>
+      </div>
+      <div class="cert-item">
+        <div>
+          <div class="cert-name">Scrum Foundation Professional Certificate</div>
+          <div class="cert-issuer">CertiProf</div>
+        </div>
+        <div class="cert-date">Nov 2025</div>
+      </div>
+      <div class="cert-item">
+        <div>
+          <div class="cert-name">Data Analysis Using PySpark</div>
+          <div class="cert-issuer">Coursera</div>
+        </div>
+        <div class="cert-date">2025</div>
+      </div>
+      <div class="cert-item">
+        <div>
+          <div class="cert-name">Domain-Driven Design</div>
+          <div class="cert-issuer">LinkedIn Learning</div>
+        </div>
+        <div class="cert-date">2022</div>
+      </div>
+    </div>
 
-<div class="mb-12 relative pl-8">
-<div class="absolute -left-[9px] top-1 w-4 h-4 bg-white/20 rounded-full"></div>
-<span class="font-label-sm text-label-sm text-on-surface-variant/50 mb-2 block tracking-widest" x-text="t('experience.3.date')"></span>
-<h3 class="font-headline-sm text-headline-sm mb-1 uppercase" x-text="t('experience.3.role')"></h3>
-<p class="text-on-surface-variant font-body-md mb-4 uppercase tracking-tighter text-sm">ByondIT / Millicom</p>
-<p class="text-on-surface-variant/70 leading-relaxed" x-text="t('experience.3.desc')"></p>
-</div>
+    <div style="margin-top:2rem; padding-top:1.5rem; border-top: 1px solid var(--border);">
+      <p class="stack-group-label" style="margin-bottom:0.75rem;">Education</p>
+      <div class="cert-grid">
+        <div class="cert-item">
+          <div>
+            <div class="cert-name">B.S. Systems Engineering</div>
+            <div class="cert-issuer">Tecnológico Comfenalco · Academically completed</div>
+          </div>
+          <div class="cert-date">Expected Oct 2026</div>
+        </div>
+        <div class="cert-item">
+          <div>
+            <div class="cert-name">Diploma in Data &amp; Information Analytics</div>
+            <div class="cert-issuer">Tecnológico Comfenalco · In progress</div>
+          </div>
+          <div class="cert-date">Expected Jul 2026</div>
+        </div>
+        <div class="cert-item">
+          <div>
+            <div class="cert-name">Software Development Technologist</div>
+            <div class="cert-issuer">Tecnológico Comfenalco · 104 credits completed</div>
+          </div>
+          <div class="cert-date">2024</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<div class="mb-12 relative pl-8">
-<div class="absolute -left-[9px] top-1 w-4 h-4 bg-white/20 rounded-full"></div>
-<span class="font-label-sm text-label-sm text-on-surface-variant/50 mb-2 block tracking-widest" x-text="t('experience.4.date')"></span>
-<h3 class="font-headline-sm text-headline-sm mb-1 uppercase" x-text="t('experience.4.role')"></h3>
-<p class="text-on-surface-variant font-body-md mb-4 uppercase tracking-tighter text-sm">Element 43</p>
-<p class="text-on-surface-variant/70 leading-relaxed" x-text="t('experience.4.desc')"></p>
-</div>
+  <!-- ═══════════════════════ CONTACT ═══════════════════════ -->
+  <section id="contact">
+    <h2>Contact</h2>
 
-</div>
-</div>
-</section>
+    <div class="contact-grid">
 
-<section class="py-24" id="skills">
-<div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg metallic-text text-center uppercase mb-16" x-text="t('skills.title')"></h2>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div>
+        <p class="section-intro">
+          If you're scaling a distributed backend and the infrastructure is
+          becoming the bottleneck — payment processing, messaging pipelines,
+          cloud costs growing faster than usage — that's a good reason to talk.
+        </p>
 
-<div class="bento-card p-8 border-l-4 border-accent">
-<div class="flex justify-between items-center mb-6">
-<h4 class="font-headline-sm text-headline-sm uppercase text-sm tracking-widest" x-text="t('skills.c1.title')"></h4>
-<span class="material-symbols-outlined text-accent">hub</span>
-</div>
-<div class="flex flex-wrap gap-2">
-<span class="bg-surface-raised px-3 py-1 font-label-sm text-[10px] uppercase border border-white/5">Kubernetes</span>
-<span class="bg-surface-raised px-3 py-1 font-label-sm text-[10px] uppercase border border-white/5">Docker</span>
-<span class="bg-surface-raised px-3 py-1 font-label-sm text-[10px] uppercase border border-white/5">Terraform</span>
-<span class="bg-surface-raised px-3 py-1 font-label-sm text-[10px] uppercase border border-white/5">AWS</span>
-<span class="bg-surface-raised px-3 py-1 font-label-sm text-[10px] uppercase border border-white/5">GCP</span>
-<span class="bg-surface-raised px-3 py-1 font-label-sm text-[10px] uppercase border border-white/5">GitHub Actions</span>
-</div>
-</div>
+        <div class="contact-process">
+          <div class="process-step">
+            <div class="step-num">01</div>
+            <div>
+              <p class="step-label">15-minute call</p>
+              <p class="step-desc">You describe the system and the problem. I ask the questions that define scope and whether I can actually help.</p>
+            </div>
+          </div>
+          <div class="process-step">
+            <div class="step-num">02</div>
+            <div>
+              <p class="step-label">Architecture audit</p>
+              <p class="step-desc">I review current state — services, infra, CI/CD, cloud spend — and identify the real bottleneck, not the visible symptom.</p>
+            </div>
+          </div>
+          <div class="process-step">
+            <div class="step-num">03</div>
+            <div>
+              <p class="step-label">Proposal</p>
+              <p class="step-desc">Concrete scope, timeline, and engagement structure. No retainer until there's agreement on the problem definition.</p>
+            </div>
+          </div>
+        </div>
 
-<div class="bento-card p-8 border-l-3 border-accent">
-<div class="flex justify-between items-center mb-6">
-<h4 class="font-headline-sm text-headline-sm uppercase text-sm tracking-widest" x-text="t('skills.c2.title')"></h4>
-<span class="material-symbols-outlined text-accent">terminal</span>
-</div>
-<div class="flex flex-wrap gap-2">
-<span class="bg-surface-raised px-3 py-1 font-label-sm text-[10px] uppercase border border-white/5">Go (Golang)</span>
-<span class="bg-surface-raised px-3 py-1 font-label-sm text-[10px] uppercase border border-white/5">Python</span>
-<span class="bg-surface-raised px-3 py-1 font-label-sm text-[10px] uppercase border border-white/5">Node.js</span>
-<span class="bg-surface-raised px-3 py-1 font-label-sm text-[10px] uppercase border border-white/5">PostgreSQL</span>
-<span class="bg-surface-raised px-3 py-1 font-label-sm text-[10px] uppercase border border-white/5">Redis</span>
-<span class="bg-surface-raised px-3 py-1 font-label-sm text-[10px] uppercase border border-white/5">Kafka</span>
-</div>
-</div>
+        <div class="email-block">
+          <p class="email-label">Prefer async?</p>
+          <a href="mailto:jjvnzdev@gmail.com" class="email-link">jjvnzdev@gmail.com</a>
+        </div>
+      </div>
 
-<div class="bento-card p-8 border-l-4 border-success">
-<div class="flex justify-between items-center mb-6">
-<h4 class="font-headline-sm text-headline-sm uppercase text-sm tracking-widest" x-text="t('skills.c4.title')"></h4>
-<span class="material-symbols-outlined text-success">account_tree</span>
-</div>
-<div class="flex flex-wrap gap-2">
-<span class="bg-surface-raised px-3 py-1 font-label-sm text-[10px] uppercase border border-white/5">Microservicios</span>
-<span class="bg-surface-raised px-3 py-1 font-label-sm text-[10px] uppercase border border-white/5">Event-Driven</span>
-<span class="bg-surface-raised px-3 py-1 font-label-sm text-[10px] uppercase border border-white/5">CQRS</span>
-<span class="bg-surface-raised px-3 py-1 font-label-sm text-[10px] uppercase border border-white/5">Domain-Driven Design</span>
-<span class="bg-surface-raised px-3 py-1 font-label-sm text-[10px] uppercase border border-white/5">RabbitMQ</span>
-</div>
-</div>
+      <div>
+        <div class="calendar-wrap">
+          <div class="calendar-header">
+            <span>Book a 15-min call</span>
+            <span class="cal-dot" aria-hidden="true"></span>
+          </div>
+          <iframe
+            src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3-4hLRaodla42xII9UxMGOnnl_i8HzC--lo9DcZbIFG2q63qduG5KMaDvh9WPmEsEx5K4q-9aw?gv=true"
+            title="Book a 15-minute consultation with Jair Villalobos"
+            loading="lazy"
+          ></iframe>
+          <div class="calendar-fallback">
+            Calendar not loading?
+            <a href="mailto:jjvnzdev@gmail.com">Email directly →</a>
+          </div>
+        </div>
+      </div>
 
-<div class="bento-card p-8 border-l-3 border-success">
-<div class="flex justify-between items-center mb-6">
-<h4 class="font-headline-sm text-headline-sm uppercase text-sm tracking-widest" x-text="t('skills.c3.title')"></h4>
-<span class="material-symbols-outlined text-success">analytics</span>
-</div>
-<div class="grid grid-cols-2 gap-6">
-<div class="text-center">
-<div class="relative w-16 h-16 mx-auto mb-2 flex items-center justify-center">
-<svg class="w-full h-full -rotate-90"><circle cx="32" cy="32" fill="none" r="28" stroke="rgba(255,255,255,0.05)" stroke-width="4"></circle><circle class="skill-ring" cx="32" cy="32" fill="none" r="28" stroke="#A9F600" stroke-dasharray="175" stroke-dashoffset="175" data-target="35" stroke-width="4"></circle></svg>
-<span class="absolute text-[9px] font-bold">Prometheus</span>
-</div>
-</div>
-<div class="text-center">
-<div class="relative w-16 h-16 mx-auto mb-2 flex items-center justify-center">
-<svg class="w-full h-full -rotate-90"><circle cx="32" cy="32" fill="none" r="28" stroke="rgba(255,255,255,0.05)" stroke-width="4"></circle><circle class="skill-ring" cx="32" cy="32" fill="none" r="28" stroke="#A9F600" stroke-dasharray="175" stroke-dashoffset="175" data-target="15" stroke-width="4"></circle></svg>
-<span class="absolute text-[9px] font-bold">Grafana</span>
-</div>
-</div>
-<div class="text-center">
-<div class="relative w-16 h-16 mx-auto mb-2 flex items-center justify-center">
-<svg class="w-full h-full -rotate-90"><circle cx="32" cy="32" fill="none" r="28" stroke="rgba(255,255,255,0.05)" stroke-width="4"></circle><circle class="skill-ring" cx="32" cy="32" fill="none" r="28" stroke="#E4582C" stroke-dasharray="175" stroke-dashoffset="175" data-target="45" stroke-width="4"></circle></svg>
-<span class="absolute text-[9px] font-bold">OTel</span>
-</div>
-</div>
-<div class="text-center">
-<div class="relative w-16 h-16 mx-auto mb-2 flex items-center justify-center">
-<svg class="w-full h-full -rotate-90"><circle cx="32" cy="32" fill="none" r="28" stroke="rgba(255,255,255,0.05)" stroke-width="4"></circle><circle class="skill-ring" cx="32" cy="32" fill="none" r="28" stroke="#E4582C" stroke-dasharray="175" stroke-dashoffset="175" data-target="25" stroke-width="4"></circle></svg>
-<span class="absolute text-[9px] font-bold">Datadog</span>
-</div>
-</div>
-</div>
-</div>
-
-</div>
-</div>
-</section>
-
-<section class="py-24 bg-background" id="agenda">
-<div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-<div>
-<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg metallic-text uppercase mb-8" x-text="t('contact.title')"></h2>
-<p class="font-body-lg text-on-surface-variant mb-10" x-text="t('contact.sub')"></p>
-<div class="space-y-6">
-<div class="flex items-center gap-4">
-<span class="material-symbols-outlined p-3 bg-white/5 rounded-full text-accent">checklist</span>
-<div>
-<p class="text-[10px] uppercase text-on-surface-variant/50" x-text="t('contact.step1.title')"></p>
-<p class="font-headline-sm text-sm" x-text="t('contact.step1.desc')"></p>
-</div>
-</div>
-<div class="flex items-center gap-4">
-<span class="material-symbols-outlined p-3 bg-white/5 rounded-full text-success">insights</span>
-<div>
-<p class="text-[10px] uppercase text-on-surface-variant/50" x-text="t('contact.step2.title')"></p>
-<p class="font-headline-sm text-sm" x-text="t('contact.step2.desc')"></p>
-</div>
-</div>
-<div class="flex items-center gap-4">
-<span class="material-symbols-outlined p-3 bg-white/5 rounded-full text-accent">handshake</span>
-<div>
-<p class="text-[10px] uppercase text-on-surface-variant/50" x-text="t('contact.step3.title')"></p>
-<p class="font-headline-sm text-sm" x-text="t('contact.step3.desc')"></p>
-</div>
-</div>
-</div>
-<div class="mt-8 flex flex-wrap gap-4">
-<a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-5 py-3 border border-white/10 font-label-sm text-[10px] uppercase tracking-wider hover:bg-white/5 transition-all" aria-label="GitHub">
-<span class="material-symbols-outlined text-sm">code</span> <span x-text="t('social.github')"></span>
-</a>
-<a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-5 py-3 border border-white/10 font-label-sm text-[10px] uppercase tracking-wider hover:bg-white/5 transition-all" aria-label="LinkedIn">
-<span class="material-symbols-outlined text-sm">work</span> <span x-text="t('social.linkedin')"></span>
-</a>
-</div>
-</div>
-<div class="bento-card p-1 overflow-hidden border-t-2 border-success glow-success">
-<div class="bg-black/40 w-full h-[600px] flex items-center justify-center relative">
-<iframe src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3-4hLRaodla42xII9UxMGOnnl_i8HzC--lo9DcZbIFG2q63qduG5KMaDvh9WPmEsEx5K4q-9aw?gv=true" class="w-full h-full border-0" title="Agendar consultoría de 15 min en Google Calendar"></iframe>
-<div class="absolute inset-0 pointer-events-none border border-white/5"></div>
-</div>
-</div>
-</div>
-</div>
-</section>
+    </div>
+  </section>
 
 </main>
-<footer class="bg-background w-full py-12 border-t border-white/5">
-<div class="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop gap-gutter max-w-container-max mx-auto">
-<div class="font-headline-sm text-headline-sm text-on-surface tracking-tighter">
-                JAIR VILLALOBOS
-            </div>
-<div class="flex gap-8">
-<a class="font-label-sm text-label-sm uppercase tracking-tighter text-on-surface-variant hover:text-accent transition-colors" href="#">Sistemas críticos</a>
-<a class="font-label-sm text-label-sm uppercase tracking-tighter text-on-surface-variant hover:text-accent transition-colors" href="#">Latencia predecible</a>
-<a class="font-label-sm text-label-sm uppercase tracking-tighter text-on-surface-variant hover:text-accent transition-colors" href="#">Cero SPOF</a>
 </div>
-<div class="font-label-sm text-label-sm uppercase tracking-tighter text-success" x-text="t('footer.brand')">
-            </div>
-</div>
-<div class="mt-4 text-center">
-<a class="text-[10px] text-on-surface-variant/50 hover:text-accent transition-colors underline underline-offset-2" href="#agenda"><span x-text="t('footer.cta_prefix')"></span> — <span x-text="t('footer.cta_link')"></span></a>
-</div>
-</footer>
 
 <script>
-        var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const menuBtn    = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
 
-        if (!reducedMotion) {
-            var observerOptions = { threshold: 0.1 };
-            var observer = new IntersectionObserver(function(entries) {
-                entries.forEach(function(entry) {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('opacity-100', 'translate-y-0');
-                        entry.target.classList.remove('opacity-0', 'translate-y-8');
-                    }
-                });
-            }, observerOptions);
-            document.querySelectorAll('.bento-card').forEach(function(card) {
-                card.classList.add('opacity-0', 'translate-y-8', 'transition-all', 'duration-700');
-                observer.observe(card);
-            });
+  menuBtn.addEventListener('click', function() {
+    const isOpen = mobileMenu.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', isOpen);
+    menuBtn.textContent = isOpen ? 'close' : 'menu';
+  });
 
-            function animateCounters() {
-                document.querySelectorAll('[data-count]').forEach(function(el) {
-                    var target = parseFloat(el.getAttribute('data-count'));
-                    if (isNaN(target) || target === 0) return;
-                    var duration = 1200;
-                    var startTime = performance.now();
-                    function step(now) {
-                        var elapsed = now - startTime;
-                        var progress = Math.min(elapsed / duration, 1);
-                        var eased = 1 - Math.pow(1 - progress, 3);
-                        el.textContent = Math.floor(eased * target);
-                        if (progress < 1) requestAnimationFrame(step);
-                        else el.textContent = target;
-                    }
-                    requestAnimationFrame(step);
-                });
-            }
-            var metricsObserver = new IntersectionObserver(function(entries) {
-                if (entries[0] && entries[0].isIntersecting) {
-                    animateCounters();
-                    metricsObserver.disconnect();
-                }
-            }, { threshold: 0.3 });
-            var metricsSection = document.getElementById('metricas');
-            if (metricsSection) metricsObserver.observe(metricsSection);
+  function closeMobileMenu() {
+    mobileMenu.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    menuBtn.textContent = 'menu';
+  }
 
-            var skillsObserver = new IntersectionObserver(function(entries) {
-                if (entries[0] && entries[0].isIntersecting) {
-                    document.querySelectorAll('.skill-ring').forEach(function(ring, index) {
-                        var target = ring.getAttribute('data-target');
-                        if (target) {
-                            ring.style.strokeDashoffset = '175';
-                            setTimeout(function() {
-                                ring.style.strokeDashoffset = target;
-                            }, 300 + (index * 150));
-                        }
-                    });
-                    skillsObserver.disconnect();
-                }
-            }, { threshold: 0.4 });
-            var skillsSection = document.getElementById('skills');
-            if (skillsSection) skillsObserver.observe(skillsSection);
-        } else {
-            document.querySelectorAll('.bento-card').forEach(function(card) {
-                card.classList.add('opacity-100', 'translate-y-0');
-            });
-            document.querySelectorAll('[data-count]').forEach(function(el) {
-                el.textContent = el.getAttribute('data-count');
-            });
-        }
-    </script>
+  function toggleCase(header) {
+    const card   = header.closest('.case-card');
+    const body   = card.querySelector('.case-body');
+    const toggle = header.querySelector('.case-toggle');
+    const isOpen = card.classList.toggle('open');
+    body.style.display = isOpen ? 'block' : 'none';
+    toggle.textContent = isOpen ? '▲' : '▼';
+    header.setAttribute('aria-expanded', String(isOpen));
+  }
+</script>
 
-</body></html>
+</body>
+</html>
