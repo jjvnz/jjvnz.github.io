@@ -6,6 +6,7 @@
 <title>Jair — Backend & Distributed Systems Engineer</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
 <style>
 /* === TOKENS === */
 :root {
@@ -20,7 +21,7 @@
   --green: #39d98a;
   --text: #e4e4e4;
   --text-dim: #999999;
-  --text-muted: #555555;
+  --text-muted: #686868;
   --border: rgba(255,255,255,0.07);
   --border-strong: rgba(255,255,255,0.11);
   --mono: 'JetBrains Mono', monospace;
@@ -272,6 +273,7 @@ h1.hero-h1 {
 .diff-card:hover {
   border-color: var(--accent-border);
   transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
 }
 .diff-header {
   background: var(--surface-2);
@@ -340,6 +342,7 @@ h1.hero-h1 {
 .case-card:hover {
   border-color: rgba(255,255,255,0.14);
   transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
 }
 .case-badge {
   display: inline-block;
@@ -889,6 +892,93 @@ document.addEventListener('DOMContentLoaded', function() {
   }, { rootMargin: '-40% 0px -55% 0px' });
 
   sections.forEach(sec => observer.observe(sec));
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // ── Hero counters ──
+  if (typeof anime !== 'undefined') {
+    var statNumbers = document.querySelectorAll('.stat-number');
+    statNumbers.forEach(function(el) {
+      var text = el.textContent;
+      var numMatch = text.match(/(\d+)/);
+      if (!numMatch) return;
+      var target = parseInt(numMatch[1], 10);
+      var suffix = text.replace(numMatch[1], '');
+      var obj = { val: 0 };
+      anime({
+        targets: obj,
+        val: target,
+        duration: 1000,
+        delay: 300,
+        easing: 'easeOutCubic',
+        round: 1,
+        update: function() {
+          el.innerHTML = obj.val + suffix;
+          // restore <em> wrapper for non-numeric suffix like +/×
+          if (suffix === '+' || suffix === '×' || suffix === 'M+') {
+            el.innerHTML = obj.val + '<em>' + suffix + '</em>';
+          }
+        }
+      });
+    });
+  }
+
+  // ── Scroll reveal helper ──
+  function revealStagger(selector, gridSelector, opts) {
+    if (typeof anime === 'undefined') return;
+    opts = opts || {};
+    var grid = document.querySelector(gridSelector || selector);
+    if (!grid) return;
+    var items = grid.querySelectorAll(selector);
+    if (!items.length) return;
+    items.forEach(function(el) { el.style.opacity = '0'; el.style.transform = 'translateY(30px)'; });
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (!entry.isIntersecting) return;
+        anime({
+          targets: items,
+          opacity: [0, 1],
+          translateY: [30, 0],
+          duration: 700,
+          delay: anime.stagger(opts.stagger || 80),
+          easing: 'easeOutCubic'
+        });
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: opts.threshold || 0.12 });
+    obs.observe(grid);
+  }
+
+  // ── Apply reveals ──
+  revealStagger('.diff-card', '.principles-grid', { threshold: 0.1 });
+  revealStagger('.case-card', '.proof-grid', { threshold: 0.1 });
+  revealStagger('.arsenal-block', '.arsenal-grid', { stagger: 80, threshold: 0.1 });
+
+  // ── Timeline items (individual stagger within parent) ──
+  if (typeof anime !== 'undefined') {
+    var timeline = document.querySelector('.timeline');
+    if (timeline) {
+      var tlItems = timeline.querySelectorAll('.timeline-item');
+      tlItems.forEach(function(el) { el.style.opacity = '0'; el.style.transform = 'translateY(30px)'; });
+      var tlObs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (!entry.isIntersecting) return;
+          anime({
+            targets: tlItems,
+            opacity: [0, 1],
+            translateY: [30, 0],
+            duration: 700,
+            delay: anime.stagger(80),
+            easing: 'easeOutCubic'
+          });
+          tlObs.unobserve(entry.target);
+        });
+      }, { threshold: 0.1 });
+      tlObs.observe(timeline);
+    }
+  }
 });
 </script>
 </body>
