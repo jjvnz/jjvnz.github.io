@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jair — Backend & Distributed Systems Engineer</title>
+<title>Jair Villalobos — Backend & Distributed Systems Engineer</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
@@ -115,6 +115,7 @@ nav.topnav {
   transition: color 0.2s;
 }
 .nav-links a:hover, .nav-links a.active { color: #fff; }
+.nav-right { display: flex; align-items: center; gap: 10px; }
 
 /* === BUTTONS === */
 .btn-primary {
@@ -224,7 +225,7 @@ h1.hero-h1 {
   50% { opacity: 0; }
 }
 .hero-sub {
-  max-width: 540px;
+  max-width: 560px;
   font-size: 16px;
   color: var(--text-dim);
   line-height: 1.7;
@@ -435,6 +436,29 @@ h1.hero-h1 {
 .arsenal-item:last-child { border-bottom: none; }
 .arsenal-item::before { content: '▸'; color: var(--accent); font-size: 8px; flex-shrink: 0; }
 
+/* === REPOS STRIP === */
+.repos-strip {
+  margin-top: 18px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.repo-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 12px;
+  transition: border-color 0.2s, color 0.2s;
+}
+.repo-chip:hover { border-color: var(--accent-border); color: var(--accent); }
+.repo-chip .repo-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
 /* === TRAJECTORY === */
 .timeline {
   margin-top: 48px;
@@ -465,6 +489,7 @@ h1.hero-h1 {
   border: 2px solid var(--accent);
   transition: background 0.2s, transform 0.2s;
 }
+.timeline-item.current::before { background: var(--accent); }
 .timeline-item:hover::before { background: var(--accent); transform: scale(1.2); }
 .tl-year {
   font-family: var(--mono);
@@ -497,11 +522,18 @@ h1.hero-h1 {
   justify-content: space-between;
   gap: 24px;
   flex-wrap: wrap;
-  margin-bottom: 48px;
+  margin-bottom: 24px;
 }
 .footer-text h3 { font-size: 22px; font-weight: 500; color: #fff; margin-bottom: 6px; }
 .footer-text p { font-size: 14px; color: var(--text-muted); }
 .footer-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.footer-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+.footer-meta span.dot-sep { margin: 0 8px; opacity: 0.5; }
 .footer-copy {
   padding-top: 24px;
   border-top: 1px solid var(--border);
@@ -543,7 +575,10 @@ h1.hero-h1 {
       <li><a href="#arsenal">Arsenal</a></li>
       <li><a href="#trajectory">Trajectory</a></li>
     </ul>
-    <a href="https://github.com" class="btn-ghost" target="_blank">GitHub ↗</a>
+    <div class="nav-right">
+      <a href="https://www.linkedin.com/in/jjvnz" class="btn-ghost" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a href="https://github.com/jjvnz" class="btn-ghost" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
   </div>
 </nav>
 
@@ -551,14 +586,14 @@ h1.hero-h1 {
 <section id="hero">
   <div class="container">
     <div class="hero-inner">
-      <div class="hero-tag">Available for contract &amp; full-time</div>
+      <div class="hero-tag">Full-time @ PersonalSoft</div>
       <h1 class="hero-h1">
         Backend Engineer.<br>
         Distributed Systems.<br>
         Go · NATS · K8s<span class="cursor"></span>
       </h1>
       <p class="hero-sub">
-        I remove the friction between <strong>legacy enterprise infrastructure</strong> and high-concurrency production systems. Circuit breakers, idempotency, and zero-downtime migrations — not strategy documents.
+        Currently bridging legacy SOAP core systems with modern APIs at <strong>PersonalSoft</strong>. Before that, five years shipping distributed Go backends across CPaaS messaging and LATAM fintech — circuit breakers, idempotency, zero-downtime migrations. Not strategy documents.
       </p>
       <div class="cta-group">
         <a href="#proof" class="btn-primary">Review Architecture Patterns →</a>
@@ -567,7 +602,7 @@ h1.hero-h1 {
       <div class="hero-stats">
         <div>
           <div class="stat-number">1M<em>+</em></div>
-          <div class="stat-label">msgs/day at peak</div>
+          <div class="stat-label">msgs/day at peak (IPCOM)</div>
         </div>
         <div>
           <div class="stat-number">3</div>
@@ -579,7 +614,7 @@ h1.hero-h1 {
         </div>
         <div>
           <div class="stat-number">5<em>+</em></div>
-          <div class="stat-label">years production delivery</div>
+          <div class="stat-label">years shipping backend systems</div>
         </div>
       </div>
     </div>
@@ -601,12 +636,12 @@ h1.hero-h1 {
         </div>
         <div class="diff-body">
           <div class="diff-title">Resilience by design</div>
-          <span class="diff-line removed">retry loop without backoff</span>
-          <span class="diff-line removed">no idempotency key</span>
-          <span class="diff-line added">circuit breaker + fallback</span>
-          <span class="diff-line added">Redis SetNX idempotency</span>
-          <span class="diff-line neutral">// exactly-once semantics</span>
-          <p class="diff-desc">Systems that fail gracefully under load. Circuit breakers prevent cascade failures; Redis SetNX ensures payment operations never double-execute.</p>
+          <span class="diff-line removed">webhook retries without dedup</span>
+          <span class="diff-line removed">no per-device auth boundary</span>
+          <span class="diff-line added">dedup + cell filters + RBAC</span>
+          <span class="diff-line added">per-device PIN + auto lockout</span>
+          <span class="diff-line neutral">// distributed rate-limiting</span>
+          <p class="diff-desc">Systems that fail gracefully under load. Webhook deduplication and dynamic RBAC at IPCOM; per-device zero-trust auth at BYONDIT — same instinct, different domain.</p>
         </div>
       </div>
 
@@ -617,12 +652,12 @@ h1.hero-h1 {
         </div>
         <div class="diff-body">
           <div class="diff-title">Incremental modernization</div>
-          <span class="diff-line removed">SOAP/XML monolith</span>
-          <span class="diff-line removed">Oracle PL/SQL coupling</span>
-          <span class="diff-line added">Go REST adapter layer</span>
-          <span class="diff-line added">strangler fig migration</span>
+          <span class="diff-line removed">SOAP/Mule ESB core</span>
+          <span class="diff-line removed">JSON Schema Draft-7 rigidity</span>
+          <span class="diff-line added">Go REST adapter (KrakenD)</span>
+          <span class="diff-line added">Draft-2020 dynamic workflows</span>
           <span class="diff-line neutral">// no big bang rewrites</span>
-          <p class="diff-desc">Legacy systems aren't replaced in one sprint. I build adapter bridges that let old and new run in parallel until the risk window closes.</p>
+          <p class="diff-desc">Legacy systems aren't replaced in one sprint. I build adapter bridges that let old and new run in parallel until the risk window closes — from banking cores to voice-flow schemas.</p>
         </div>
       </div>
 
@@ -633,12 +668,12 @@ h1.hero-h1 {
         </div>
         <div class="diff-body">
           <div class="diff-title">Pipeline efficiency</div>
-          <span class="diff-line removed">sequential build jobs</span>
+          <span class="diff-line removed">6-hour sequential CI runs</span>
           <span class="diff-line removed">no dependency graph</span>
-          <span class="diff-line added">graph-driven parallelism</span>
-          <span class="diff-line added">cache-aware CI layers</span>
-          <span class="diff-line neutral">// 1→20+ builds/day</span>
-          <p class="diff-desc">CI/CD bottlenecks compound across every engineer on the team. Dependency graph analysis finds the real blocking jobs, not the obvious ones.</p>
+          <span class="diff-line added">affected-only builds</span>
+          <span class="diff-line added">remote artifact caching</span>
+          <span class="diff-line neutral">// 1→20+ builds/day, same quota</span>
+          <p class="diff-desc">CI/CD bottlenecks compound across every engineer on the team. Dependency-graph analysis finds the real blocking jobs, not the obvious ones — and Terraform audits right-size the infra underneath.</p>
         </div>
       </div>
 
@@ -651,29 +686,29 @@ h1.hero-h1 {
   <div class="container">
     <span class="section-label">// proof_of_work[]</span>
     <h2 class="section-heading">Shipped systems, measured outcomes</h2>
-    <p class="section-sub">Three cases across CPaaS, fintech, and developer tooling — each with a friction, a decision, and a number.</p>
+    <p class="section-sub">Three engagements across CPaaS, fintech, and independent consulting — each with a friction, a decision, and a number.</p>
     <div class="proof-grid">
 
       <div class="case-card">
         <div><span class="case-badge badge-cyan">High Concurrency</span></div>
         <div>
           <div class="case-company">IPCOM</div>
-          <div class="case-subtitle">CPaaS Messaging Platform</div>
+          <div class="case-subtitle">Backend Engineer · Nov 2024 – May 2025</div>
         </div>
         <div class="friction-block">
           <div class="block-label">Friction</div>
-          <div class="block-text">Monolithic SMS/voice broker couldn't sustain peak load without message loss and SIP session contention.</div>
+          <div class="block-text">A CPaaS platform needed to sustain 1M+ real-time messages daily across Web Chat, WhatsApp and RCS, with legacy SIP components limiting the voice layer.</div>
         </div>
         <div class="eng-block">
           <div class="block-label">Engineering applied</div>
-          <div class="block-text">Distributed NATS message bus with PJSIP session management, async workers, and back-pressure queues decoupled ingestion from processing.</div>
+          <div class="block-text">Built the multi-channel messaging core in Go + Redis + NATS with webhook dedup and RBAC via a custom OPA policy engine. Migrated SIP to PJSIP with distributed rate-limiting (Gubernator) and a full OpenTelemetry/Grafana observability layer.</div>
         </div>
         <div>
           <div class="metrics-label">Output</div>
           <div class="metrics-row">
             <span class="metric-badge">1M+ msgs/day</span>
-            <span class="metric-badge">no message loss</span>
-            <span class="metric-badge">Go + NATS</span>
+            <span class="metric-badge">-35% MTTR</span>
+            <span class="metric-badge">-40% DB load</span>
           </div>
         </div>
       </div>
@@ -682,22 +717,22 @@ h1.hero-h1 {
         <div><span class="case-badge badge-orange">Zero Downtime</span></div>
         <div>
           <div class="case-company">BYONDIT</div>
-          <div class="case-subtitle">Fintech Wallet — LATAM</div>
+          <div class="case-subtitle">Backend Engineer · Nov 2022 – Jul 2023</div>
         </div>
         <div class="friction-block">
           <div class="block-label">Friction</div>
-          <div class="block-text">Banking core exposed only SOAP/XML. Three country deployments required simultaneous cutover with PCI compliance and zero tolerance for transaction errors.</div>
+          <div class="block-text">Tigo Money's banking core exposed only SOAP over Mule ESB. Three LATAM markets needed mobile P2P transfers and bill pay with zero tolerance for transaction errors.</div>
         </div>
         <div class="eng-block">
           <div class="block-label">Engineering applied</div>
-          <div class="block-text">Go service as SOAP→REST translation layer with idempotency tokens per transaction. Strangler fig pattern enabled parallel-run validation before each market cutover.</div>
+          <div class="block-text">Go REST layer bridging SOAP to mobile channels via KrakenD, with idempotency tokens per transaction, OAuth2/OIDC federation on AWS Cognito, and per-device zero-trust auth to cut fraud.</div>
         </div>
         <div>
           <div class="metrics-label">Output</div>
           <div class="metrics-row">
             <span class="metric-badge">3 markets</span>
             <span class="metric-badge">0 downtime</span>
-            <span class="metric-badge">idempotent ops</span>
+            <span class="metric-badge">-30% integration time</span>
           </div>
         </div>
       </div>
@@ -705,23 +740,23 @@ h1.hero-h1 {
       <div class="case-card">
         <div><span class="case-badge badge-green">Dev Velocity</span></div>
         <div>
-          <div class="case-company">Upwork Consulting</div>
-          <div class="case-subtitle">CI/CD Optimization</div>
+          <div class="case-company">Upwork</div>
+          <div class="case-subtitle">Independent Consulting · May 2021 – Jun 2026</div>
         </div>
         <div class="friction-block">
           <div class="block-label">Friction</div>
-          <div class="block-text">Sequential GitHub Actions pipeline limited the team to 1 successful build per day. Build times blocked every PR merge.</div>
+          <div class="block-text">Distributed Go backends running 6-hour sequential CI pipelines. GitHub Actions quota allowed roughly one full build per day, blocking every PR merge across the team.</div>
         </div>
         <div class="eng-block">
           <div class="block-label">Engineering applied</div>
-          <div class="block-text">Dependency graph analysis identified parallelizable stages. Restructured workflow YAML with cache-aware layering and matrix jobs eliminating sequential bottlenecks.</div>
+          <div class="block-text">Dependency-graph analysis for affected-only builds, remote artifact caching, and pipeline parallelization — same Actions quota, radically different throughput. Right-sized K8s workloads via Terraform audits to cut cloud spend.</div>
         </div>
         <div>
           <div class="metrics-label">Output</div>
           <div class="metrics-row">
             <span class="metric-badge">1→20+ builds/day</span>
-            <span class="metric-badge">GitHub Actions</span>
-            <span class="metric-badge">graph analysis</span>
+            <span class="metric-badge">lower cloud cost</span>
+            <span class="metric-badge">5+ yrs, multiple clients</span>
           </div>
         </div>
       </div>
@@ -735,7 +770,7 @@ h1.hero-h1 {
   <div class="container">
     <span class="section-label">// tech.stack</span>
     <h2 class="section-heading">Technical arsenal</h2>
-    <p class="section-sub">Grouped by what each layer does in a distributed system — not alphabetical noise.</p>
+    <p class="section-sub">Grouped by what each layer does in a distributed system — not alphabetical noise. Every item below was used in a shipped engagement.</p>
     <div class="arsenal-grid">
 
       <div class="arsenal-block">
@@ -743,18 +778,18 @@ h1.hero-h1 {
         <div class="arsenal-items">
           <div class="arsenal-item">Go</div>
           <div class="arsenal-item">Python</div>
-          <div class="arsenal-item">Clojure</div>
           <div class="arsenal-item">Java</div>
+          <div class="arsenal-item">Clojure</div>
         </div>
       </div>
 
       <div class="arsenal-block">
-        <div class="arsenal-header">Async &amp; Messaging</div>
+        <div class="arsenal-header">Messaging &amp; Real-Time</div>
         <div class="arsenal-items">
           <div class="arsenal-item">NATS</div>
-          <div class="arsenal-item">Kafka</div>
           <div class="arsenal-item">Redis</div>
-          <div class="arsenal-item">gRPC</div>
+          <div class="arsenal-item">KrakenD</div>
+          <div class="arsenal-item">PJSIP</div>
         </div>
       </div>
 
@@ -762,9 +797,8 @@ h1.hero-h1 {
         <div class="arsenal-header">Data &amp; State</div>
         <div class="arsenal-items">
           <div class="arsenal-item">PostgreSQL</div>
-          <div class="arsenal-item">Oracle</div>
+          <div class="arsenal-item">Oracle / PL-SQL</div>
           <div class="arsenal-item">DynamoDB</div>
-          <div class="arsenal-item">PL/SQL</div>
         </div>
       </div>
 
@@ -774,22 +808,28 @@ h1.hero-h1 {
           <div class="arsenal-item">AWS / GCP</div>
           <div class="arsenal-item">Kubernetes</div>
           <div class="arsenal-item">Terraform</div>
-          <div class="arsenal-item">OpenTelemetry</div>
-          <div class="arsenal-item">Docker</div>
+          <div class="arsenal-item">OpenTelemetry / Grafana</div>
+          <div class="arsenal-item">Docker / GitLab CI</div>
         </div>
       </div>
 
       <div class="arsenal-block">
         <div class="arsenal-header">System Design</div>
         <div class="arsenal-items">
-          <div class="arsenal-item">Clean Arch</div>
-          <div class="arsenal-item">DDD</div>
-          <div class="arsenal-item">Event-Driven</div>
-          <div class="arsenal-item">TDD</div>
-          <div class="arsenal-item">CQRS</div>
+          <div class="arsenal-item">Clean Architecture</div>
+          <div class="arsenal-item">Domain-Driven Design</div>
+          <div class="arsenal-item">Hexagonal Architecture</div>
+          <div class="arsenal-item">Event-Driven / TDD</div>
         </div>
       </div>
 
+    </div>
+
+    <div class="repos-strip">
+      <a href="https://github.com/jjvnz/transaction-event-processor" class="repo-chip" target="_blank" rel="noopener"><span class="repo-dot"></span>transaction-event-processor — Clean Arch + DDD</a>
+      <a href="https://github.com/jjvnz/CarnicosGoETL" class="repo-chip" target="_blank" rel="noopener"><span class="repo-dot"></span>CarnicosGoETL — star-schema warehouse</a>
+      <a href="https://github.com/jjvnz/chilean-holidays" class="repo-chip" target="_blank" rel="noopener"><span class="repo-dot"></span>chilean-holidays — Hexagonal Architecture</a>
+      <a href="https://github.com/jjvnz/order-system" class="repo-chip" target="_blank" rel="noopener"><span class="repo-dot"></span>order-system — Event-Driven, Clojure</a>
     </div>
   </div>
 </section>
@@ -799,51 +839,60 @@ h1.hero-h1 {
   <div class="container">
     <span class="section-label">// git log --oneline career</span>
     <h2 class="section-heading">Production delivery timeline</h2>
-    <p class="section-sub">5+ years of shipped systems, not Proof-of-Concepts.</p>
+    <p class="section-sub">From QA to backend to distributed systems — six years of shipped work, sourced straight from LinkedIn.</p>
     <div class="timeline">
 
+      <div class="timeline-item current">
+        <div class="tl-year">Jun 2026 — Present</div>
+        <div class="tl-role">Ingeniero de Integración de Software</div>
+        <div class="tl-company">PersonalSoft · Medellín</div>
+        <div class="tl-pills">
+          <span class="tl-pill">Go</span><span class="tl-pill">Java</span><span class="tl-pill">REST/SOAP</span><span class="tl-pill">PL/SQL</span><span class="tl-pill">GitLab CI</span>
+        </div>
+      </div>
+
       <div class="timeline-item">
-        <div class="tl-year">2024 — present</div>
-        <div class="tl-role">Senior Backend Engineer</div>
-        <div class="tl-company">IPCOM · CPaaS Messaging</div>
+        <div class="tl-year">May 2021 — Jun 2026 · 5y 2m</div>
+        <div class="tl-role">Backend Software Engineer</div>
+        <div class="tl-company">Upwork · Independent Consulting, Colombia</div>
+        <div class="tl-pills">
+          <span class="tl-pill">Go</span><span class="tl-pill">GitHub Actions</span><span class="tl-pill">Terraform</span><span class="tl-pill">Kubernetes</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-year">Nov 2024 — May 2025 · 7m</div>
+        <div class="tl-role">Backend Engineer</div>
+        <div class="tl-company">IPCOM · CPaaS &amp; Real-Time Messaging</div>
         <div class="tl-pills">
           <span class="tl-pill">Go</span><span class="tl-pill">NATS</span><span class="tl-pill">PJSIP</span><span class="tl-pill">Redis</span><span class="tl-pill">K8s</span>
         </div>
       </div>
 
       <div class="timeline-item">
-        <div class="tl-year">2022 — 2024</div>
+        <div class="tl-year">Nov 2022 — Jul 2023 · 9m</div>
         <div class="tl-role">Backend Engineer</div>
-        <div class="tl-company">BYONDIT · Fintech Wallet LATAM</div>
+        <div class="tl-company">BYONDIT · Fintech Wallet, Panamá</div>
         <div class="tl-pills">
-          <span class="tl-pill">Go</span><span class="tl-pill">SOAP/REST</span><span class="tl-pill">PostgreSQL</span><span class="tl-pill">Oracle</span><span class="tl-pill">AWS</span>
+          <span class="tl-pill">Go</span><span class="tl-pill">SOAP/REST</span><span class="tl-pill">DynamoDB</span><span class="tl-pill">Oracle</span><span class="tl-pill">AWS</span>
         </div>
       </div>
 
       <div class="timeline-item">
-        <div class="tl-year">2021 — 2022</div>
-        <div class="tl-role">Backend Consultant</div>
-        <div class="tl-company">Upwork · CI/CD &amp; Systems Optimization</div>
+        <div class="tl-year">Jun 2020 — Nov 2020 · 6m</div>
+        <div class="tl-role">Software QA Tester</div>
+        <div class="tl-company">Elemento 43 · Quality Assurance</div>
         <div class="tl-pills">
-          <span class="tl-pill">Python</span><span class="tl-pill">GitHub Actions</span><span class="tl-pill">Docker</span><span class="tl-pill">Terraform</span>
+          <span class="tl-pill">Cypress</span><span class="tl-pill">Cucumber</span><span class="tl-pill">Postman</span><span class="tl-pill">JavaScript</span>
         </div>
       </div>
 
       <div class="timeline-item">
-        <div class="tl-year">2019 — 2021</div>
-        <div class="tl-role">Backend Engineer</div>
-        <div class="tl-company">Enterprise Systems · Java / Spring</div>
+        <div class="tl-year">Jan 2020 — Sep 2026 · optante a grado</div>
+        <div class="tl-role">B.Sc. Ingeniería de Sistemas</div>
+        <div class="tl-company">Fundación Universitaria Tecnológico Comfenalco</div>
         <div class="tl-pills">
-          <span class="tl-pill">Java</span><span class="tl-pill">Spring Boot</span><span class="tl-pill">Oracle</span><span class="tl-pill">PL/SQL</span>
-        </div>
-      </div>
-
-      <div class="timeline-item">
-        <div class="tl-year">2023 — 2026 (in progress)</div>
-        <div class="tl-role">B.Sc. Systems Engineering</div>
-        <div class="tl-company">Universidad · Degree completion</div>
-        <div class="tl-pills">
-          <span class="tl-pill">Distributed Systems</span><span class="tl-pill">Algorithms</span>
+          <span class="tl-pill">A.S. Software Dev. 2020–2024</span><span class="tl-pill">SENA 2017</span>
         </div>
       </div>
 
@@ -857,16 +906,20 @@ h1.hero-h1 {
     <div class="footer-top">
       <div class="footer-text">
         <h3>Open to the right conversation.</h3>
-        <p>Architecture reviews, contract work, or a technical deep-dive — your call.</p>
+        <p>Architecture reviews, technical deep-dives, or just talking distributed systems — your call.</p>
       </div>
       <div class="footer-actions">
-        <a href="https://github.com/jjvnz" class="btn-ghost" target="_blank">GitHub ↗</a>
-        <a href="mailto:jjvnzdev@gmail.com" class="btn-primary">Talk Code →</a>
+        <a href="https://www.linkedin.com/in/jjvnz" class="btn-ghost" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a href="https://github.com/jjvnz" class="btn-ghost" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="mailto:jjvnz.dev@gmail.com" class="btn-primary">Talk Code →</a>
       </div>
     </div>
+    <div class="footer-meta">
+      255 contributions in the past year<span class="dot-sep">·</span>GitHub Pro<span class="dot-sep">·</span>5 pinned repos, Go/Python/Clojure
+    </div>
     <div class="footer-copy">
-      <span>Jair · Backend &amp; Distributed Systems Engineer</span>
-      <span>LATAM · Remote-first</span>
+      <span>Jair Villalobos · Backend &amp; Distributed Systems Engineer</span>
+      <span>Cartagena, Bolívar, Colombia · LATAM, Remote-friendly</span>
     </div>
   </div>
 </section>
