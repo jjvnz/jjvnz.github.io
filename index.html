@@ -5,59 +5,62 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jair Villalobos — Backend & Distributed Systems Engineer</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <script>
   tailwind.config = {
     theme: {
       extend: {
         colors: {
-          background: "#FAFAFA",
-          surface: "#FFFFFF",
-          "surface-low": "#F4F4F7",
-          "surface-high": "#ECECF3",
-          outline: "#8A8C9A",
-          "outline-variant": "#E3E3EA",
-          "on-background": "#15161E",
-          "on-surface-variant": "#54566A",
-          primary: "#143DE7",
-          "primary-container": "#3B5BFF",
-          "primary-soft": "#EEF1FF",
-          success: "#059669",
-          "success-soft": "#ECFDF5",
-          danger: "#DC2626",
-          "danger-soft": "#FEF2F2",
+          background: "#0A1828",
+          surface: "#0F2333",
+          "surface-low": "#0C1F2E",
+          "surface-high": "#16324A",
+          outline: "#5C7A8E",
+          "outline-variant": "#1C3348",
+          "on-background": "#F2EFE9",
+          "on-surface-variant": "#8FA3B3",
+          primary: "#BFA181",
+          "primary-container": "#D4B896",
+          "primary-soft": "#231D14",
+          secondary: "#178582",
+          "secondary-soft": "#0E2A2C",
+          success: "#2AA893",
+          danger: "#D96B58",
         },
         fontFamily: {
           sans: ["Inter", "sans-serif"],
-          mono: ["JetBrains Mono", "monospace"],
+          display: ["Space Grotesk", "sans-serif"],
+          mono: ["IBM Plex Mono", "monospace"],
         },
       },
     },
   };
 </script>
 <style>
-  body { background-color: #FAFAFA; }
-  .diff-removed { color: #DC2626; }
+  body { background-color: #0A1828; }
+  .diff-removed { color: #D96B58; }
   .diff-removed::before { content: "- "; opacity: .6; }
-  .diff-added { color: #059669; }
+  .diff-added { color: #2AA893; }
   .diff-added::before { content: "+ "; opacity: .6; }
-  .diff-neutral { color: #9A9CAA; }
+  .diff-neutral { color: #5C7A8E; }
   .diff-neutral::before { content: "  "; }
   .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
   .reveal.in { opacity: 1; transform: translateY(0); }
-  .case-card:hover, .diff-card:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(20,22,30,0.07); }
+  .case-card:hover, .diff-card:hover { transform: translateY(-3px); box-shadow: 0 16px 32px rgba(0,0,0,0.35); }
   .case-card, .diff-card { transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+  .signal-divider { width: 100%; height: 32px; display: block; }
+  .signal-divider path { stroke: #178582; opacity: 0.55; }
 </style>
 </head>
 <body class="font-sans text-on-background antialiased">
 
-<!-- NAV -->
-<nav class="fixed top-0 left-0 w-full z-50 bg-background/85 backdrop-blur-md border-b border-outline-variant">
+<nav class="fixed top-0 left-0 w-full z-50 bg-background/90 backdrop-blur-md border-b border-outline-variant">
   <div class="max-w-5xl mx-auto px-5 md:px-6 h-16 flex items-center justify-between">
     <a href="#hero" class="font-mono font-bold tracking-tight text-on-background">Jair<span class="text-primary">.</span>dev</a>
     <div class="hidden md:flex gap-8 items-center font-mono text-[13px]">
       <a href="#philosophy" class="text-on-surface-variant hover:text-primary transition-colors">Philosophy</a>
+      <a href="#ai-layer" class="text-on-surface-variant hover:text-primary transition-colors">AI Orchestration</a>
       <a href="#proof" class="text-on-surface-variant hover:text-primary transition-colors">Proof of Work</a>
       <a href="#arsenal" class="text-on-surface-variant hover:text-primary transition-colors">Arsenal</a>
       <a href="#trajectory" class="text-on-surface-variant hover:text-primary transition-colors">Trajectory</a>
@@ -71,21 +74,20 @@
 
 <main class="max-w-5xl mx-auto px-5 md:px-6">
 
-<!-- HERO -->
 <section id="hero" class="pt-36 pb-20 md:pt-44 md:pb-28">
-  <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary-soft rounded-full mb-6">
-    <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+  <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary-soft border border-outline-variant rounded-full mb-6">
+    <span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
     <span class="font-mono text-[12px] text-primary">Full-time @ PersonalSoft</span>
   </div>
-  <h1 class="font-sans font-bold text-[34px] leading-[1.15] md:text-[48px] md:leading-[1.1] tracking-tight text-on-background max-w-3xl mb-6">
+  <h1 class="font-display font-bold text-[34px] leading-[1.15] md:text-[48px] md:leading-[1.1] tracking-tight text-on-background max-w-3xl mb-6">
     Backend Engineer. Distributed Systems.<br>
-    <span class="text-primary">Go · NATS · K8s</span>
+    <span class="text-primary">AI Orchestration.</span>
   </h1>
   <p class="text-[16px] md:text-[18px] leading-relaxed text-on-surface-variant max-w-2xl mb-10">
-    Currently bridging legacy SOAP core systems with modern APIs at <span class="font-semibold text-on-background">PersonalSoft</span>. Before that, five years shipping distributed Go backends across CPaaS messaging and LATAM fintech — circuit breakers, idempotency, zero-downtime migrations. Not strategy documents.
+    Currently bridging legacy SOAP core systems with modern APIs at <span class="font-semibold text-on-background">PersonalSoft</span>. Before that, five years shipping distributed Go backends across CPaaS messaging and LATAM fintech — and, in parallel, building the AI/LLM orchestration layers that connect agentic pipelines to real business logic. Not strategy documents.
   </p>
   <div class="flex flex-wrap gap-3 mb-16">
-    <a href="#proof" class="bg-primary-container text-white px-6 py-3 rounded-lg font-mono text-[13px] font-semibold hover:opacity-90 transition-opacity">Review Architecture Patterns →</a>
+    <a href="#ai-layer" class="bg-primary text-background px-6 py-3 rounded-lg font-mono text-[13px] font-semibold hover:bg-primary-container transition-colors">Review AI Orchestration Layer →</a>
     <a href="#footer" class="border border-outline-variant text-on-background px-6 py-3 rounded-lg font-mono text-[13px] font-semibold hover:border-primary hover:text-primary transition-colors">Talk Code</a>
   </div>
   <div class="grid grid-cols-2 md:grid-cols-4 gap-6 border-t border-outline-variant pt-8">
@@ -108,14 +110,16 @@
   </div>
 </section>
 
-<!-- PHILOSOPHY -->
+<svg class="signal-divider" viewBox="0 0 1000 32" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 16 L200 16 L215 4 L230 28 L245 16 L400 16 L415 8 L430 24 L445 16 L600 16 L615 2 L630 30 L645 16 L800 16 L815 6 L830 26 L845 16 L1000 16" fill="none" stroke-width="1.5"/>
+</svg>
+
 <section id="philosophy" class="py-20 border-t border-outline-variant">
-  <span class="font-mono text-[11px] uppercase tracking-widest text-primary block mb-3">// engineering.principles</span>
-  <h2 class="font-sans font-semibold text-[26px] text-on-background mb-2">How I build systems</h2>
+  <span class="font-mono text-[11px] uppercase tracking-widest text-secondary block mb-3">// engineering.principles</span>
+  <h2 class="font-display font-semibold text-[26px] text-on-background mb-2">How I build systems</h2>
   <p class="text-on-surface-variant max-w-lg mb-12">Three constraints that shape every architectural decision, from schema design to deployment strategy.</p>
 
   <div class="grid md:grid-cols-3 gap-5">
-    <!-- card 1 -->
     <div class="diff-card bg-surface border border-outline-variant rounded-xl overflow-hidden flex flex-col reveal">
       <div class="bg-surface-low border-b border-outline-variant px-4 py-2.5 flex items-center gap-2">
         <div class="flex gap-1.5"><span class="w-2 h-2 rounded-full bg-danger/40"></span><span class="w-2 h-2 rounded-full bg-outline-variant"></span><span class="w-2 h-2 rounded-full bg-success/40"></span></div>
@@ -133,7 +137,6 @@
         <p class="text-[12.5px] text-on-surface-variant leading-relaxed">Systems that fail gracefully under load. Webhook deduplication and dynamic RBAC at IPCOM; per-device zero-trust auth at BYONDIT — same instinct, different domain.</p>
       </div>
     </div>
-    <!-- card 2 -->
     <div class="diff-card bg-surface border border-outline-variant rounded-xl overflow-hidden flex flex-col reveal">
       <div class="bg-surface-low border-b border-outline-variant px-4 py-2.5 flex items-center gap-2">
         <div class="flex gap-1.5"><span class="w-2 h-2 rounded-full bg-danger/40"></span><span class="w-2 h-2 rounded-full bg-outline-variant"></span><span class="w-2 h-2 rounded-full bg-success/40"></span></div>
@@ -151,7 +154,6 @@
         <p class="text-[12.5px] text-on-surface-variant leading-relaxed">Legacy systems aren't replaced in one sprint. I build adapter bridges that let old and new run in parallel until the risk window closes — from banking cores to voice-flow schemas.</p>
       </div>
     </div>
-    <!-- card 3 -->
     <div class="diff-card bg-surface border border-outline-variant rounded-xl overflow-hidden flex flex-col reveal">
       <div class="bg-surface-low border-b border-outline-variant px-4 py-2.5 flex items-center gap-2">
         <div class="flex gap-1.5"><span class="w-2 h-2 rounded-full bg-danger/40"></span><span class="w-2 h-2 rounded-full bg-outline-variant"></span><span class="w-2 h-2 rounded-full bg-success/40"></span></div>
@@ -172,14 +174,63 @@
   </div>
 </section>
 
-<!-- PROOF OF WORK -->
+<svg class="signal-divider" viewBox="0 0 1000 32" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 16 L150 16 L165 6 L180 26 L195 16 L350 16 L365 10 L380 22 L395 16 L550 16 L565 3 L580 29 L595 16 L750 16 L765 9 L780 23 L795 16 L1000 16" fill="none" stroke-width="1.5"/>
+</svg>
+
+<section id="ai-layer" class="py-20 border-t border-outline-variant">
+  <span class="font-mono text-[11px] uppercase tracking-widest text-secondary block mb-3">// ai.orchestration_layer</span>
+  <h2 class="font-display font-semibold text-[26px] text-on-background mb-2">Connecting LLM pipelines to real business logic</h2>
+  <p class="text-on-surface-variant max-w-lg mb-12">The same distributed-systems discipline — clean boundaries, observability, zero-downtime — applied to agentic backends, not just prompt scripts.</p>
+
+  <div class="grid md:grid-cols-2 gap-5">
+    <div class="diff-card bg-surface border border-outline-variant rounded-xl overflow-hidden flex flex-col reveal">
+      <div class="bg-surface-low border-b border-outline-variant px-4 py-2.5 flex items-center gap-2">
+        <div class="flex gap-1.5"><span class="w-2 h-2 rounded-full bg-danger/40"></span><span class="w-2 h-2 rounded-full bg-outline-variant"></span><span class="w-2 h-2 rounded-full bg-success/40"></span></div>
+        <span class="font-mono text-[10.5px] text-outline">context_window.py</span>
+      </div>
+      <div class="p-5 flex-grow">
+        <h3 class="font-semibold text-[14px] text-on-background mb-3">Context & structured extraction</h3>
+        <div class="bg-surface-low rounded-lg p-3 font-mono text-[11.5px] leading-loose mb-4">
+          <div class="diff-removed">unbounded prompt context</div>
+          <div class="diff-removed">free-text LLM output</div>
+          <div class="diff-added">context-window management</div>
+          <div class="diff-added">JSON-schema extraction</div>
+          <div class="diff-neutral">// deterministic downstream contracts</div>
+        </div>
+        <p class="text-[12.5px] text-on-surface-variant leading-relaxed">Prompt generators and JSON-schema extraction layers that turn LLM output into something a backend can actually consume — not another loosely-typed string to parse.</p>
+      </div>
+    </div>
+    <div class="diff-card bg-surface border border-outline-variant rounded-xl overflow-hidden flex flex-col reveal">
+      <div class="bg-surface-low border-b border-outline-variant px-4 py-2.5 flex items-center gap-2">
+        <div class="flex gap-1.5"><span class="w-2 h-2 rounded-full bg-danger/40"></span><span class="w-2 h-2 rounded-full bg-outline-variant"></span><span class="w-2 h-2 rounded-full bg-success/40"></span></div>
+        <span class="font-mono text-[10.5px] text-outline">agent_pipeline.go</span>
+      </div>
+      <div class="p-5 flex-grow">
+        <h3 class="font-semibold text-[14px] text-on-background mb-3">Agentic pipelines, in production</h3>
+        <div class="bg-surface-low rounded-lg p-3 font-mono text-[11.5px] leading-loose mb-4">
+          <div class="diff-removed">LLM calls bolted onto scripts</div>
+          <div class="diff-removed">no infra behind the "AI feature"</div>
+          <div class="diff-added">Go/FastAPI orchestration services</div>
+          <div class="diff-added">K8s + Terraform + CI/CD</div>
+          <div class="diff-neutral">// same discipline as core banking systems</div>
+        </div>
+        <p class="text-[12.5px] text-on-surface-variant leading-relaxed">Agentic workflows deployed with the same rigor as a payments API: auto-scaling Kubernetes, IaC via Terraform, multi-stage CI/CD — not a notebook running on someone's laptop.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<svg class="signal-divider" viewBox="0 0 1000 32" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 16 L250 16 L265 5 L280 27 L295 16 L450 16 L465 11 L480 21 L495 16 L650 16 L665 4 L680 28 L695 16 L850 16 L865 8 L880 24 L895 16 L1000 16" fill="none" stroke-width="1.5"/>
+</svg>
+
 <section id="proof" class="py-20 border-t border-outline-variant">
-  <span class="font-mono text-[11px] uppercase tracking-widest text-primary block mb-3">// proof_of_work[]</span>
-  <h2 class="font-sans font-semibold text-[26px] text-on-background mb-2">Shipped systems, measured outcomes</h2>
-  <p class="text-on-surface-variant max-w-lg mb-12">Three engagements across CPaaS, fintech, and independent consulting — each with a friction, a decision, and a number.</p>
+  <span class="font-mono text-[11px] uppercase tracking-widest text-secondary block mb-3">// proof_of_work[]</span>
+  <h2 class="font-display font-semibold text-[26px] text-on-background mb-2">Shipped systems, measured outcomes</h2>
+  <p class="text-on-surface-variant max-w-lg mb-12">Four engagements across CPaaS, fintech, AI orchestration, and independent consulting — each with a friction, a decision, and a number.</p>
 
   <div class="space-y-5">
-    <!-- IPCOM -->
     <div class="case-card bg-surface border border-outline-variant rounded-xl p-6 reveal">
       <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3 mb-5">
         <div>
@@ -198,14 +249,13 @@
           <div class="font-mono text-[10px] uppercase tracking-wider text-danger mb-1">Friction</div>
           <p class="text-[13px] text-on-surface-variant leading-relaxed">A CPaaS platform needed to sustain 1M+ real-time messages daily across Web Chat, WhatsApp and RCS, with legacy SIP components limiting the voice layer.</p>
         </div>
-        <div class="pl-3 border-l-2 border-primary/50">
-          <div class="font-mono text-[10px] uppercase tracking-wider text-primary mb-1">Engineering applied</div>
+        <div class="pl-3 border-l-2 border-secondary/50">
+          <div class="font-mono text-[10px] uppercase tracking-wider text-secondary mb-1">Engineering applied</div>
           <p class="text-[13px] text-on-surface-variant leading-relaxed">Built the multi-channel messaging core in Go + Redis + NATS with webhook dedup and RBAC via a custom OPA policy engine. Migrated SIP to PJSIP with distributed rate-limiting (Gubernator) and a full OpenTelemetry/Grafana observability layer.</p>
         </div>
       </div>
     </div>
 
-    <!-- BYONDIT -->
     <div class="case-card bg-surface border border-outline-variant rounded-xl p-6 reveal">
       <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3 mb-5">
         <div>
@@ -222,57 +272,58 @@
       <div class="grid md:grid-cols-2 gap-6">
         <div class="pl-3 border-l-2 border-danger/50">
           <div class="font-mono text-[10px] uppercase tracking-wider text-danger mb-1">Friction</div>
-          <p class="text-[13px] text-on-surface-variant leading-relaxed">Tigo Money's banking core exposed only SOAP over Mule ESB. Three LATAM markets needed mobile P2P transfers and bill pay with zero tolerance for transaction errors.</p>
+          <p class="text-[13px] text-on-surface-variant leading-relaxed">Legacy SOAP core banking (Mule ESB) needed to reach mobile channels across 3+ LATAM markets — with zero tolerance for downtime during cutover.</p>
         </div>
-        <div class="pl-3 border-l-2 border-primary/50">
-          <div class="font-mono text-[10px] uppercase tracking-wider text-primary mb-1">Engineering applied</div>
-          <p class="text-[13px] text-on-surface-variant leading-relaxed">Go REST layer bridging SOAP to mobile channels via KrakenD, with idempotency tokens per transaction, OAuth2/OIDC federation on AWS Cognito, and per-device zero-trust auth to cut fraud.</p>
+        <div class="pl-3 border-l-2 border-secondary/50">
+          <div class="font-mono text-[10px] uppercase tracking-wider text-secondary mb-1">Engineering applied</div>
+          <p class="text-[13px] text-on-surface-variant leading-relaxed">Architected a REST API bridging SOAP to mobile via KrakenD custom plugins, OAuth2/OIDC federation on AWS Cognito, and per-device zero-trust auth — plus PCI-DSS-compliant financial products (Access Card, Lending).</p>
         </div>
       </div>
     </div>
 
-    <!-- Upwork -->
     <div class="case-card bg-surface border border-outline-variant rounded-xl p-6 reveal">
       <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3 mb-5">
         <div>
-          <span class="inline-block font-mono text-[10px] uppercase tracking-wider px-2 py-1 rounded bg-primary-soft text-primary mb-2">Dev Velocity</span>
-          <h3 class="font-semibold text-[18px] text-on-background">Upwork</h3>
-          <p class="text-[12.5px] text-outline">Independent Consulting · May 2021 – Jun 2026</p>
+          <span class="inline-block font-mono text-[10px] uppercase tracking-wider px-2 py-1 rounded bg-secondary-soft text-secondary mb-2">AI Orchestration</span>
+          <h3 class="font-semibold text-[18px] text-on-background">Upwork (Freelance)</h3>
+          <p class="text-[12.5px] text-outline">Independent Consultant · Jan 2021 – Present</p>
         </div>
         <div class="flex gap-2 flex-wrap">
           <span class="font-mono text-[11px] px-2.5 py-1 rounded bg-surface-low border border-outline-variant text-on-background">1→20+ builds/day</span>
-          <span class="font-mono text-[11px] px-2.5 py-1 rounded bg-surface-low border border-outline-variant text-on-background">lower cloud cost</span>
+          <span class="font-mono text-[11px] px-2.5 py-1 rounded bg-surface-low border border-outline-variant text-on-background">LLM pipelines shipped</span>
           <span class="font-mono text-[11px] px-2.5 py-1 rounded bg-surface-low border border-outline-variant text-on-background">5+ yrs, multiple clients</span>
         </div>
       </div>
       <div class="grid md:grid-cols-2 gap-6">
         <div class="pl-3 border-l-2 border-danger/50">
           <div class="font-mono text-[10px] uppercase tracking-wider text-danger mb-1">Friction</div>
-          <p class="text-[13px] text-on-surface-variant leading-relaxed">Distributed Go backends running 6-hour sequential CI pipelines. GitHub Actions quota allowed roughly one full build per day, blocking every PR merge across the team.</p>
+          <p class="text-[13px] text-on-surface-variant leading-relaxed">Clients needed agentic LLM pipelines connected to real business logic — not one-off prompts — plus distributed Go backends running 6-hour sequential CI pipelines that throttled every PR merge.</p>
         </div>
-        <div class="pl-3 border-l-2 border-primary/50">
-          <div class="font-mono text-[10px] uppercase tracking-wider text-primary mb-1">Engineering applied</div>
-          <p class="text-[13px] text-on-surface-variant leading-relaxed">Dependency-graph analysis for affected-only builds, remote artifact caching, and pipeline parallelization — same Actions quota, radically different throughput. Right-sized K8s workloads via Terraform audits to cut cloud spend.</p>
+        <div class="pl-3 border-l-2 border-secondary/50">
+          <div class="font-mono text-[10px] uppercase tracking-wider text-secondary mb-1">Engineering applied</div>
+          <p class="text-[13px] text-on-surface-variant leading-relaxed">Built prompt-generation and context-window management layers with JSON-schema extraction in Go/FastAPI, deployed on auto-scaling K8s via Terraform. Separately, dependency-graph analysis and remote caching took CI throughput from 1 to 20+ builds/day on the same GitHub Actions quota.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ARSENAL -->
+<svg class="signal-divider" viewBox="0 0 1000 32" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 16 L100 16 L115 7 L130 25 L145 16 L320 16 L335 3 L350 29 L365 16 L540 16 L555 10 L570 22 L585 16 L760 16 L775 5 L790 27 L805 16 L1000 16" fill="none" stroke-width="1.5"/>
+</svg>
+
 <section id="arsenal" class="py-20 border-t border-outline-variant">
-  <span class="font-mono text-[11px] uppercase tracking-widest text-primary block mb-3">// tech.stack</span>
-  <h2 class="font-sans font-semibold text-[26px] text-on-background mb-2">Technical arsenal</h2>
+  <span class="font-mono text-[11px] uppercase tracking-widest text-secondary block mb-3">// tech.stack</span>
+  <h2 class="font-display font-semibold text-[26px] text-on-background mb-2">Technical arsenal</h2>
   <p class="text-on-surface-variant max-w-lg mb-12">Grouped by what each layer does in a distributed system — not alphabetical noise. Every item below was used in a shipped engagement.</p>
 
-  <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
     <div class="bg-surface border border-outline-variant rounded-lg overflow-hidden">
       <div class="bg-surface-low border-b border-outline-variant px-3 py-2 font-mono text-[9.5px] uppercase tracking-wider text-outline">Core Languages</div>
       <div class="p-3 space-y-2 font-mono text-[12px]">
         <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>Go</div>
         <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>Python</div>
         <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>Java</div>
-        <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>Clojure</div>
       </div>
     </div>
     <div class="bg-surface border border-outline-variant rounded-lg overflow-hidden">
@@ -282,6 +333,15 @@
         <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>Redis</div>
         <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>KrakenD</div>
         <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>PJSIP</div>
+      </div>
+    </div>
+    <div class="bg-surface border border-outline-variant rounded-lg overflow-hidden">
+      <div class="bg-surface-low border-b border-outline-variant px-3 py-2 font-mono text-[9.5px] uppercase tracking-wider text-outline">AI & LLM</div>
+      <div class="p-3 space-y-2 font-mono text-[12px]">
+        <div class="flex items-center gap-1.5"><span class="text-secondary">▸</span>LLM APIs</div>
+        <div class="flex items-center gap-1.5"><span class="text-secondary">▸</span>Agentic Workflows</div>
+        <div class="flex items-center gap-1.5"><span class="text-secondary">▸</span>JSON-Schema Extraction</div>
+        <div class="flex items-center gap-1.5"><span class="text-secondary">▸</span>Prompt Engineering</div>
       </div>
     </div>
     <div class="bg-surface border border-outline-variant rounded-lg overflow-hidden">
@@ -329,11 +389,14 @@
   </div>
 </section>
 
-<!-- TRAJECTORY -->
+<svg class="signal-divider" viewBox="0 0 1000 32" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 16 L180 16 L195 9 L210 23 L225 16 L400 16 L415 4 L430 28 L445 16 L620 16 L635 11 L650 21 L665 16 L840 16 L855 6 L870 26 L885 16 L1000 16" fill="none" stroke-width="1.5"/>
+</svg>
+
 <section id="trajectory" class="py-20 border-t border-outline-variant">
-  <span class="font-mono text-[11px] uppercase tracking-widest text-primary block mb-3">// git log --oneline career</span>
-  <h2 class="font-sans font-semibold text-[26px] text-on-background mb-2">Production delivery timeline</h2>
-  <p class="text-on-surface-variant max-w-lg mb-12">From QA to backend to distributed systems — six years of shipped work, sourced straight from LinkedIn.</p>
+  <span class="font-mono text-[11px] uppercase tracking-widest text-secondary block mb-3">// git log --oneline career</span>
+  <h2 class="font-display font-semibold text-[26px] text-on-background mb-2">Production delivery timeline</h2>
+  <p class="text-on-surface-variant max-w-lg mb-12">From QA to backend to distributed systems and AI orchestration — six years of shipped work, sourced straight from LinkedIn.</p>
 
   <div class="relative pl-8 border-l-2 border-outline-variant max-w-2xl">
     <div class="mb-9 relative">
@@ -356,6 +419,7 @@
       <p class="text-[12.5px] text-outline mb-3">Upwork · Independent Consulting, Colombia</p>
       <div class="flex flex-wrap gap-1.5">
         <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">Go</span>
+        <span class="font-mono text-[10px] px-2 py-1 rounded bg-secondary-soft border border-outline-variant text-secondary">AI Orchestration</span>
         <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">GitHub Actions</span>
         <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">Terraform</span>
         <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">Kubernetes</span>
@@ -414,18 +478,17 @@
 
 </main>
 
-<!-- FOOTER -->
 <footer id="footer" class="border-t border-outline-variant py-16 mt-4">
   <div class="max-w-5xl mx-auto px-5 md:px-6">
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
       <div>
-        <h3 class="font-semibold text-[22px] text-on-background mb-1">Open to the right conversation.</h3>
-        <p class="text-on-surface-variant text-[14px]">Architecture reviews, technical deep-dives, or just talking distributed systems — your call.</p>
+        <h3 class="font-display font-semibold text-[22px] text-on-background mb-1">Open to the right conversation.</h3>
+        <p class="text-on-surface-variant text-[14px]">Architecture reviews, technical deep-dives, or just talking distributed systems and AI orchestration — your call.</p>
       </div>
       <div class="flex gap-3 flex-wrap">
         <a href="https://www.linkedin.com/in/jjvnz" target="_blank" rel="noopener" class="border border-outline-variant text-on-background px-5 py-2.5 rounded-lg font-mono text-[12px] hover:border-primary hover:text-primary transition-colors">LinkedIn ↗</a>
         <a href="https://github.com/jjvnz" target="_blank" rel="noopener" class="border border-outline-variant text-on-background px-5 py-2.5 rounded-lg font-mono text-[12px] hover:border-primary hover:text-primary transition-colors">GitHub ↗</a>
-        <a href="mailto:jjvnz.dev@gmail.com" class="bg-primary-container text-white px-5 py-2.5 rounded-lg font-mono text-[12px] font-semibold hover:opacity-90 transition-opacity">Talk Code →</a>
+        <a href="mailto:jjvnz.dev@gmail.com" class="bg-primary text-background px-5 py-2.5 rounded-lg font-mono text-[12px] font-semibold hover:bg-primary-container transition-colors">Talk Code →</a>
       </div>
     </div>
     <div class="font-mono text-[11px] text-outline mb-6">
