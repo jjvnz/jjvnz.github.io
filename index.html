@@ -1,657 +1,727 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jair Villalobos — Backend Engineer</title>
+<meta name="description" content="Jair Villalobos — Backend Engineer especializado en Go y sistemas distribuidos. 6+ años en fintech y CPaaS, LATAM. Diseño para modos de fallo, no solo para el happy path.">
+<meta property="og:title" content="Jair Villalobos — Backend Engineer">
+<meta property="og:description" content="Sistemas backend donde los modos de fallo son la parte más interesante del diseño. Go · sistemas distribuidos · 6+ años en fintech & CPaaS.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="profile.jpg">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230A0C12'/%3E%3Ctext x='16' y='23' font-family='monospace' font-size='18' font-weight='700' fill='%23D9814A' text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@350;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        carbon:  '#0A0C12',
+        crust:   '#13161E',
+        edge:    '#1F232C',
+        copper:  '#D9814A',
+        cloud:   '#F0F2F6',
+        mist:    '#E0E4EC',
+        shale:   '#7C8294',
+        magenta: '#A78BFA',
+        verd:    '#52AC8C',
+        rust:    '#D47A7A',
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
+      },
+
+    }
+  }
+}
+</script>
 <style>
-  :root {
-    --bg:      #07111D;
-    --surface: #0D1B2A;
-    --border:  #1A2E40;
-    --text:    #CBD5E1;
-    --dim:     #4A6177;
-    --amber:   #F59E0B;
-    --sky:     #38BDF8;
-    --green:   #22C55E;
-    --red:     #F87171;
-    --white:   #F1F5F9;
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scrollbar-color:#1F232C transparent;scrollbar-width:thin}
+  :focus-visible{outline:2px solid #D9814A;outline-offset:2px}
+
+  body{
+    background:#0A0C12;color:#E0E4EC;
+    font-family:'Inter',system-ui,sans-serif;
+    font-size:18px;line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:clip;
   }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+  ::selection{background:#D9814A;color:#0A0C12}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    line-height: 1.75;
-    -webkit-font-smoothing: antialiased;
+  /* ── A11Y UTILITIES ─────────────────────────── */
+  .sr-only{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  }
+  .skip-link{
+    position:fixed;top:-100px;left:16px;z-index:100;
+    background:#13161E;color:#F0F2F6;border:1px solid #D9814A;
+    padding:10px 18px;border-radius:6px 2px 8px 4px;
+    font-family:'JetBrains Mono',monospace;font-size:14px;
+    transition:top .2s ease;
+  }
+  .skip-link:focus{top:16px}
+
+  /* ── SECTION DOT NAV ─────────────────────────── */
+  .dot-nav{
+    position:fixed;right:28px;top:50%;transform:translateY(-50%);
+    z-index:40;display:flex;flex-direction:column;gap:16px;
+  }
+  .dot-nav a{
+    width:9px;height:9px;border-radius:50%;
+    border:1px solid #1F232C;background:transparent;
+    display:block;transition:all .3s ease;position:relative;
+  }
+  .dot-nav a:hover,.dot-nav a:focus-visible,.dot-nav a.active{
+    background:#D9814A;border-color:#D9814A;
+    box-shadow:0 0 10px rgba(217,129,74,.4);
+  }
+  .dot-nav a .dot-label{
+    position:absolute;right:20px;top:50%;transform:translateY(-50%);
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:#7C8294;
+    white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s ease;
+    background:#13161E;border:1px solid #1F232C;padding:3px 8px;border-radius:4px 2px 6px 3px;
+  }
+  .dot-nav a:hover .dot-label,.dot-nav a:focus-visible .dot-label{opacity:1}
+  @media(max-width:1024px){.dot-nav{display:none}}
+
+  /* ── TENSION MATRIX ─────────────────────────── */
+  .tension-grid::before{
+    content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:
+      linear-gradient(rgba(240,242,246,.012) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(240,242,246,.012) 1px,transparent 1px);
+    background-size:48px 48px;
   }
 
-  main {
-    max-width: 820px;
-    margin: 0 auto;
-    padding: 64px 24px 120px;
+  /* ── FLOATING KINETIC ───────────────────────── */
+  .float-kinetic{
+    transition:transform .35s cubic-bezier(.34,1.56,.64,1),
+               box-shadow .35s ease;
+  }
+  .float-kinetic:hover{
+    transform:translateY(-4px) rotate(var(--rot,0.6deg)) scale(1.01);
+    box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 40px rgba(217,129,74,.04);
   }
 
-  a { color: var(--sky); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-
-  /* ── HERO ───────────────────────────────────── */
-  .hero { margin-bottom: 48px; }
-
-  .hero-id {
-    font-size: 12px;
-    color: var(--dim);
-    letter-spacing: 0.06em;
-    margin-bottom: 22px;
+  .destabilize:hover{
+    animation:wobble .2s ease;
   }
-  .hero-id .handle { color: var(--amber); }
-
-  .hero-hook {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(22px, 4.5vw, 38px);
-    font-weight: 600;
-    color: var(--white);
-    line-height: 1.2;
-    max-width: 680px;
-    margin-bottom: 24px;
+  @keyframes wobble{
+    0%{transform:rotate(0deg)}
+    25%{transform:rotate(var(--rot,0.8deg))}
+    75%{transform:rotate(calc(var(--rot,0.8deg)*-1))}
+    100%{transform:rotate(0deg)}
   }
 
-  .hero-status {
-    font-size: 13px;
-    color: var(--dim);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
+  /* ── PARALLAX LAYERS ────────────────────────── */
+  .parallax-slow{will-change:transform}
+  .parallax-mid{will-change:transform}
+  .parallax-fast{will-change:transform}
+
+  /* ── GLOW ORB ───────────────────────────────── */
+  .glow-orb{
+    position:absolute;width:600px;height:600px;border-radius:50%;
+    background:radial-gradient(circle at 40% 40%,rgba(217,129,74,.08),transparent 70%);
+    pointer-events:none;filter:blur(60px);z-index:0;
   }
 
-  .dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--green);
-    animation: pulse 2.4s ease-in-out infinite;
-    flex-shrink: 0;
+  /* ── TERMINAL FRAME ─────────────────────────── */
+  .terminal-frame{
+    border:1px solid #1F232C;
+    border-radius:8px;
+    background:rgba(19,22,30,.85);
+    backdrop-filter:blur(12px);
+    box-shadow:0 0 0 1px rgba(240,242,246,.02),0 24px 80px rgba(0,0,0,.5);
+  }
+  .terminal-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+
+  /* ── SVG FLOW LINES ─────────────────────────── */
+  .flow-line{stroke-dasharray:8 6;animation:flow-drift .8s linear infinite}
+  @keyframes flow-drift{to{stroke-dashoffset:-14}}
+
+  .flow-line-solid{stroke-dasharray:none;stroke-linecap:round}
+  .flow-line-active{stroke:#D9814A;stroke-width:2;filter:drop-shadow(0 0 6px rgba(217,129,74,.3))}
+  .flow-line-dim{stroke:rgba(240,242,246,.08);stroke-width:1.5}
+
+  .node-pulse{animation:node-breath 3s ease-in-out infinite}
+  @keyframes node-breath{
+    0%,100%{box-shadow:0 0 0 0 rgba(217,129,74,0)}
+    50%{box-shadow:0 0 24px rgba(217,129,74,.08)}
   }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0.3; }
+  /* ── LOG STREAM ─────────────────────────────── */
+  .log-line{opacity:0;transform:translateX(-12px);transition:opacity .6s ease,transform .6s ease}
+  .log-line.reveal{opacity:var(--op,1);transform:translateX(0)}
+  .log-line:nth-child(1){transition-delay:.1s;--op:.95}
+  .log-line:nth-child(2){transition-delay:.25s;--op:.85}
+  .log-line:nth-child(3){transition-delay:.4s;--op:.75}
+  .log-line:nth-child(4){transition-delay:.55s;--op:.65}
+  .log-line:nth-child(5){transition-delay:.7s;--op:.55}
+  .log-line:nth-child(6){transition-delay:.85s;--op:.45}
+
+  /* ── GAUGE WIDGETS ──────────────────────────── */
+  .gauge{
+    border:1px solid #1F232C;
+    border-radius:4px 10px 6px 12px;
+    background:#13161E;
+    padding:24px 28px;
+    transition:background .3s,box-shadow .3s,border-radius .4s;
+    position:relative;
+    overflow:hidden;
+  }
+  .gauge::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,transparent,#D9814A,transparent);
+    opacity:0;transition:opacity .4s;
+  }
+  .gauge:hover::before{opacity:1}
+  .gauge:hover{
+    background:#1A1E2A;
+    border-radius:10px 4px 8px 6px;
+    box-shadow:0 8px 32px rgba(0,0,0,.35);
+  }
+  .gauge-val{
+    font-family:'JetBrains Mono',monospace;
+    font-size:52px;font-weight:350;
+    background:linear-gradient(135deg,#D9814A,#E8A87C);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums;
   }
 
-  /* ── METRICS STRIP ──────────────────────────── */
-  .metrics {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    margin-bottom: 56px;
+  /* ── GIT COMMIT ──────────────────────────────── */
+  .commit{
+    border-left:2px solid #1F232C;
+    padding:0 0 48px 28px;
+    position:relative;
+    transition:border-color .3s;
   }
-
-  .metric { background: var(--surface); padding: 22px 24px; }
-
-  .metric-val {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 38px;
-    font-weight: 600;
-    color: var(--amber);
-    line-height: 1;
-    margin-bottom: 8px;
-    letter-spacing: -0.02em;
-    font-variant-numeric: tabular-nums;
+  .commit::before{
+    content:'';position:absolute;left:-7px;top:6px;
+    width:12px;height:12px;border-radius:50%;
+    background:#0A0C12;border:2px solid #D9814A;
+    transition:background .3s,border-color .3s,box-shadow .3s;
   }
-
-  .metric-label { font-size: 13px; color: var(--white); margin-bottom: 3px; }
-  .metric-ctx   { font-size: 11px; color: var(--dim); }
-
-  /* ── DIVIDER ────────────────────────────────── */
-  .divider { border: none; border-top: 1px solid var(--border); margin: 52px 0; }
-
-  /* ── CMD LINE ───────────────────────────────── */
-  .cmd { font-size: 13px; color: var(--dim); margin-bottom: 18px; user-select: none; }
-  .cmd .p { color: var(--amber); }
-  .cmd .f { color: var(--sky); }
-
-  /* ── PROSE ──────────────────────────────────── */
-  .prose {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 16px;
-    line-height: 1.8;
-    color: var(--text);
-    max-width: 680px;
+  .commit:hover::before{
+    background:#D9814A;box-shadow:0 0 16px rgba(217,129,74,.2);
   }
-  .prose p + p { margin-top: 18px; }
-  .prose strong { color: var(--white); font-weight: 600; }
+  .commit:last-child{padding-bottom:0}
+  .commit-hash{font-family:'JetBrains Mono',monospace;font-size:14px;color:#7C8294;letter-spacing:-.02em}
+  .commit-msg{font-size:20px;color:#E0E4EC;margin:4px 0 8px;font-weight:400}
+  .commit-diff{font-size:15px;color:#7C8294;line-height:1.7}
 
-  /* ── CODE BLOCK ─────────────────────────────── */
-  pre {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 16px 20px;
-    overflow-x: auto;
-    font-size: 13px;
-    line-height: 1.75;
+  /* ── NODE PROJECTS ──────────────────────────── */
+  .proj-node{
+    position:absolute;
+    border:1px solid #1F232C;
+    background:#13161E;
+    padding:24px 28px;
+    transition:all .4s cubic-bezier(.34,1.56,.64,1);
+    cursor:default;
+    z-index:2;
   }
-
-  .rm  { color: var(--red); }
-  .add { color: var(--green); }
-  .hi  { color: var(--amber); font-weight: 500; }
-  .sd  { color: var(--dim); }
-
-  /* ── EXPERIENCE ─────────────────────────────── */
-  .exp { margin-bottom: 40px; }
-
-  .exp-head {
-    display: flex;
-    align-items: baseline;
-    gap: 12px;
-    margin-bottom: 14px;
-    flex-wrap: wrap;
+  .proj-node:hover{
+    border-color:rgba(217,129,74,.3);
+    background:#1A1E2A;
+    transform:translateY(-2px) scale(1.01);
+    box-shadow:0 16px 48px rgba(0,0,0,.4),0 0 40px rgba(217,129,74,.04);
+    z-index:10;
   }
-
-  .exp-co {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    color: var(--white);
-    font-size: 15px;
+  .proj-node.central{
+    border-left:3px solid #D9814A;
+    box-shadow:0 8px 40px rgba(0,0,0,.3),0 0 60px rgba(217,129,74,.02);
   }
-  .exp-role   { font-size: 12px; color: var(--amber); }
-  .exp-period { font-size: 12px; color: var(--dim); margin-left: auto; }
-
-  /* ── STACK ──────────────────────────────────── */
-  .stack-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
+  .proj-node.satellite{
+    border-left:2px solid rgba(167,139,186,.3);
+    box-shadow:0 4px 20px rgba(0,0,0,.2);
   }
-
-  .stack-cat { background: var(--surface); padding: 16px 20px; }
-
-  .stack-cat-label {
-    font-size: 10px;
-    color: var(--amber);
-    letter-spacing: 0.10em;
-    text-transform: uppercase;
-    margin-bottom: 8px;
+  .proj-node .tag{
+    font-family:'JetBrains Mono',monospace;font-size:13px;
+    padding:2px 10px;border:1px solid #1F232C;border-radius:2px 8px 4px 6px;
+    display:inline-block;color:#7C8294;
   }
+  .proj-node .tag.active{border-color:rgba(82,172,140,.3);color:#52AC8C}
 
-  .stack-items { font-size: 13px; color: var(--text); line-height: 1.9; }
-
-  /* ── GIT LOG ────────────────────────────────── */
-  .git-log {
-    background: var(--surface);
-    border: 1px solid var(--border);
+  /* ── CONSTELLATION ──────────────────────────── */
+  .constellation{position:relative;}
+  .star{
+    position:absolute;
+    font-family:'JetBrains Mono',monospace;font-size:14px;color:#7C8294;
+    padding:6px 14px;border:1px solid #1F232C;
+    border-radius:10px 2px 8px 4px;
+    background:#13161E;white-space:nowrap;
+    transition:all .3s cubic-bezier(.34,1.56,.64,1);
+    cursor:default;
   }
-
-  .log-row {
-    display: grid;
-    grid-template-columns: 7ch 1fr auto;
-    gap: 16px;
-    padding: 10px 20px;
-    font-size: 13px;
-    border-bottom: 1px solid var(--border);
-    align-items: baseline;
+  .star:hover{
+    background:#1A1E2A;border-color:rgba(217,129,74,.2);color:#D9814A;
+    transform:scale(1.05);z-index:5;
   }
-  .log-row:last-child { border-bottom: none; }
-
-  .log-hash { color: var(--amber); font-size: 12px; }
-  .log-msg  { color: var(--text); }
-  .log-msg .co { color: var(--white); font-weight: 500; }
-  .log-date { color: var(--dim); font-size: 12px; text-align: right; white-space: nowrap; }
-
-  /* ── CONTACT ────────────────────────────────── */
-  .contact-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
+  .star.cat-label{
+    border:none;background:transparent;color:#D9814A;
+    font-family:'Inter',sans-serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+    padding:0;border-radius:0;cursor:default;
   }
+  .star.cat-label:hover{transform:none;background:transparent;border-color:transparent;color:#D9814A}
 
-  .contact-item { background: var(--surface); padding: 14px 20px; font-size: 13px; }
-  .contact-key  { color: var(--dim); margin-right: 6px; }
-
-  /* ── FOOTER ─────────────────────────────────── */
-  .footer {
-    margin-top: 52px;
-    font-size: 12px;
-    color: var(--dim);
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
+  /* ── HEALTHZ RESPONSE ────────────────────────── */
+  .healthz{
+    font-family:'JetBrains Mono',monospace;font-size:16px;line-height:2;
+    border:1px solid #1F232C;
+    border-radius:6px 14px 4px 12px;
+    padding:32px 40px;
+    background:#13161E;
+    position:relative;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
   }
+  .healthz .key{color:#D9814A}
+  .healthz .str{color:#52AC8C}
+  .healthz .bool{color:#A78BFA}
+  .healthz .null{color:#7C8294}
 
-  /* ── PROJECTS ───────────────────────────────── */
-  .project {
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--amber);
-    background: var(--surface);
-    padding: 22px 24px;
-    margin-bottom: 16px;
+  /* ── RESPONSIVE FLOW ─────────────────────────── */
+  @media(max-width:1024px){
+    .flow-grid{display:flex;flex-direction:column;gap:48px;padding:0 20px!important}
+    .proj-node{position:relative!important;width:100%!important;margin-bottom:16px}
+    .proj-node.satellite{left:auto!important;top:auto!important}
+    #project-graph-svg{display:none}
+    .star{position:relative!important;left:auto!important;top:auto!important;display:inline-block;margin:4px}
+    .constellation{text-align:center}
+    .commit{padding-left:20px}
   }
+  @media(max-width:768px){
+    .gauge-val{font-size:36px}
+    .healthz{padding:20px;font-size:14px;overflow-x:auto}
 
-  .project-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
+    .commit-msg{font-size:17px}
   }
-
-  .project-name {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    color: var(--white);
-    font-size: 15px;
-  }
-
-  .project-status {
-    font-size: 11px;
-    padding: 3px 9px;
-    border: 1px solid var(--border);
-    color: var(--dim);
-    white-space: nowrap;
-  }
-
-  .project-status.live {
-    border-color: rgba(34,197,94,0.4);
-    color: var(--green);
-  }
-
-  .project-problem {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 14px;
-    color: var(--text);
-    line-height: 1.7;
-    margin-bottom: 16px;
-    max-width: 640px;
-  }
-
-  .project-decision {
-    font-size: 12px;
-    color: var(--dim);
-    margin-bottom: 14px;
-    line-height: 1.75;
-  }
-
-  .project-decision .key {
-    color: var(--amber);
-    margin-right: 6px;
-  }
-
-  .project-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-    padding-top: 14px;
-    border-top: 1px solid var(--border);
-  }
-
-  .project-stack {
-    font-size: 12px;
-    color: var(--dim);
-  }
-
-  .project-link {
-    font-size: 12px;
-    color: var(--sky);
-  }
-
-  /* ── RESPONSIVE ─────────────────────────────── */
-  @media (max-width: 580px) {
-    .metrics            { grid-template-columns: 1fr; }
-    .log-row            { grid-template-columns: 6ch 1fr; }
-    .log-date           { display: none; }
-    .exp-period         { margin-left: 0; flex-basis: 100%; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .dot { animation: none; }
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+    .float-kinetic:hover,.destabilize:hover,.proj-node:hover,.star:hover{transform:none!important}
+    .parallax-slow,.parallax-mid,.parallax-fast{transform:none!important}
+    .log-line{opacity:1!important;transform:none!important}
   }
 </style>
 </head>
-<body>
-<main>
+<body class="tension-grid">
 
-  <!-- HERO -->
-  <header class="hero">
-    <div class="hero-id">
-      <span class="handle">jair.villalobos</span>
-      &nbsp;·&nbsp; backend engineer &nbsp;·&nbsp; cartagena, colombia
+<a href="#main-content" class="skip-link">Saltar al contenido</a>
+
+<nav class="dot-nav" aria-label="Navegación de secciones">
+  <a href="#about" aria-label="Ir a About"><span class="dot-label">about</span></a>
+  <a href="#experience" aria-label="Ir a Experience"><span class="dot-label">experience</span></a>
+  <a href="#projects" aria-label="Ir a Projects"><span class="dot-label">projects</span></a>
+  <a href="#stack" aria-label="Ir a Stack"><span class="dot-label">stack</span></a>
+  <a href="#contact" aria-label="Ir a Contact"><span class="dot-label">contact</span></a>
+</nav>
+
+<div class="glow-orb fixed top-[-200px] left-1/2 -translate-x-1/2" style="z-index:0"></div>
+
+<main id="main-content" class="flow-grid max-w-[1320px] mx-auto px-6 relative" style="z-index:1">
+
+  <!-- ════════════════════════════════════════════════
+       HERO — Terminal breakout
+       ════════════════════════════════════════════════ -->
+  <header class="relative parallax-slow" style="padding-top:72px" data-speed=".8">
+    <div class="terminal-frame float-kinetic relative" style="max-width:92%;margin-left:-4%;padding:0;--rot:.4deg">
+      <div class="flex items-center gap-2 px-4 py-3" style="border-bottom:1px solid #1F232C">
+        <span class="terminal-dot" style="background:#D47A7A"></span>
+        <span class="terminal-dot" style="background:#D9814A"></span>
+        <span class="terminal-dot" style="background:#52AC8C"></span>
+        <span class="text-[13px] text-[#7C8294] font-mono ml-2">jair@portfolio — bash</span>
+      </div>
+      <div class="px-6 py-8 md:px-10 md:py-12">
+        <div class="text-[13px] font-mono text-[#7C8294] tracking-wide mb-3 md:mb-4">jair.villalobos · backend engineer · cartagena, colombia</div>
+        <h1 class="text-[clamp(28px,5vw,56px)] font-[500] leading-[1.15] text-[#F0F2F6] tracking-[-.02em] max-w-[880px]">
+          I build backend systems where <span class="text-[#D9814A]">failure modes</span> are the most interesting part of the design.
+        </h1>
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mt-6 text-[15px] font-mono">
+          <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-[#52AC8C] animate-pulse"></span><span class="text-[#52AC8C]">open</span> <span class="text-[#7C8294]">— remote Backend / Platform Engineering · LATAM</span></span>
+          <span class="text-[#7C8294]">Go · distributed systems · 6+ yr fintech & CPaaS</span>
+        </div>
+      </div>
     </div>
-    <h1 class="hero-hook">I build backend systems where failure modes are the most interesting part of the design.</h1>
-    <div class="hero-status">
-      <span class="dot" aria-hidden="true"></span>
-      <span style="color:var(--green)">open</span>
-      <span>— remote Backend / Platform Engineering &nbsp;·&nbsp; LATAM timezone</span>
+    <div class="text-right mt-[-12px] mr-[4%] text-[13px] font-mono text-[#7C8294] tracking-wider">
+      <span class="bg-[#13161E] px-3 py-1 border border-[#1F232C] rounded-[6px_2px_8px_4px]">./enter.sh</span>
     </div>
   </header>
 
-  <!-- METRICS -->
-  <div class="metrics" role="list" aria-label="Key engineering outcomes">
-    <div class="metric" role="listitem">
-      <div class="metric-val" data-target="35" data-prefix="−" data-suffix="%">−35%</div>
-      <div class="metric-label">MTTR reduction</div>
-      <div class="metric-ctx">OTel / Grafana observability layer &nbsp;·&nbsp; IPCOM</div>
-    </div>
-    <div class="metric" role="listitem">
-      <div class="metric-val" data-target="20" data-suffix="×">20×</div>
-      <div class="metric-label">CI builds per day</div>
-      <div class="metric-ctx">dep-graph analysis + artifact caching &nbsp;·&nbsp; same quota</div>
-    </div>
-    <div class="metric" role="listitem">
-      <div class="metric-val" data-target="3">3</div>
-      <div class="metric-label">LATAM markets</div>
-      <div class="metric-ctx">Tigo Money wallet APIs &nbsp;·&nbsp; zero-downtime cutover</div>
-    </div>
-  </div>
+  <div class="my-24"></div>
 
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="cmd"><span class="p">$</span> <span class="f">cat</span> about.md</div>
-    <div class="prose">
-      <p>At <strong>IPCOM</strong> I spent seven months inside a CPaaS platform processing over a million real-time messages daily — building the authorization engine that injected dynamic RBAC across the entire fleet, migrating legacy SIP components to PJSIP using Go's concurrency model, and instrumenting the observability layer that cut MTTR by 35%.</p>
-      <p>Before that, at <strong>BYONDIT</strong>, I built the REST API layer for Tigo Money's digital wallet — bridging SOAP core banking to modern mobile channels across three LATAM markets, with zero-downtime cutover and a multi-device auth model designed around zero-trust at the device level.</p>
-      <p>The work I'm most technically proud of happened at a smaller scale: clients through <strong>Upwork</strong> whose CI pipelines took six hours per run and got one full build per day. I implemented dependency graph analysis for affected-only builds, remote artifact caching, and pipeline parallelization. Same GitHub Actions quota, twenty-plus incremental builds per day.</p>
-      <p>My primary language is <strong>Go</strong>. In parallel I'm building an event-driven order system in Clojure — not as a portfolio checkbox, but because STM and structural immutability handle concurrency in ways that change how I think about state in Go. The contrast is productive.</p>
-      <p>My current role at <strong>PersonalSoft</strong> involves Java, SOAP, and legacy financial infrastructure. Different constraints, same analytical lens.</p>
-      <p>I've been doing this while finishing a Systems Engineering degree since 2020 — both full-time. Not for credit: it's an accurate signal of how I operate under competing constraints.</p>
-    </div>
-  </section>
-
-  <hr class="divider">
-
-  <!-- EXPERIENCE -->
-  <section id="experience">
-    <div class="cmd"><span class="p">$</span> <span class="f">git log</span> --format=diff --follow ./experience</div>
-
-    <div class="exp">
-      <div class="exp-head">
-        <span class="exp-co">PersonalSoft</span>
-        <span class="exp-role">Intermediate Software Developer</span>
-        <span class="exp-period">Jun 2026 – present</span>
-      </div>
-<pre>Go + Java — REST ↔ SOAP integration for regional retail and credit infrastructure.
-Legacy PL/SQL data layers, Docker packaging, GitHub Actions deployment pipelines.
-Same analytical lens. Different failure modes.</pre>
+  <!-- ════════════════════════════════════════════════
+       ABOUT + METRICS — Log Stream & Gauges
+       ════════════════════════════════════════════════ -->
+  <section class="relative" id="about" aria-labelledby="about-heading">
+    <h2 id="about-heading" class="sr-only">About</h2>
+    <div class="flex items-center gap-3 mb-8 font-mono text-sm text-[#7C8294]">
+      <span class="text-[#D9814A]">$</span> <span>tail -f about.log</span>
     </div>
 
-    <div class="exp">
-      <div class="exp-head">
-        <span class="exp-co">IPCOM</span>
-        <span class="exp-role">Backend Engineer · CPaaS & Real-Time Messaging</span>
-        <span class="exp-period">Nov 2024 – May 2025</span>
+    <div class="grid grid-cols-12 gap-8 md:gap-12 relative">
+      <!-- ABOUT TEXT (cols 1-8) -->
+      <div class="col-span-12 md:col-span-7 lg:col-span-8 relative z-10">
+        <div class="prose max-w-[680px]" id="log-stream">
+          <div class="log-line">
+            <img src="profile.jpg" alt="Jair Villalobos" loading="lazy" width="160" height="160"
+                 class="w-[120px] h-[120px] md:w-[160px] md:h-[160px] float-right ml-6 mb-4 object-cover
+                        border border-[#1F232C] rounded-[6px_14px_4px_12px]
+                        transition-all duration-500 hover:scale-[1.02] hover:border-[#D9814A]"
+                 style="shape-outside:margin-box;filter:grayscale(.4) contrast(1.05)">
+          </div>
+          <p class="log-line text-[clamp(18px,2.2vw,24px)] leading-[1.8] text-[#E0E4EC] font-[300]">I write backend systems the way a carpenter measures twice. Not because I'm slow — because cutting too early is what creates the technical debt nobody wants to talk about.</p>
+          <p class="log-line text-[clamp(18px,2.2vw,24px)] leading-[1.8] text-[#E0E4EC] font-[300]">To me, code is a conviction, not a transaction. Every endpoint, every migration, every decision about how to handle a failure mode — it's a choice between <span class="text-[#F0F2F6] font-[400]">"this works now"</span> and <span class="text-[#F0F2F6] font-[400]">"this will still make sense in six months"</span>. I've spent the last six years learning to choose the second one.</p>
+          <p class="log-line text-[clamp(18px,2.2vw,24px)] leading-[1.8] text-[#E0E4EC] font-[300]">I show my work. The bugs, the dead ends, the refactors that didn't pay off. Not as a flex, but because the most honest thing I can put in a portfolio is the process, not just the result.</p>
+          <p class="log-line text-[clamp(18px,2.2vw,24px)] leading-[1.8] text-[#E0E4EC] font-[300]">I work primarily in <strong class="font-[500] text-[#F0F2F6]">Go</strong>, with detours into Clojure (for the concurrency model that changed how I think about state) and Java (because legacy infrastructure pays the bills and teaches you patience).</p>
+          <p class="log-line text-[clamp(18px,2.2vw,24px)] leading-[1.8] text-[#E0E4EC] font-[300]">Behind every deployment, there's a person who double-checks the rollback strategy before hitting publish. That's me. I build systems that fail gracefully, and I talk about failure the same way — openly, without the corporate gloss.</p>
+          <p class="log-line text-[clamp(18px,2.2vw,24px)] leading-[1.8] text-[#E0E4EC] font-[300]">If any of this resonates, I'd like to hear what you're building. No job title pitch needed — just a conversation about systems, trade-offs, and what keeps you up at night.</p>
+        </div>
       </div>
-<pre><span class="add">+ OPA Policy Generator — dynamic RBAC injected across the entire CPaaS fleet</span>
-<span class="add">+ PJSIP migration — SIP legacy decoupled into resilient Go microservices</span>
-<span class="add">+ OTel / Grafana matrix — proactive bottleneck detection in low-latency loops</span>
-<span class="add">+ Gubernator rate-limiting — distributed, consistent under burst load</span>
-<span class="hi">→ −35% MTTR · −40% DB load · 1M+ msgs/day sustained</span></pre>
-    </div>
 
-    <div class="exp">
-      <div class="exp-head">
-        <span class="exp-co">BYONDIT</span>
-        <span class="exp-role">Backend Engineer · Fintech & Digital Wallets</span>
-        <span class="exp-period">Nov 2022 – Jul 2023</span>
-      </div>
-<pre><span class="rm">- SOAP core banking exposed directly to mobile clients</span>
-<span class="rm">- shared session token, no per-device lockout, high fraud surface</span>
-<span class="add">+ KrakenD custom plugins bridging SOAP ↔ REST across 3 LATAM markets</span>
-<span class="add">+ OAuth2 / OIDC via AWS Cognito · per-device PIN + auto lockout (zero-trust)</span>
-<span class="add">+ AWS Lambda serverless layer · Secrets Manager · TDD in production</span>
-<span class="hi">→ 0 downtime cutover · −30% integration time · PCI-DSS compliant</span></pre>
-    </div>
-
-    <div class="exp">
-      <div class="exp-head">
-        <span class="exp-co">Upwork</span>
-        <span class="exp-role">Backend Software Engineer · Independent</span>
-        <span class="exp-period">May 2021 – Jun 2026</span>
-      </div>
-<pre>Go backends across multiple clients. Most notable optimization:
-
-<span class="rm">- CI pipeline: 6hr full build, 1 build/day, quota exhausted daily</span>
-<span class="add">+ dependency graph analysis — affected-only builds</span>
-<span class="add">+ remote artifact caching + stage parallelization</span>
-<span class="hi">→ 1 build/day → 20+ incremental builds, same quota, same cost</span>
-
-<span class="sd">Also: Go / Clojure distributed systems · K8s right-sizing via Terraform audits
-AI orchestration pipelines with structured JSON-schema output contracts</span></pre>
-    </div>
-
-    <div class="exp">
-      <div class="exp-head">
-        <span class="exp-co">Elemento 43</span>
-        <span class="exp-role">Software QA Tester</span>
-        <span class="exp-period">Jun 2020 – Nov 2020</span>
-      </div>
-<pre>Where it started. E2E testing with Cypress / Cucumber · REST API validation
-with Postman · POM pattern. Learned to break things before shipping them.</pre>
-    </div>
-  </section>
-
-  <hr class="divider">
-
-  <!-- PROJECTS -->
-  <section id="projects">
-    <div class="cmd"><span class="p">$</span> <span class="f">ls</span> ./projects --deployed-only</div>
-
-    <!-- transaction-event-processor -->
-    <div class="project">
-      <div class="project-head">
-        <span class="project-name">transaction-event-processor</span>
-        <span class="project-status live">active · Go</span>
-      </div>
-      <div class="project-problem">
-        The problem: idempotency under concurrent load. When multiple workers race
-        to process the same event, you get duplicate writes, dirty state, and cascading
-        failures downstream. The question is how to prevent that without serializing
-        everything and killing throughput.
-      </div>
-      <div class="project-decision">
-        <span class="key">Architecture:</span>non-blocking ingestion — HTTP returns 202 immediately,
-        events processed asynchronously through a configurable goroutine worker pool.<br>
-        <span class="key">Idempotency:</span>Redis SetNX as the distributed lock — atomic, TTL-bounded,
-        no duplicate processing across replicas.<br>
-        <span class="key">Resilience:</span>gobreaker circuit breaker on PostgreSQL — prevents cascading
-        failures when the DB degrades under write pressure.
-      </div>
-      <div class="project-footer">
-        <span class="project-stack">Go · Echo · PostgreSQL · Redis · gobreaker</span>
-        <a class="project-link" href="https://github.com/jjvnz/transaction-event-processor" target="_blank" rel="noopener">github.com/jjvnz/transaction-event-processor →</a>
-      </div>
-    </div>
-
-    <!-- AI orchestration -->
-    <div class="project">
-      <div class="project-head">
-        <span class="project-name">AI orchestration layer</span>
-        <span class="project-status live">production · Go + FastAPI</span>
-      </div>
-      <div class="project-problem">
-        LLM outputs are non-deterministic. Integrating them into backend workflows
-        without strict output contracts produces brittle systems: the model changes
-        a field name, the downstream parser breaks, the pipeline silently corrupts
-        data. The problem isn't the model — it's the missing boundary between
-        probabilistic generation and deterministic processing.
-      </div>
-      <div class="project-decision">
-        <span class="key">Contract layer:</span>JSON Schema output contracts enforced at the LLM boundary —
-        the model is prompted to produce structured output, validated against schema
-        before any downstream processing.<br>
-        <span class="key">Runtime:</span>Go orchestrator managing agent lifecycles and retry logic,
-        FastAPI handling the model-facing interface.<br>
-        <span class="key">Infra:</span>Kubernetes + Terraform + GitHub Actions — same deployment
-        discipline as core banking services, not a Colab notebook.
-      </div>
-      <div class="project-footer">
-        <span class="project-stack">Go · FastAPI · Kubernetes · Terraform · GitHub Actions · LLM APIs</span>
-        <span class="project-link" style="color:var(--dim)">production client work · architecture on request</span>
-      </div>
-    </div>
-
-    <!-- order-system Clojure -->
-    <div class="project">
-      <div class="project-head">
-        <span class="project-name">order-system</span>
-        <span class="project-status live">active · Clojure</span>
-      </div>
-      <div class="project-problem">
-        Not a portfolio checkbox. A working question: what does concurrent state
-        management look like when immutability is structural rather than enforced
-        by convention? Built to understand what Go's concurrency model leaves out —
-        and to make that understanding precise enough to be useful back in Go.
-      </div>
-      <div class="project-decision">
-        <span class="key">Model:</span>event-driven order processing using Clojure's STM — coordinated
-        state transitions without locks, without the race conditions that locks introduce.<br>
-        <span class="key">Architecture:</span>Clean Architecture + DDD in a functional paradigm — domain
-        logic stays pure, side effects are pushed to the boundary.<br>
-        <span class="key">Outcome:</span>concrete vocabulary for discussing state, concurrency, and
-        failure modes across different runtime models.
-      </div>
-      <div class="project-footer">
-        <span class="project-stack">Clojure · event-driven · DDD · Clean Architecture</span>
-        <a class="project-link" href="https://github.com/jjvnz/order-system" target="_blank" rel="noopener">github.com/jjvnz/order-system →</a>
+      <!-- METRICS (cols 10-12, offset) -->
+      <div class="col-span-12 md:col-span-5 lg:col-span-4 relative z-20">
+        <div class="flex flex-col gap-5 md:sticky md:top-24 md:pt-12 parallax-mid" data-speed="1.2" role="list" aria-label="Key engineering outcomes">
+          <div class="gauge float-kinetic" role="listitem" style="--rot:-.3deg">
+            <div class="gauge-val" data-target="35" data-prefix="−" data-suffix="%">−35%</div>
+            <div class="text-base text-[#F0F2F6] mt-1 font-[400]">MTTR reduction</div>
+            <div class="text-[14px] text-[#7C8294] mt-1 leading-relaxed">OTel / Grafana observability layer · IPCOM</div>
+          </div>
+          <div class="gauge float-kinetic" role="listitem" style="--rot:.4deg;margin-left:12px">
+            <div class="gauge-val" data-target="20" data-suffix="×">20×</div>
+            <div class="text-base text-[#F0F2F6] mt-1 font-[400]">CI builds per day</div>
+            <div class="text-[14px] text-[#7C8294] mt-1 leading-relaxed">dep-graph analysis + artifact caching · same quota</div>
+          </div>
+          <div class="gauge float-kinetic" role="listitem" style="--rot:-.5deg;margin-left:-8px">
+            <div class="gauge-val" data-target="3">3</div>
+            <div class="text-base text-[#F0F2F6] mt-1 font-[400]">LATAM markets</div>
+            <div class="text-[14px] text-[#7C8294] mt-1 leading-relaxed">Tigo Money wallet APIs · zero-downtime cutover</div>
+          </div>
+          <!-- decorative connector line -->
+          <svg class="absolute top-0 left-[-40px] w-[60px] h-full pointer-events-none hidden lg:block" style="z-index:-1" aria-hidden="true">
+            <line x1="10" y1="80" x2="50" y2="60" stroke="rgba(240,242,246,.04)" stroke-width="1" stroke-dasharray="4 4"/>
+            <line x1="10" y1="160" x2="50" y2="140" stroke="rgba(240,242,246,.04)" stroke-width="1" stroke-dasharray="4 4"/>
+            <line x1="10" y1="240" x2="50" y2="220" stroke="rgba(240,242,246,.04)" stroke-width="1" stroke-dasharray="4 4"/>
+          </svg>
+        </div>
       </div>
     </div>
   </section>
 
-  <hr class="divider">
+  <div class="my-28"></div>
 
-  <!-- STACK -->
-  <section id="stack">
-    <div class="cmd"><span class="p">$</span> <span class="f">cat</span> stack.json</div>
-    <div class="stack-grid">
-      <div class="stack-cat">
-        <div class="stack-cat-label">Primary</div>
-        <div class="stack-items">Go (Golang)</div>
-      </div>
-      <div class="stack-cat">
-        <div class="stack-cat-label">Languages</div>
-        <div class="stack-items">Java · Python / FastAPI · Clojure</div>
-      </div>
-      <div class="stack-cat">
-        <div class="stack-cat-label">APIs & Messaging</div>
-        <div class="stack-items">gRPC · REST · NATS · Kafka</div>
-      </div>
-      <div class="stack-cat">
-        <div class="stack-cat-label">Data</div>
-        <div class="stack-items">PostgreSQL · Redis · DynamoDB · Oracle</div>
-      </div>
-      <div class="stack-cat">
-        <div class="stack-cat-label">Gateways & Integrations</div>
-        <div class="stack-items">KrakenD · SOAP / Mule ESB · PL/SQL</div>
-      </div>
-      <div class="stack-cat">
-        <div class="stack-cat-label">Cloud & Infra</div>
-        <div class="stack-items">AWS · GCP · Kubernetes · Terraform · Docker</div>
-      </div>
-      <div class="stack-cat">
-        <div class="stack-cat-label">Observability & Security</div>
-        <div class="stack-items">OpenTelemetry · Grafana · OPA · PJSIP · Gubernator</div>
-      </div>
-      <div class="stack-cat">
-        <div class="stack-cat-label">Practices</div>
-        <div class="stack-items">Clean Architecture · DDD · TDD · Zero-Trust · CI/CD</div>
+  <!-- ════════════════════════════════════════════════
+       EXPERIENCE — Git Commit Timeline
+       ════════════════════════════════════════════════ -->
+  <section id="experience" class="relative" aria-labelledby="experience-heading">
+    <h2 id="experience-heading" class="sr-only">Experience</h2>
+    <div class="flex items-center gap-3 mb-8 font-mono text-sm text-[#7C8294]">
+      <span class="text-[#D9814A]">$</span> <span>git log --format=diff --follow ./experience</span>
+    </div>
+
+    <div class="grid grid-cols-12 gap-x-0 gap-y-4">
+      <div class="col-span-12 md:col-span-10 md:col-start-2 lg:col-span-8 lg:col-start-3">
+        <div class="commit">
+          <div class="commit-hash"><span class="text-[#D9814A]">*</span> 2a8f1e4</div>
+          <div class="commit-msg">PersonalSoft · Intermediate Software Developer</div>
+          <div class="commit-diff">
+            <span class="text-[#52AC8C]">+</span> Go + Java — REST ↔ SOAP integration for regional retail and credit infrastructure.<br>
+            <span class="text-[#52AC8C]">+</span> Legacy PL/SQL data layers, Docker packaging, GitHub Actions deployment pipelines.<br>
+            <span class="text-[#7C8294]">Jun 2026 – present</span>
+          </div>
+        </div>
+
+        <div class="commit">
+          <div class="commit-hash"><span class="text-[#D9814A]">*</span> 7b3c0d9</div>
+          <div class="commit-msg">IPCOM · Backend Engineer — CPaaS & Real-Time Messaging</div>
+          <div class="commit-diff">
+            <span class="text-[#52AC8C]">+</span> OPA Policy Generator — dynamic RBAC injected across the entire CPaaS fleet<br>
+            <span class="text-[#52AC8C]">+</span> PJSIP migration — SIP legacy decoupled into resilient Go microservices<br>
+            <span class="text-[#52AC8C]">+</span> OTel / Grafana matrix — proactive bottleneck detection in low-latency loops<br>
+            <span class="text-[#D9814A]">→</span> −35% MTTR · −40% DB load · 1M+ msgs/day sustained<br>
+            <span class="text-[#7C8294]">Nov 2024 – May 2025</span>
+          </div>
+        </div>
+
+        <div class="commit">
+          <div class="commit-hash"><span class="text-[#D9814A]">*</span> ef4a1b2</div>
+          <div class="commit-msg">BYONDIT · Backend Engineer — Fintech & Digital Wallets</div>
+          <div class="commit-diff">
+            <span class="text-[#D47A7A]">-</span> SOAP core banking exposed directly to mobile clients<br>
+            <span class="text-[#D47A7A]">-</span> shared session token, no per-device lockout, high fraud surface<br>
+            <span class="text-[#52AC8C]">+</span> KrakenD custom plugins bridging SOAP ↔ REST across 3 LATAM markets<br>
+            <span class="text-[#52AC8C]">+</span> OAuth2 / OIDC via AWS Cognito · per-device PIN + auto lockout<br>
+            <span class="text-[#D9814A]">→</span> 0 downtime cutover · −30% integration time · PCI-DSS compliant<br>
+            <span class="text-[#7C8294]">Nov 2022 – Jul 2023</span>
+          </div>
+        </div>
+
+        <div class="commit">
+          <div class="commit-hash"><span class="text-[#D9814A]">*</span> 9d0f6c3</div>
+          <div class="commit-msg">Upwork · Backend Software Engineer — Independent</div>
+          <div class="commit-diff">
+            <span class="text-[#D47A7A]">-</span> CI pipeline: 6hr full build, 1 build/day, quota exhausted daily<br>
+            <span class="text-[#52AC8C]">+</span> dependency graph analysis — affected-only builds<br>
+            <span class="text-[#52AC8C]">+</span> remote artifact caching + stage parallelization<br>
+            <span class="text-[#D9814A]">→</span> 1 build/day → 20+ incremental builds, same quota, same cost<br>
+            <span class="text-[#7C8294]">Also: Go / Clojure distributed systems · K8s right-sizing via Terraform audits · AI pipelines</span><br>
+            <span class="text-[#7C8294]">May 2021 – Jun 2026</span>
+          </div>
+        </div>
+
+        <div class="commit">
+          <div class="commit-hash"><span class="text-[#D9814A]">*</span> a3b8e2f</div>
+          <div class="commit-msg">Elemento 43 · Software QA Tester</div>
+          <div class="commit-diff">
+            <span class="text-[#52AC8C]">+</span> E2E testing with Cypress / Cucumber · REST API validation with Postman<br>
+            <span class="text-[#52AC8C]">+</span> POM pattern — learned to break things before shipping them<br>
+            <span class="text-[#7C8294]">Jun 2020 – Nov 2020</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <hr class="divider">
+  <div class="my-28"></div>
 
-  <!-- TIMELINE -->
-  <section id="timeline">
-    <div class="cmd"><span class="p">$</span> <span class="f">git log</span> --oneline --all --date-order --author="jair.villalobos"</div>
-    <div class="git-log">
-      <div class="log-row">
-        <span class="log-hash">a3f9c1e</span>
-        <span class="log-msg"><span class="co">PersonalSoft</span> — Go/Java, REST↔SOAP, legacy credit infrastructure</span>
-        <span class="log-date">Jun 2026 – present</span>
+  <!-- ════════════════════════════════════════════════
+       PROJECTS — Data Flow Graph
+       ════════════════════════════════════════════════ -->
+  <section id="projects" class="relative" aria-labelledby="projects-heading">
+    <h2 id="projects-heading" class="sr-only">Projects</h2>
+    <div class="flex items-center gap-3 mb-8 font-mono text-sm text-[#7C8294]">
+      <span class="text-[#D9814A]">$</span> <span>cat ./architecture | dot -Tsvg</span>
+    </div>
+
+    <div class="relative" style="min-height:620px" id="project-graph">
+      <!-- SVG CONNECTIONS -->
+      <svg id="project-graph-svg" class="absolute inset-0 w-full h-full pointer-events-none" style="z-index:1" aria-hidden="true">
+        <!-- central → AI -->
+        <line class="flow-line flow-line-dim" x1="0" y1="0" x2="0" y2="0" data-from="central" data-to="ai"/>
+        <!-- central → order -->
+        <line class="flow-line-solid flow-line-dim" x1="0" y1="0" x2="0" y2="0" data-from="central" data-to="order"/>
+        <!-- AI → order (diagonal) -->
+        <line class="flow-line flow-line-dim" x1="0" y1="0" x2="0" y2="0" data-from="ai" data-to="order"/>
+      </svg>
+
+      <!-- CENTRAL NODE (largest) — transaction-event-processor -->
+      <div class="proj-node central node-pulse" id="node-central"
+           data-graph-x="50%" data-graph-y="55%" data-graph-w="44%"
+           style="left:28%;top:30%;width:44%;border-radius:8px 2px 14px 4px">
+        <div class="flex items-baseline justify-between gap-3 flex-wrap mb-2">
+          <span class="text-[clamp(18px,2vw,24px)] font-[500] text-[#F0F2F6]">transaction-event-processor</span>
+          <span class="tag active">active · Go</span>
+        </div>
+        <div class="text-[15px] text-[#7C8294] leading-relaxed mb-3 font-mono">
+          <span class="text-[#D9814A]">Architecture:</span> non-blocking ingestion — HTTP 202, async goroutine worker pool
+        </div>
+        <div class="flex flex-wrap gap-2 text-[13px] text-[#E0E4EC]">
+          <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">Go</span>
+          <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">Echo</span>
+          <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">PostgreSQL</span>
+          <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">Redis</span>
+          <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">gobreaker</span>
+        </div>
+        <div class="mt-3 pt-3 border-t border-[#1F232C] flex justify-between items-center">
+          <span class="text-[13px] text-[#7C8294] font-mono">SetNX lock · TTL-bounded · circuit breaker</span>
+          <a href="https://github.com/jjvnz/transaction-event-processor" target="_blank" rel="noopener"
+             class="text-[14px] text-[#A78BFA] hover:text-[#D9814A] transition-colors font-mono"
+             data-repo="jjvnz/transaction-event-processor">github → <span class="gh-stars text-[#7C8294]"></span></a>
+        </div>
       </div>
-      <div class="log-row">
-        <span class="log-hash">7b21d40</span>
-        <span class="log-msg"><span class="co">Upwork</span> — Go backends, CI/CD 1× → 20×, AI orchestration</span>
-        <span class="log-date">May 2021 – Jun 2026</span>
+
+      <!-- SATELLITE 1 — AI orchestration (top-right) -->
+      <div class="proj-node satellite" id="node-ai"
+           style="left:60%;top:2%;width:32%;border-radius:10px 3px 6px 12px">
+        <div class="flex items-baseline justify-between gap-2 flex-wrap mb-2">
+          <span class="text-[17px] font-[500] text-[#F0F2F6]">AI orchestration layer</span>
+          <span class="tag active">production</span>
+        </div>
+        <div class="text-[14px] text-[#7C8294] leading-relaxed mb-3 font-mono">
+          JSON Schema output contracts at the LLM boundary. Go orchestrator, FastAPI model-facing.
+        </div>
+        <div class="flex flex-wrap gap-1.5 text-[12px] text-[#E0E4EC]">
+          <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">Go</span>
+          <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">FastAPI</span>
+          <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">K8s</span>
+          <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">Terraform</span>
+        </div>
+        <div class="text-[12px] text-[#7C8294] mt-2 font-mono">architecture on request</div>
       </div>
-      <div class="log-row">
-        <span class="log-hash">c48e902</span>
-        <span class="log-msg"><span class="co">IPCOM</span> — CPaaS messaging core, 1M+ msgs/day, −35% MTTR</span>
-        <span class="log-date">Nov 2024 – May 2025</span>
+
+      <!-- SATELLITE 2 — order-system (bottom-left) -->
+      <div class="proj-node satellite" id="node-order"
+           style="left:6%;bottom:2%;width:34%;border-radius:4px 12px 8px 3px">
+        <div class="flex items-baseline justify-between gap-2 flex-wrap mb-2">
+          <span class="text-[17px] font-[500] text-[#F0F2F6]">order-system</span>
+          <span class="tag active">active · Clojure</span>
+        </div>
+        <div class="text-[14px] text-[#7C8294] leading-relaxed mb-3 font-mono">
+          Clojure STM · event-driven state without locks. Clean Architecture + DDD in a functional paradigm.
+        </div>
+        <div class="flex flex-wrap gap-1.5 text-[12px] text-[#E0E4EC]">
+          <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">Clojure</span>
+          <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">DDD</span>
+          <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">STM</span>
+        </div>
+        <div class="mt-3 pt-3 border-t border-[#1F232C]">
+          <a href="https://github.com/jjvnz/order-system" target="_blank" rel="noopener"
+             class="text-[14px] text-[#A78BFA] hover:text-[#D9814A] transition-colors font-mono"
+             data-repo="jjvnz/order-system">github → <span class="gh-stars text-[#7C8294]"></span></a>
+        </div>
       </div>
-      <div class="log-row">
-        <span class="log-hash">91ac773</span>
-        <span class="log-msg"><span class="co">BYONDIT</span> — SOAP→REST fintech bridge, 3 LATAM markets, 0 downtime</span>
-        <span class="log-date">Nov 2022 – Jul 2023</span>
-      </div>
-      <div class="log-row">
-        <span class="log-hash">0d4e1aa</span>
-        <span class="log-msg"><span class="co">Elemento 43</span> — QA engineer, Cypress / Postman</span>
-        <span class="log-date">Jun 2020 – Nov 2020</span>
-      </div>
-      <div class="log-row">
-        <span class="log-hash">5f0021b</span>
-        <span class="log-msg"><span class="co">Comfenalco</span> — B.Sc. Ingeniería de Sistemas (en curso, 2026)</span>
-        <span class="log-date">2020 – 2026</span>
-      </div>
+    </div>
+
+    <!-- LEGEND -->
+    <div class="flex flex-wrap gap-6 mt-6 text-[13px] font-mono text-[#7C8294]">
+      <span class="flex items-center gap-2"><span class="w-5 h-[1.5px] bg-[rgba(240,242,246,.08)]" style="border-top:1.5px dashed rgba(240,242,246,.08)"></span> event-driven</span>
+      <span class="flex items-center gap-2"><span class="w-5 h-[1.5px] bg-[rgba(240,242,246,.08)]"></span> direct call</span>
+      <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-[#D9814A]"></span> central node</span>
     </div>
   </section>
 
-  <hr class="divider">
+  <div class="my-28"></div>
 
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="cmd"><span class="p">$</span> <span class="f">cat</span> contact.env</div>
-    <div class="contact-grid">
-      <div class="contact-item">
-        <span class="contact-key">EMAIL</span>
-        <a href="mailto:jjvnz.dev@gmail.com">jjvnz.dev@gmail.com</a>
-      </div>
-      <div class="contact-item">
-        <span class="contact-key">GITHUB</span>
-        <a href="https://github.com/jjvnz" target="_blank" rel="noopener">github.com/jjvnz</a>
-      </div>
-      <div class="contact-item">
-        <span class="contact-key">LINKEDIN</span>
-        <a href="https://linkedin.com/in/jjvnz" target="_blank" rel="noopener">linkedin.com/in/jjvnz</a>
-      </div>
-      <div class="contact-item">
-        <span class="contact-key">LOCATION</span>
-        <span>Cartagena, Colombia — remote</span>
-      </div>
+  <!-- ════════════════════════════════════════════════
+       STACK — Tech Constellation
+       ════════════════════════════════════════════════ -->
+  <section id="stack" class="relative" aria-labelledby="stack-heading">
+    <h2 id="stack-heading" class="sr-only">Stack</h2>
+    <div class="flex items-center gap-3 mb-8 font-mono text-sm text-[#7C8294]">
+      <span class="text-[#D9814A]">$</span> <span>cat stacks.json | jq '.radar'</span>
     </div>
 
-    <div class="footer">
-      <span class="sd">$ echo $STATUS</span>
-      <span style="color:var(--green)">Open to Backend / Platform Engineering roles — remote, LATAM timezone.</span>
+    <div class="constellation relative" style="min-height:400px" id="tech-radar">
+      <!-- Category labels (positioned as orbital sectors) -->
+      <span class="star cat-label" style="left:2%;top:4%">PRIMARY</span>
+      <span class="star cat-label" style="left:38%;top:2%">LANGUAGES</span>
+      <span class="star cat-label" style="right:4%;top:6%">APIs & MSG</span>
+      <span class="star cat-label" style="left:4%;bottom:38%">DATA</span>
+      <span class="star cat-label" style="left:38%;bottom:4%">CLOUD & INFRA</span>
+      <span class="star cat-label" style="right:6%;bottom:2%">OBSERVABILITY</span>
+      <span class="star cat-label" style="right:2%;bottom:44%">GATEWAYS</span>
+      <span class="star cat-label" style="left:38%;top:48%">PRACTICES</span>
+
+      <!-- Stars (technologies) -->
+      <span class="star" style="left:12%;top:12%">Go</span>
+      <span class="star" style="left:48%;top:8%">Java</span>
+      <span class="star" style="left:62%;top:14%">Python</span>
+      <span class="star" style="left:76%;top:10%">Clojure</span>
+      <span class="star" style="right:8%;top:16%">gRPC</span>
+      <span class="star" style="right:4%;top:24%">REST</span>
+      <span class="star" style="right:16%;top:20%">NATS</span>
+      <span class="star" style="right:10%;top:32%">Kafka</span>
+      <span class="star" style="left:8%;top:50%">PostgreSQL</span>
+      <span class="star" style="left:20%;top:56%">Redis</span>
+      <span class="star" style="left:8%;top:64%">DynamoDB</span>
+      <span class="star" style="left:22%;top:72%">Oracle</span>
+      <span class="star" style="left:46%;top:56%">AWS</span>
+      <span class="star" style="left:42%;top:68%">GCP</span>
+      <span class="star" style="left:58%;top:64%">K8s</span>
+      <span class="star" style="left:52%;top:78%">Terraform</span>
+      <span class="star" style="left:70%;top:72%">Docker</span>
+      <span class="star" style="right:12%;top:52%">OPA</span>
+      <span class="star" style="right:4%;top:60%">Grafana</span>
+      <span class="star" style="right:14%;top:68%">OTel</span>
+      <span class="star" style="right:6%;top:76%">PJSIP</span>
+      <span class="star" style="right:16%;bottom:28%">KrakenD</span>
+      <span class="star" style="right:4%;bottom:38%">SOAP</span>
+      <span class="star" style="left:46%;top:40%">Clean Arch</span>
+      <span class="star" style="left:60%;top:36%">DDD</span>
+      <span class="star" style="left:52%;top:28%">TDD</span>
+      <span class="star" style="left:64%;top:46%">Zero-Trust</span>
+      <span class="star" style="left:74%;top:40%">CI/CD</span>
     </div>
   </section>
+
+  <div class="my-28"></div>
+
+  <!-- ════════════════════════════════════════════════
+       CONTACT — Health Check Endpoint
+       ════════════════════════════════════════════════ -->
+  <section id="contact" class="relative" aria-labelledby="contact-heading">
+    <h2 id="contact-heading" class="sr-only">Contact</h2>
+    <div class="flex items-center gap-3 mb-8 font-mono text-sm text-[#7C8294]">
+      <span class="text-[#D9814A]">$</span> <span>curl -s https://jair.dev/healthz | jq</span>
+    </div>
+
+    <div class="healthz float-kinetic" style="--rot:.3deg">
+      <div><span class="key">"status"</span>: <span class="str">"ok"</span>,</div>
+      <div><span class="key">"engineer"</span>: <span class="str">"Jair Villalobos"</span>,</div>
+      <div><span class="key">"timezone"</span>: <span class="str">"America/Bogota (remote)"</span>,</div>
+      <div><span class="key">"email"</span>: <span class="str">"<a href="mailto:jjvnz.dev@gmail.com" class="text-[#52AC8C] hover:text-[#D9814A] transition-colors no-underline">jjvnz.dev@gmail.com</a>"</span>,</div>
+      <div><span class="key">"github"</span>: <span class="str">"<a href="https://github.com/jjvnz" target="_blank" rel="noopener" class="text-[#52AC8C] hover:text-[#D9814A] transition-colors no-underline">github.com/jjvnz</a>"</span>,</div>
+      <div><span class="key">"linkedin"</span>: <span class="str">"<a href="https://linkedin.com/in/jjvnz" target="_blank" rel="noopener" class="text-[#52AC8C] hover:text-[#D9814A] transition-colors no-underline">linkedin.com/in/jjvnz</a>"</span>,</div>
+      <div><span class="key">"open_to"</span>: <span class="str">"Backend / Platform Engineering — LATAM"</span>,</div>
+      <div><span class="key">"uptime"</span>: <span class="null">~6 years</span></div>
+    </div>
+
+    <div class="mt-8 text-center text-[14px] font-mono text-[#7C8294]">
+      <span class="inline-flex items-center gap-2 px-4 py-2 border border-[#1F232C] rounded-[6px_2px_8px_4px] bg-[#13161E]">
+        <span class="w-2 h-2 rounded-full bg-[#52AC8C] animate-pulse"></span>
+        ready for connections · <a href="mailto:jjvnz.dev@gmail.com" class="text-[#D9814A] hover:underline">reach out</a>
+      </span>
+    </div>
+  </section>
+
+  <div class="my-20"></div>
+
+  <!-- ════════════════════════════════════════════════
+       TERMINAL PROMPT
+       ════════════════════════════════════════════════ -->
+  <footer role="contentinfo" class="border-t border-[#1F232C] pt-6 pb-12 text-[14px] font-mono text-[#7C8294] flex items-center gap-2">
+    <span class="text-[#D9814A]">jair@portfolio:~$</span>
+    <span class="w-2 h-5 bg-[#D9814A] animate-pulse" style="animation-duration:1.2s" aria-hidden="true"></span>
+    <span class="sr-only">Jair Villalobos — Backend Engineer</span>
+  </footer>
 
 </main>
 
 <script>
+(function(){
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ── PARALLAX ──────────────────────────────────
+  if (!prefersReduced) {
+    const parallaxEls = document.querySelectorAll('.parallax-slow, .parallax-mid, .parallax-fast');
+    window.addEventListener('scroll', () => {
+      const sy = window.scrollY;
+      parallaxEls.forEach(el => {
+        const speed = parseFloat(el.dataset.speed) || 1;
+        const rate = el.classList.contains('parallax-slow') ? 0.15 :
+                     el.classList.contains('parallax-fast') ? 0.35 : 0.25;
+        el.style.transform = `translateY(${sy * rate * speed * -1}px)`;
+      });
+    }, { passive: true });
+  }
+
+  // ── LOG STREAM REVEAL ─────────────────────────
+  const logObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.log-line').forEach((line, i) => {
+          setTimeout(() => line.classList.add('reveal'), i * 180);
+        });
+        logObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  const logStream = document.getElementById('log-stream');
+  if (logStream) logObserver.observe(logStream);
+
+  // ── COUNT UP ──────────────────────────────────
   function countUp(el) {
     const target = parseInt(el.dataset.target, 10);
     const prefix = el.dataset.prefix || '';
     const suffix = el.dataset.suffix || '';
-    const duration = 1200;
+    const duration = 1400;
     const start = performance.now();
-
     function frame(now) {
       const elapsed = Math.min(now - start, duration);
       const t = elapsed / duration;
@@ -661,21 +731,133 @@ with Postman · POM pattern. Learned to break things before shipping them.</pre>
       if (elapsed < duration) requestAnimationFrame(frame);
       else el.textContent = prefix + target + suffix;
     }
-
     el.textContent = prefix + '0' + suffix;
     requestAnimationFrame(frame);
   }
 
-  const obs = new IntersectionObserver(entries => {
+  const gaugeObserver = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
-        countUp(e.target);
-        obs.unobserve(e.target);
+        if (!prefersReduced) {
+          e.target.querySelectorAll('[data-target]').forEach(el => countUp(el));
+        }
+        gaugeObserver.unobserve(e.target);
       }
     });
-  }, { threshold: 0.5 });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.gauge').forEach(el => gaugeObserver.observe(el));
 
-  document.querySelectorAll('[data-target]').forEach(el => obs.observe(el));
+  // ── PROJECT GRAPH SVG ─────────────────────────
+  function layoutGraph() {
+    const container = document.getElementById('project-graph');
+    if (!container) return;
+    const svg = document.getElementById('project-graph-svg');
+    const central = document.getElementById('node-central');
+    const ai = document.getElementById('node-ai');
+    const order = document.getElementById('node-order');
+    if (!central || !ai || !order) return;
+
+    if (container.offsetWidth < 1024) { svg.style.display = 'none'; return }
+    svg.style.display = '';
+
+    function center(el) {
+      const r = el.getBoundingClientRect();
+      const cr = container.getBoundingClientRect();
+      return { x: r.left - cr.left + r.width/2, y: r.top - cr.top + r.height/2 };
+    }
+    const c = center(central), a = center(ai), o = center(order);
+
+    const lines = svg.querySelectorAll('line');
+    if (lines[0]) { lines[0].setAttribute('x1',c.x); lines[0].setAttribute('y1',c.y); lines[0].setAttribute('x2',a.x); lines[0].setAttribute('y2',a.y); }
+    if (lines[1]) { lines[1].setAttribute('x1',c.x); lines[1].setAttribute('y1',c.y); lines[1].setAttribute('x2',o.x); lines[1].setAttribute('y2',o.y); }
+    if (lines[2]) { lines[2].setAttribute('x1',a.x); lines[2].setAttribute('y1',a.y); lines[2].setAttribute('x2',o.x); lines[2].setAttribute('y2',o.y); }
+
+    // HOVER — highlight connected lines
+    const toggleLine = (node, active) => {
+      const id = node.id.replace('node-', '');
+      lines.forEach(l => {
+        if (l.dataset.from === id || l.dataset.to === id) {
+          l.classList.toggle('flow-line-active', active);
+          l.classList.toggle('flow-line-dim', !active);
+          if (active) { l.classList.remove('flow-line', 'flow-line-solid'); }
+          else { l.classList.add(l.dataset.from === 'central' && l.dataset.to === 'order' ? 'flow-line-solid' : 'flow-line', 'flow-line-dim'); }
+        }
+      });
+    };
+    [central, ai, order].forEach(n => {
+      n.addEventListener('mouseenter', () => toggleLine(n, true));
+      n.addEventListener('mouseleave', () => toggleLine(n, false));
+    });
+  }
+
+  if (!prefersReduced) {
+    layoutGraph();
+    window.addEventListener('resize', layoutGraph);
+  }
+
+  // ── TYPEWRITER (preserva HTML interno) ─────────
+  if (!prefersReduced) {
+    const hook = document.querySelector('h1');
+    if (hook && !hook.dataset.typed) {
+      hook.dataset.typed = 'true';
+      const walker = document.createTreeWalker(hook, NodeFilter.SHOW_TEXT, null, false);
+      const textNodes = [], originals = [];
+      while (walker.nextNode()) {
+        textNodes.push(walker.currentNode);
+        originals.push(walker.currentNode.textContent);
+        walker.currentNode.textContent = '';
+      }
+      let nIdx = 0, cIdx = 0;
+      function typeNext() {
+        if (nIdx >= textNodes.length) return;
+        const node = textNodes[nIdx], full = originals[nIdx];
+        cIdx++;
+        if (cIdx >= full.length) {
+          node.textContent = full;
+          nIdx++; cIdx = 0;
+        } else {
+          node.textContent = full.substring(0, cIdx);
+        }
+        setTimeout(typeNext, 22 + Math.random() * 14);
+      }
+      setTimeout(typeNext, 600);
+    }
+  }
+
+  // ── DOT NAV SCROLL-SPY ─────────────────────────
+  const dotLinks = document.querySelectorAll('.dot-nav a');
+  const navSections = ['about','experience','projects','stack','contact']
+    .map(id => document.getElementById(id)).filter(Boolean);
+  if (dotLinks.length && navSections.length) {
+    const spyObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          dotLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + entry.target.id));
+        }
+      });
+    }, { threshold: 0.4, rootMargin: '-10% 0px -10% 0px' });
+    navSections.forEach(s => spyObserver.observe(s));
+  }
+
+  // ── GITHUB STATS ──────────────────────────────
+  async function loadGitHubStats() {
+    const repos = ['jjvnz/transaction-event-processor', 'jjvnz/order-system'];
+    for (const repo of repos) {
+      try {
+        const res = await fetch('https://api.github.com/repos/' + repo);
+        if (!res.ok) continue;
+        const data = await res.json();
+        document.querySelectorAll('[data-repo="' + repo + '"]').forEach(b => {
+          if (data.stargazers_count !== undefined) {
+            const span = b.querySelector('.gh-stars');
+            if (span) span.textContent = '\u2605 ' + data.stargazers_count;
+          }
+        });
+      } catch {}
+    }
+  }
+  loadGitHubStats();
+})();
 </script>
 </body>
 </html>
