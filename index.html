@@ -232,6 +232,85 @@
     gap: 8px;
   }
 
+  /* ── PROJECTS ───────────────────────────────── */
+  .project {
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber);
+    background: var(--surface);
+    padding: 22px 24px;
+    margin-bottom: 16px;
+  }
+
+  .project-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+
+  .project-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    color: var(--white);
+    font-size: 15px;
+  }
+
+  .project-status {
+    font-size: 11px;
+    padding: 3px 9px;
+    border: 1px solid var(--border);
+    color: var(--dim);
+    white-space: nowrap;
+  }
+
+  .project-status.live {
+    border-color: rgba(34,197,94,0.4);
+    color: var(--green);
+  }
+
+  .project-problem {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.7;
+    margin-bottom: 16px;
+    max-width: 640px;
+  }
+
+  .project-decision {
+    font-size: 12px;
+    color: var(--dim);
+    margin-bottom: 14px;
+    line-height: 1.75;
+  }
+
+  .project-decision .key {
+    color: var(--amber);
+    margin-right: 6px;
+  }
+
+  .project-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .project-stack {
+    font-size: 12px;
+    color: var(--dim);
+  }
+
+  .project-link {
+    font-size: 12px;
+    color: var(--sky);
+  }
+
   /* ── RESPONSIVE ─────────────────────────────── */
   @media (max-width: 580px) {
     .metrics            { grid-template-columns: 1fr; }
@@ -368,6 +447,93 @@ with Postman · POM pattern. Learned to break things before shipping them.</pre>
 
   <hr class="divider">
 
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="cmd"><span class="p">$</span> <span class="f">ls</span> ./projects --deployed-only</div>
+
+    <!-- transaction-event-processor -->
+    <div class="project">
+      <div class="project-head">
+        <span class="project-name">transaction-event-processor</span>
+        <span class="project-status live">active · Go</span>
+      </div>
+      <div class="project-problem">
+        The problem: idempotency under concurrent load. When multiple workers race
+        to process the same event, you get duplicate writes, dirty state, and cascading
+        failures downstream. The question is how to prevent that without serializing
+        everything and killing throughput.
+      </div>
+      <div class="project-decision">
+        <span class="key">Architecture:</span>non-blocking ingestion — HTTP returns 202 immediately,
+        events processed asynchronously through a configurable goroutine worker pool.<br>
+        <span class="key">Idempotency:</span>Redis SetNX as the distributed lock — atomic, TTL-bounded,
+        no duplicate processing across replicas.<br>
+        <span class="key">Resilience:</span>gobreaker circuit breaker on PostgreSQL — prevents cascading
+        failures when the DB degrades under write pressure.
+      </div>
+      <div class="project-footer">
+        <span class="project-stack">Go · Echo · PostgreSQL · Redis · gobreaker</span>
+        <a class="project-link" href="https://github.com/jjvnz/transaction-event-processor" target="_blank" rel="noopener">github.com/jjvnz/transaction-event-processor →</a>
+      </div>
+    </div>
+
+    <!-- AI orchestration -->
+    <div class="project">
+      <div class="project-head">
+        <span class="project-name">AI orchestration layer</span>
+        <span class="project-status live">production · Go + FastAPI</span>
+      </div>
+      <div class="project-problem">
+        LLM outputs are non-deterministic. Integrating them into backend workflows
+        without strict output contracts produces brittle systems: the model changes
+        a field name, the downstream parser breaks, the pipeline silently corrupts
+        data. The problem isn't the model — it's the missing boundary between
+        probabilistic generation and deterministic processing.
+      </div>
+      <div class="project-decision">
+        <span class="key">Contract layer:</span>JSON Schema output contracts enforced at the LLM boundary —
+        the model is prompted to produce structured output, validated against schema
+        before any downstream processing.<br>
+        <span class="key">Runtime:</span>Go orchestrator managing agent lifecycles and retry logic,
+        FastAPI handling the model-facing interface.<br>
+        <span class="key">Infra:</span>Kubernetes + Terraform + GitHub Actions — same deployment
+        discipline as core banking services, not a Colab notebook.
+      </div>
+      <div class="project-footer">
+        <span class="project-stack">Go · FastAPI · Kubernetes · Terraform · GitHub Actions · LLM APIs</span>
+        <span class="project-link" style="color:var(--dim)">production client work · architecture on request</span>
+      </div>
+    </div>
+
+    <!-- order-system Clojure -->
+    <div class="project">
+      <div class="project-head">
+        <span class="project-name">order-system</span>
+        <span class="project-status live">active · Clojure</span>
+      </div>
+      <div class="project-problem">
+        Not a portfolio checkbox. A working question: what does concurrent state
+        management look like when immutability is structural rather than enforced
+        by convention? Built to understand what Go's concurrency model leaves out —
+        and to make that understanding precise enough to be useful back in Go.
+      </div>
+      <div class="project-decision">
+        <span class="key">Model:</span>event-driven order processing using Clojure's STM — coordinated
+        state transitions without locks, without the race conditions that locks introduce.<br>
+        <span class="key">Architecture:</span>Clean Architecture + DDD in a functional paradigm — domain
+        logic stays pure, side effects are pushed to the boundary.<br>
+        <span class="key">Outcome:</span>concrete vocabulary for discussing state, concurrency, and
+        failure modes across different runtime models.
+      </div>
+      <div class="project-footer">
+        <span class="project-stack">Clojure · event-driven · DDD · Clean Architecture</span>
+        <a class="project-link" href="https://github.com/jjvnz/order-system" target="_blank" rel="noopener">github.com/jjvnz/order-system →</a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
   <!-- STACK -->
   <section id="stack">
     <div class="cmd"><span class="p">$</span> <span class="f">cat</span> stack.json</div>
@@ -411,7 +577,7 @@ with Postman · POM pattern. Learned to break things before shipping them.</pre>
 
   <!-- TIMELINE -->
   <section id="timeline">
-    <div class="cmd"><span class="p">$</span> <span class="f">git log</span> --oneline --all --date-order</div>
+    <div class="cmd"><span class="p">$</span> <span class="f">git log</span> --oneline --all --date-order --author="jair.villalobos"</div>
     <div class="git-log">
       <div class="log-row">
         <span class="log-hash">a3f9c1e</span>
