@@ -45,12 +45,15 @@
   .diff-added::before { content: "+ "; opacity: .6; }
   .diff-neutral { color: #5C7A8E; }
   .diff-neutral::before { content: "  "; }
-  .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
-  .reveal.in { opacity: 1; transform: translateY(0); }
+  .reveal { opacity: 0; }
   .case-card:hover, .diff-card:hover { transform: translateY(-3px); box-shadow: 0 16px 32px rgba(0,0,0,0.35); }
   .case-card, .diff-card { transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
   .signal-divider { width: 100%; height: 32px; display: block; }
-  .signal-divider path { stroke: #178582; opacity: 0.55; }
+  .signal-divider path { stroke: #178582; opacity: 0.55; fill: none; }
+  #hero .inline-flex, #hero h1, #hero p, #hero .flex.flex-wrap.gap-3, #hero .grid > div { opacity: 0; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, #hero .inline-flex, #hero h1, #hero p, #hero .flex.flex-wrap.gap-3, #hero .grid > div { opacity: 1 !important; }
+  }
 </style>
 </head>
 <body class="font-sans text-on-background antialiased">
@@ -502,11 +505,7 @@
 </footer>
 
 <script>
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
+  // Nav active-section highlighting (unrelated to animation library)
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('nav a[href^="#"]');
   const navObserver = new IntersectionObserver((entries) => {
@@ -517,6 +516,52 @@
     });
   }, { rootMargin: '-40% 0px -55% 0px' });
   sections.forEach(s => navObserver.observe(s));
+</script>
+
+<script type="module">
+  import { animate, stagger, onScroll, utils } from 'https://cdn.jsdelivr.net/npm/animejs@4/+esm';
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (reduceMotion) {
+    utils.set('.reveal, #hero .inline-flex, #hero h1, #hero p, #hero .flex.flex-wrap.gap-3, #hero .grid > div', { opacity: 1 });
+  } else {
+    // Hero entrance sequence — plays once on load
+    animate('#hero .inline-flex', { opacity: [0, 1], translateY: [12, 0], duration: 500, ease: 'outQuad' });
+    animate('#hero h1', { opacity: [0, 1], translateY: [18, 0], duration: 650, delay: 100, ease: 'outQuad' });
+    animate('#hero p', { opacity: [0, 1], translateY: [18, 0], duration: 650, delay: 220, ease: 'outQuad' });
+    animate('#hero .flex.flex-wrap.gap-3', { opacity: [0, 1], translateY: [18, 0], duration: 650, delay: 340, ease: 'outQuad' });
+    animate('#hero .grid > div', {
+      opacity: [0, 1],
+      translateY: [14, 0],
+      duration: 550,
+      delay: stagger(90, { start: 460 }),
+      ease: 'outQuad',
+    });
+
+    // Scroll-triggered reveals for philosophy / AI orchestration / proof-of-work cards
+    document.querySelectorAll('.reveal').forEach((el) => {
+      animate(el, {
+        opacity: [0, 1],
+        translateY: [24, 0],
+        duration: 700,
+        ease: 'outQuad',
+        autoplay: onScroll({ target: el, enter: 'bottom-=10% top', once: true }),
+      });
+    });
+
+    // Signature moment: signal-divider waveforms trace themselves in, like a live trace sweeping across a dashboard
+    document.querySelectorAll('.signal-divider path').forEach((path) => {
+      const length = path.getTotalLength();
+      utils.set(path, { strokeDasharray: length, strokeDashoffset: length });
+      animate(path, {
+        strokeDashoffset: [length, 0],
+        duration: 1100,
+        ease: 'inOutSine',
+        autoplay: onScroll({ target: path.closest('.signal-divider'), enter: 'bottom-=5% top', once: true }),
+      });
+    });
+  }
 </script>
 </body>
 </html>
