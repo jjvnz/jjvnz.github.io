@@ -1,567 +1,221 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jair Villalobos — Backend & Distributed Systems Engineer</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          background: "#0A1828",
-          surface: "#0F2333",
-          "surface-low": "#0C1F2E",
-          "surface-high": "#16324A",
-          outline: "#5C7A8E",
-          "outline-variant": "#1C3348",
-          "on-background": "#F2EFE9",
-          "on-surface-variant": "#8FA3B3",
-          primary: "#BFA181",
-          "primary-container": "#D4B896",
-          "primary-soft": "#231D14",
-          secondary: "#178582",
-          "secondary-soft": "#0E2A2C",
-          success: "#2AA893",
-          danger: "#D96B58",
-        },
-        fontFamily: {
-          sans: ["Inter", "sans-serif"],
-          display: ["Space Grotesk", "sans-serif"],
-          mono: ["IBM Plex Mono", "monospace"],
-        },
-      },
-    },
-  };
-</script>
+<title>jair.villalobos — ~/profile</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  body { background-color: #0A1828; }
-  .diff-removed { color: #D96B58; }
-  .diff-removed::before { content: "- "; opacity: .6; }
-  .diff-added { color: #2AA893; }
-  .diff-added::before { content: "+ "; opacity: .6; }
-  .diff-neutral { color: #5C7A8E; }
-  .diff-neutral::before { content: "  "; }
-  .reveal { opacity: 0; }
-  .case-card:hover, .diff-card:hover { transform: translateY(-3px); box-shadow: 0 16px 32px rgba(0,0,0,0.35); }
-  .case-card, .diff-card { transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
-  .signal-divider { width: 100%; height: 32px; display: block; }
-  .signal-divider path { stroke: #178582; opacity: 0.55; fill: none; }
-  #hero .inline-flex, #hero h1, #hero p, #hero .flex.flex-wrap.gap-3, #hero .grid > div { opacity: 0; }
-  @media (prefers-reduced-motion: reduce) {
-    .reveal, #hero .inline-flex, #hero h1, #hero p, #hero .flex.flex-wrap.gap-3, #hero .grid > div { opacity: 1 !important; }
+  :root {
+    --bg: #0D1117;
+    --surface: #161B22;
+    --border: #30363D;
+    --text: #C9D1D9;
+    --dim: #8B949E;
+    --green: #3FB950;
+    --blue: #58A6FF;
+    --amber: #D29922;
+    --red: #F85149;
   }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.7;
+    margin: 0;
+    padding: 0;
+  }
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 20px 100px;
+  }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .prompt { color: var(--green); }
+  .path { color: var(--blue); }
+  .dim { color: var(--dim); }
+  .cmd { color: var(--text); }
+  .line { white-space: pre-wrap; word-break: break-word; }
+  pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 14px 16px;
+    overflow-x: auto;
+    margin: 10px 0 28px;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+  .toc {
+    color: var(--dim);
+    margin-bottom: 40px;
+    font-size: 13px;
+  }
+  .toc a { margin-right: 4px; }
+  .cmdline { margin: 0 0 6px; }
+  .lvl-info { color: var(--blue); }
+  .lvl-alert { color: var(--red); }
+  .lvl-metric { color: var(--green); }
+  .diff-rm { color: var(--red); }
+  .diff-add { color: var(--green); }
+  section { margin-bottom: 44px; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 44px 0; }
+  ::selection { background: #264F78; }
 </style>
 </head>
-<body class="font-sans text-on-background antialiased">
+<body>
+<main>
 
-<nav class="fixed top-0 left-0 w-full z-50 bg-background/90 backdrop-blur-md border-b border-outline-variant">
-  <div class="max-w-5xl mx-auto px-5 md:px-6 h-16 flex items-center justify-between">
-    <a href="#hero" class="font-mono font-bold tracking-tight text-on-background">Jair<span class="text-primary">.</span>dev</a>
-    <div class="hidden md:flex gap-8 items-center font-mono text-[13px]">
-      <a href="#philosophy" class="text-on-surface-variant hover:text-primary transition-colors">Philosophy</a>
-      <a href="#ai-layer" class="text-on-surface-variant hover:text-primary transition-colors">AI Orchestration</a>
-      <a href="#proof" class="text-on-surface-variant hover:text-primary transition-colors">Proof of Work</a>
-      <a href="#arsenal" class="text-on-surface-variant hover:text-primary transition-colors">Arsenal</a>
-      <a href="#trajectory" class="text-on-surface-variant hover:text-primary transition-colors">Trajectory</a>
-    </div>
-    <div class="flex items-center gap-2">
-      <a href="https://www.linkedin.com/in/jjvnz" target="_blank" rel="noopener" class="text-[12px] font-mono border border-outline-variant rounded px-3 py-1.5 text-on-surface-variant hover:border-primary hover:text-primary transition-colors">LinkedIn ↗</a>
-      <a href="https://github.com/jjvnz" target="_blank" rel="noopener" class="text-[12px] font-mono border border-outline-variant rounded px-3 py-1.5 text-on-surface-variant hover:border-primary hover:text-primary transition-colors hidden sm:inline-block">GitHub ↗</a>
-    </div>
-  </div>
-</nav>
+<div class="cmdline"><span class="prompt">jair@backend</span><span class="dim">:</span><span class="path">~</span><span class="prompt">$</span> ls sections/</div>
+<div class="toc">
+  <a href="#about">about.md</a> <a href="#ipcom">ipcom/</a> <a href="#byondit">byondit/</a> <a href="#ai">ai-pipeline/</a> <a href="#stack">go.mod</a> <a href="#log">git-log</a> <a href="#contact">contact.env</a>
+</div>
 
-<main class="max-w-5xl mx-auto px-5 md:px-6">
-
-<section id="hero" class="pt-36 pb-20 md:pt-44 md:pb-28">
-  <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary-soft border border-outline-variant rounded-full mb-6">
-    <span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
-    <span class="font-mono text-[12px] text-primary">Full-time @ PersonalSoft</span>
-  </div>
-  <h1 class="font-display font-bold text-[34px] leading-[1.15] md:text-[48px] md:leading-[1.1] tracking-tight text-on-background max-w-3xl mb-6">
-    Backend Engineer. Distributed Systems.<br>
-    <span class="text-primary">AI Orchestration.</span>
-  </h1>
-  <p class="text-[16px] md:text-[18px] leading-relaxed text-on-surface-variant max-w-2xl mb-10">
-    Currently bridging legacy SOAP core systems with modern APIs at <span class="font-semibold text-on-background">PersonalSoft</span>. Before that, five years shipping distributed Go backends across CPaaS messaging and LATAM fintech — and, in parallel, building the AI/LLM orchestration layers that connect agentic pipelines to real business logic. Not strategy documents.
-  </p>
-  <div class="flex flex-wrap gap-3 mb-16">
-    <a href="#ai-layer" class="bg-primary text-background px-6 py-3 rounded-lg font-mono text-[13px] font-semibold hover:bg-primary-container transition-colors">Review AI Orchestration Layer →</a>
-    <a href="#footer" class="border border-outline-variant text-on-background px-6 py-3 rounded-lg font-mono text-[13px] font-semibold hover:border-primary hover:text-primary transition-colors">Talk Code</a>
-  </div>
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-6 border-t border-outline-variant pt-8">
-    <div>
-      <div class="font-mono font-bold text-[26px] text-on-background">1M<span class="text-primary">+</span></div>
-      <div class="font-mono text-[11px] uppercase tracking-wide text-outline mt-1">msgs/day at peak (IPCOM)</div>
-    </div>
-    <div>
-      <div class="font-mono font-bold text-[26px] text-on-background">3</div>
-      <div class="font-mono text-[11px] uppercase tracking-wide text-outline mt-1">LATAM markets, zero downtime</div>
-    </div>
-    <div>
-      <div class="font-mono font-bold text-[26px] text-on-background">20<span class="text-primary">×</span></div>
-      <div class="font-mono text-[11px] uppercase tracking-wide text-outline mt-1">CI/CD throughput gain</div>
-    </div>
-    <div>
-      <div class="font-mono font-bold text-[26px] text-on-background">5<span class="text-primary">+</span></div>
-      <div class="font-mono text-[11px] uppercase tracking-wide text-outline mt-1">years shipping backend systems</div>
-    </div>
-  </div>
+<section id="whoami">
+<div class="cmdline"><span class="prompt">jair@backend</span><span class="dim">:</span><span class="path">~</span><span class="prompt">$</span> whoami</div>
+<pre>jair.villalobos
+Backend Engineer — Go & distributed systems, 5+ years in production.
+Not senior, not junior — proven. Currently @ PersonalSoft.
+Open to remote Backend / Platform Engineering roles, LATAM timezone.</pre>
 </section>
 
-<svg class="signal-divider" viewBox="0 0 1000 32" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M0 16 L200 16 L215 4 L230 28 L245 16 L400 16 L415 8 L430 24 L445 16 L600 16 L615 2 L630 30 L645 16 L800 16 L815 6 L830 26 L845 16 L1000 16" fill="none" stroke-width="1.5"/>
-</svg>
+<section id="about">
+<div class="cmdline"><span class="prompt">jair@backend</span><span class="dim">:</span><span class="path">~</span><span class="prompt">$</span> cat about.md</div>
+<pre>One thread runs through my career: designing resilient architectures
+that scale without interruption and support millions of real-time events.
 
-<section id="philosophy" class="py-20 border-t border-outline-variant">
-  <span class="font-mono text-[11px] uppercase tracking-widest text-secondary block mb-3">// engineering.principles</span>
-  <h2 class="font-display font-semibold text-[26px] text-on-background mb-2">How I build systems</h2>
-  <p class="text-on-surface-variant max-w-lg mb-12">Three constraints that shape every architectural decision, from schema design to deployment strategy.</p>
+At IPCOM I took on a CPaaS platform that needed to process over a
+million messages a day. I built the messaging core in Go + NATS,
+implemented dynamic RBAC, migrated SIP components to PJSIP, and
+cut MTTR by 35% with a new observability layer.
 
-  <div class="grid md:grid-cols-3 gap-5">
-    <div class="diff-card bg-surface border border-outline-variant rounded-xl overflow-hidden flex flex-col reveal">
-      <div class="bg-surface-low border-b border-outline-variant px-4 py-2.5 flex items-center gap-2">
-        <div class="flex gap-1.5"><span class="w-2 h-2 rounded-full bg-danger/40"></span><span class="w-2 h-2 rounded-full bg-outline-variant"></span><span class="w-2 h-2 rounded-full bg-success/40"></span></div>
-        <span class="font-mono text-[10.5px] text-outline">resilience.go</span>
-      </div>
-      <div class="p-5 flex-grow">
-        <h3 class="font-semibold text-[14px] text-on-background mb-3">Resilience by design</h3>
-        <div class="bg-surface-low rounded-lg p-3 font-mono text-[11.5px] leading-loose mb-4">
-          <div class="diff-removed">webhook retries without dedup</div>
-          <div class="diff-removed">no per-device auth boundary</div>
-          <div class="diff-added">dedup + cell filters + RBAC</div>
-          <div class="diff-added">per-device PIN + auto lockout</div>
-          <div class="diff-neutral">// distributed rate-limiting</div>
-        </div>
-        <p class="text-[12.5px] text-on-surface-variant leading-relaxed">Systems that fail gracefully under load. Webhook deduplication and dynamic RBAC at IPCOM; per-device zero-trust auth at BYONDIT — same instinct, different domain.</p>
-      </div>
-    </div>
-    <div class="diff-card bg-surface border border-outline-variant rounded-xl overflow-hidden flex flex-col reveal">
-      <div class="bg-surface-low border-b border-outline-variant px-4 py-2.5 flex items-center gap-2">
-        <div class="flex gap-1.5"><span class="w-2 h-2 rounded-full bg-danger/40"></span><span class="w-2 h-2 rounded-full bg-outline-variant"></span><span class="w-2 h-2 rounded-full bg-success/40"></span></div>
-        <span class="font-mono text-[10.5px] text-outline">bridge.go</span>
-      </div>
-      <div class="p-5 flex-grow">
-        <h3 class="font-semibold text-[14px] text-on-background mb-3">Incremental modernization</h3>
-        <div class="bg-surface-low rounded-lg p-3 font-mono text-[11.5px] leading-loose mb-4">
-          <div class="diff-removed">SOAP/Mule ESB core</div>
-          <div class="diff-removed">JSON Schema Draft-7 rigidity</div>
-          <div class="diff-added">Go REST adapter (KrakenD)</div>
-          <div class="diff-added">Draft-2020 dynamic workflows</div>
-          <div class="diff-neutral">// no big bang rewrites</div>
-        </div>
-        <p class="text-[12.5px] text-on-surface-variant leading-relaxed">Legacy systems aren't replaced in one sprint. I build adapter bridges that let old and new run in parallel until the risk window closes — from banking cores to voice-flow schemas.</p>
-      </div>
-    </div>
-    <div class="diff-card bg-surface border border-outline-variant rounded-xl overflow-hidden flex flex-col reveal">
-      <div class="bg-surface-low border-b border-outline-variant px-4 py-2.5 flex items-center gap-2">
-        <div class="flex gap-1.5"><span class="w-2 h-2 rounded-full bg-danger/40"></span><span class="w-2 h-2 rounded-full bg-outline-variant"></span><span class="w-2 h-2 rounded-full bg-success/40"></span></div>
-        <span class="font-mono text-[10.5px] text-outline">pipeline.yml</span>
-      </div>
-      <div class="p-5 flex-grow">
-        <h3 class="font-semibold text-[14px] text-on-background mb-3">Pipeline efficiency</h3>
-        <div class="bg-surface-low rounded-lg p-3 font-mono text-[11.5px] leading-loose mb-4">
-          <div class="diff-removed">6-hour sequential CI runs</div>
-          <div class="diff-removed">no dependency graph</div>
-          <div class="diff-added">affected-only builds</div>
-          <div class="diff-added">remote artifact caching</div>
-          <div class="diff-neutral">// 1→20+ builds/day, same quota</div>
-        </div>
-        <p class="text-[12.5px] text-on-surface-variant leading-relaxed">CI/CD bottlenecks compound across every engineer on the team. Dependency-graph analysis finds the real blocking jobs, not the obvious ones — and Terraform audits right-size the infra underneath.</p>
-      </div>
-    </div>
-  </div>
+At BYONDIT I modernized Tigo Money's banking core. I designed the
+REST layer connecting SOAP systems to mobile channels across three
+LATAM markets — zero-downtime migrations, device-level zero-trust auth.
+
+As an independent consultant, I've worked with teams whose CI/CD
+pipelines barely managed one build a day. Dependency analysis and
+caching turned that into 20+ builds a day, same quota, same cost.
+
+I'm finishing my Systems Engineering degree while working full-time —
+a sign of how I operate under competing constraints and still deliver.</pre>
 </section>
 
-<svg class="signal-divider" viewBox="0 0 1000 32" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M0 16 L150 16 L165 6 L180 26 L195 16 L350 16 L365 10 L380 22 L395 16 L550 16 L565 3 L580 29 L595 16 L750 16 L765 9 L780 23 L795 16 L1000 16" fill="none" stroke-width="1.5"/>
-</svg>
+<hr>
 
-<section id="ai-layer" class="py-20 border-t border-outline-variant">
-  <span class="font-mono text-[11px] uppercase tracking-widest text-secondary block mb-3">// ai.orchestration_layer</span>
-  <h2 class="font-display font-semibold text-[26px] text-on-background mb-2">Connecting LLM pipelines to real business logic</h2>
-  <p class="text-on-surface-variant max-w-lg mb-12">The same distributed-systems discipline — clean boundaries, observability, zero-downtime — applied to agentic backends, not just prompt scripts.</p>
+<section id="ipcom">
+<div class="cmdline"><span class="prompt">jair@backend</span><span class="dim">:</span><span class="path">~</span><span class="prompt">$</span> kubectl get pods -n ipcom-messaging</div>
+<pre>NAME                            READY   STATUS    RESTARTS   AGE
+messaging-core-7f9c8d6b-x1kq2   1/1     Running   0          214d
+opa-rbac-engine-4b2a17          1/1     Running   0          214d
+sip-pjsip-gateway-9f21a0        1/1     Running   2          198d
+otel-collector-55c7b9           1/1     Running   0          214d</pre>
 
-  <div class="grid md:grid-cols-2 gap-5">
-    <div class="diff-card bg-surface border border-outline-variant rounded-xl overflow-hidden flex flex-col reveal">
-      <div class="bg-surface-low border-b border-outline-variant px-4 py-2.5 flex items-center gap-2">
-        <div class="flex gap-1.5"><span class="w-2 h-2 rounded-full bg-danger/40"></span><span class="w-2 h-2 rounded-full bg-outline-variant"></span><span class="w-2 h-2 rounded-full bg-success/40"></span></div>
-        <span class="font-mono text-[10.5px] text-outline">context_window.py</span>
-      </div>
-      <div class="p-5 flex-grow">
-        <h3 class="font-semibold text-[14px] text-on-background mb-3">Context & structured extraction</h3>
-        <div class="bg-surface-low rounded-lg p-3 font-mono text-[11.5px] leading-loose mb-4">
-          <div class="diff-removed">unbounded prompt context</div>
-          <div class="diff-removed">free-text LLM output</div>
-          <div class="diff-added">context-window management</div>
-          <div class="diff-added">JSON-schema extraction</div>
-          <div class="diff-neutral">// deterministic downstream contracts</div>
-        </div>
-        <p class="text-[12.5px] text-on-surface-variant leading-relaxed">Prompt generators and JSON-schema extraction layers that turn LLM output into something a backend can actually consume — not another loosely-typed string to parse.</p>
-      </div>
-    </div>
-    <div class="diff-card bg-surface border border-outline-variant rounded-xl overflow-hidden flex flex-col reveal">
-      <div class="bg-surface-low border-b border-outline-variant px-4 py-2.5 flex items-center gap-2">
-        <div class="flex gap-1.5"><span class="w-2 h-2 rounded-full bg-danger/40"></span><span class="w-2 h-2 rounded-full bg-outline-variant"></span><span class="w-2 h-2 rounded-full bg-success/40"></span></div>
-        <span class="font-mono text-[10.5px] text-outline">agent_pipeline.go</span>
-      </div>
-      <div class="p-5 flex-grow">
-        <h3 class="font-semibold text-[14px] text-on-background mb-3">Agentic pipelines, in production</h3>
-        <div class="bg-surface-low rounded-lg p-3 font-mono text-[11.5px] leading-loose mb-4">
-          <div class="diff-removed">LLM calls bolted onto scripts</div>
-          <div class="diff-removed">no infra behind the "AI feature"</div>
-          <div class="diff-added">Go/FastAPI orchestration services</div>
-          <div class="diff-added">K8s + Terraform + CI/CD</div>
-          <div class="diff-neutral">// same discipline as core banking systems</div>
-        </div>
-        <p class="text-[12.5px] text-on-surface-variant leading-relaxed">Agentic workflows deployed with the same rigor as a payments API: auto-scaling Kubernetes, IaC via Terraform, multi-stage CI/CD — not a notebook running on someone's laptop.</p>
-      </div>
-    </div>
-  </div>
+<div class="cmdline"><span class="prompt">jair@backend</span><span class="dim">:</span><span class="path">~</span><span class="prompt">$</span> tail -n 6 /var/log/ipcom/incidents.log</div>
+<pre>[2024-12-02 03:14:11] <span class="lvl-alert">ALERT</span>  sip-gateway     legacy SIP saturating under RCS load, voice layer degraded
+[2024-12-02 03:15:40] <span class="lvl-info">INFO</span>   messaging-core  webhook dedup + cell filters deployed (Go + Redis + NATS)
+[2024-12-02 03:22:07] <span class="lvl-info">INFO</span>   opa-engine      dynamic RBAC rolled out across Web Chat, WhatsApp, RCS
+[2025-01-18 09:40:02] <span class="lvl-info">INFO</span>   pjsip-gateway   SIP migrated to PJSIP, Gubernator rate-limiting engaged
+[2025-02-03 11:02:55] <span class="lvl-metric">METRIC</span> mttr            -35% (rolling 30d) after OTel/Grafana rollout
+[2025-02-03 11:03:01] <span class="lvl-metric">METRIC</span> throughput      1.04M msgs/day sustained, 0 backlog</pre>
 </section>
 
-<svg class="signal-divider" viewBox="0 0 1000 32" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M0 16 L250 16 L265 5 L280 27 L295 16 L450 16 L465 11 L480 21 L495 16 L650 16 L665 4 L680 28 L695 16 L850 16 L865 8 L880 24 L895 16 L1000 16" fill="none" stroke-width="1.5"/>
-</svg>
+<hr>
 
-<section id="proof" class="py-20 border-t border-outline-variant">
-  <span class="font-mono text-[11px] uppercase tracking-widest text-secondary block mb-3">// proof_of_work[]</span>
-  <h2 class="font-display font-semibold text-[26px] text-on-background mb-2">Shipped systems, measured outcomes</h2>
-  <p class="text-on-surface-variant max-w-lg mb-12">Four engagements across CPaaS, fintech, AI orchestration, and independent consulting — each with a friction, a decision, and a number.</p>
+<section id="byondit">
+<div class="cmdline"><span class="prompt">jair@backend</span><span class="dim">:</span><span class="path">~</span><span class="prompt">$</span> git show --stat core-banking-bridge</div>
+<pre>commit 8f2c19a
+Author: Jair Villalobos
+Date:   Nov 2022 – Jul 2023
 
-  <div class="space-y-5">
-    <div class="case-card bg-surface border border-outline-variant rounded-xl p-6 reveal">
-      <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3 mb-5">
-        <div>
-          <span class="inline-block font-mono text-[10px] uppercase tracking-wider px-2 py-1 rounded bg-primary-soft text-primary mb-2">High Concurrency</span>
-          <h3 class="font-semibold text-[18px] text-on-background">IPCOM</h3>
-          <p class="text-[12.5px] text-outline">Backend Engineer · Nov 2024 – May 2025</p>
-        </div>
-        <div class="flex gap-2 flex-wrap">
-          <span class="font-mono text-[11px] px-2.5 py-1 rounded bg-surface-low border border-outline-variant text-on-background">1M+ msgs/day</span>
-          <span class="font-mono text-[11px] px-2.5 py-1 rounded bg-surface-low border border-outline-variant text-on-background">-35% MTTR</span>
-          <span class="font-mono text-[11px] px-2.5 py-1 rounded bg-surface-low border border-outline-variant text-on-background">-40% DB load</span>
-        </div>
-      </div>
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="pl-3 border-l-2 border-danger/50">
-          <div class="font-mono text-[10px] uppercase tracking-wider text-danger mb-1">Friction</div>
-          <p class="text-[13px] text-on-surface-variant leading-relaxed">A CPaaS platform needed to sustain 1M+ real-time messages daily across Web Chat, WhatsApp and RCS, with legacy SIP components limiting the voice layer.</p>
-        </div>
-        <div class="pl-3 border-l-2 border-secondary/50">
-          <div class="font-mono text-[10px] uppercase tracking-wider text-secondary mb-1">Engineering applied</div>
-          <p class="text-[13px] text-on-surface-variant leading-relaxed">Built the multi-channel messaging core in Go + Redis + NATS with webhook dedup and RBAC via a custom OPA policy engine. Migrated SIP to PJSIP with distributed rate-limiting (Gubernator) and a full OpenTelemetry/Grafana observability layer.</p>
-        </div>
-      </div>
-    </div>
+    Bridge SOAP core banking (Mule ESB) to mobile channels, 3 LATAM markets
 
-    <div class="case-card bg-surface border border-outline-variant rounded-xl p-6 reveal">
-      <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3 mb-5">
-        <div>
-          <span class="inline-block font-mono text-[10px] uppercase tracking-wider px-2 py-1 rounded bg-primary-soft text-primary mb-2">Zero Downtime</span>
-          <h3 class="font-semibold text-[18px] text-on-background">BYONDIT</h3>
-          <p class="text-[12.5px] text-outline">Backend Engineer · Nov 2022 – Jul 2023</p>
-        </div>
-        <div class="flex gap-2 flex-wrap">
-          <span class="font-mono text-[11px] px-2.5 py-1 rounded bg-surface-low border border-outline-variant text-on-background">3 markets</span>
-          <span class="font-mono text-[11px] px-2.5 py-1 rounded bg-surface-low border border-outline-variant text-on-background">0 downtime</span>
-          <span class="font-mono text-[11px] px-2.5 py-1 rounded bg-surface-low border border-outline-variant text-on-background">-30% integration time</span>
-        </div>
-      </div>
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="pl-3 border-l-2 border-danger/50">
-          <div class="font-mono text-[10px] uppercase tracking-wider text-danger mb-1">Friction</div>
-          <p class="text-[13px] text-on-surface-variant leading-relaxed">Legacy SOAP core banking (Mule ESB) needed to reach mobile channels across 3+ LATAM markets — with zero tolerance for downtime during cutover.</p>
-        </div>
-        <div class="pl-3 border-l-2 border-secondary/50">
-          <div class="font-mono text-[10px] uppercase tracking-wider text-secondary mb-1">Engineering applied</div>
-          <p class="text-[13px] text-on-surface-variant leading-relaxed">Architected a REST API bridging SOAP to mobile via KrakenD custom plugins, OAuth2/OIDC federation on AWS Cognito, and per-device zero-trust auth — plus PCI-DSS-compliant financial products (Access Card, Lending).</p>
-        </div>
-      </div>
-    </div>
+diff --git a/auth.go b/auth.go
+<span class="diff-rm">- centralized session token, shared across devices</span>
+<span class="diff-rm">- no per-device lockout</span>
+<span class="diff-add">+ OAuth2/OIDC federation via AWS Cognito (Client/Agent/Admin roles)</span>
+<span class="diff-add">+ per-device PIN + auto lockout, zero-trust boundary</span>
 
-    <div class="case-card bg-surface border border-outline-variant rounded-xl p-6 reveal">
-      <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3 mb-5">
-        <div>
-          <span class="inline-block font-mono text-[10px] uppercase tracking-wider px-2 py-1 rounded bg-secondary-soft text-secondary mb-2">AI Orchestration</span>
-          <h3 class="font-semibold text-[18px] text-on-background">Upwork (Freelance)</h3>
-          <p class="text-[12.5px] text-outline">Independent Consultant · Jan 2021 – Present</p>
-        </div>
-        <div class="flex gap-2 flex-wrap">
-          <span class="font-mono text-[11px] px-2.5 py-1 rounded bg-surface-low border border-outline-variant text-on-background">1→20+ builds/day</span>
-          <span class="font-mono text-[11px] px-2.5 py-1 rounded bg-surface-low border border-outline-variant text-on-background">LLM pipelines shipped</span>
-          <span class="font-mono text-[11px] px-2.5 py-1 rounded bg-surface-low border border-outline-variant text-on-background">5+ yrs, multiple clients</span>
-        </div>
-      </div>
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="pl-3 border-l-2 border-danger/50">
-          <div class="font-mono text-[10px] uppercase tracking-wider text-danger mb-1">Friction</div>
-          <p class="text-[13px] text-on-surface-variant leading-relaxed">Clients needed agentic LLM pipelines connected to real business logic — not one-off prompts — plus distributed Go backends running 6-hour sequential CI pipelines that throttled every PR merge.</p>
-        </div>
-        <div class="pl-3 border-l-2 border-secondary/50">
-          <div class="font-mono text-[10px] uppercase tracking-wider text-secondary mb-1">Engineering applied</div>
-          <p class="text-[13px] text-on-surface-variant leading-relaxed">Built prompt-generation and context-window management layers with JSON-schema extraction in Go/FastAPI, deployed on auto-scaling K8s via Terraform. Separately, dependency-graph analysis and remote caching took CI throughput from 1 to 20+ builds/day on the same GitHub Actions quota.</p>
-        </div>
-      </div>
-    </div>
-  </div>
+diff --git a/gateway.go b/gateway.go
+<span class="diff-rm">- direct SOAP calls from mobile clients</span>
+<span class="diff-rm">- single point of failure during cutover</span>
+<span class="diff-add">+ KrakenD custom plugins bridging SOAP &lt;-&gt; REST</span>
+<span class="diff-add">+ zero-downtime migration across 3 markets</span>
+
+ 3 files changed, impact:
+   0 downtime · -30% integration time · PCI-DSS compliant (Access Card, Lending)</pre>
 </section>
 
-<svg class="signal-divider" viewBox="0 0 1000 32" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M0 16 L100 16 L115 7 L130 25 L145 16 L320 16 L335 3 L350 29 L365 16 L540 16 L555 10 L570 22 L585 16 L760 16 L775 5 L790 27 L805 16 L1000 16" fill="none" stroke-width="1.5"/>
-</svg>
+<hr>
 
-<section id="arsenal" class="py-20 border-t border-outline-variant">
-  <span class="font-mono text-[11px] uppercase tracking-widest text-secondary block mb-3">// tech.stack</span>
-  <h2 class="font-display font-semibold text-[26px] text-on-background mb-2">Technical arsenal</h2>
-  <p class="text-on-surface-variant max-w-lg mb-12">Grouped by what each layer does in a distributed system — not alphabetical noise. Every item below was used in a shipped engagement.</p>
+<section id="ai">
+<div class="cmdline"><span class="prompt">jair@backend</span><span class="dim">:</span><span class="path">~</span><span class="prompt">$</span> curl -s localhost:8080/v1/agent/pipeline/status | jq</div>
+<pre>{
+  "context_window": "managed",
+  "output_contract": "json-schema",
+  "runtime": ["Go", "FastAPI"],
+  "infra": ["Kubernetes", "Terraform", "GitHub Actions"],
+  "note": "same deployment discipline as core banking services"
+}</pre>
 
-  <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
-    <div class="bg-surface border border-outline-variant rounded-lg overflow-hidden">
-      <div class="bg-surface-low border-b border-outline-variant px-3 py-2 font-mono text-[9.5px] uppercase tracking-wider text-outline">Core Languages</div>
-      <div class="p-3 space-y-2 font-mono text-[12px]">
-        <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>Go</div>
-        <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>Python</div>
-        <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>Java</div>
-      </div>
-    </div>
-    <div class="bg-surface border border-outline-variant rounded-lg overflow-hidden">
-      <div class="bg-surface-low border-b border-outline-variant px-3 py-2 font-mono text-[9.5px] uppercase tracking-wider text-outline">Messaging & Real-Time</div>
-      <div class="p-3 space-y-2 font-mono text-[12px]">
-        <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>NATS</div>
-        <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>Redis</div>
-        <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>KrakenD</div>
-        <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>PJSIP</div>
-      </div>
-    </div>
-    <div class="bg-surface border border-outline-variant rounded-lg overflow-hidden">
-      <div class="bg-surface-low border-b border-outline-variant px-3 py-2 font-mono text-[9.5px] uppercase tracking-wider text-outline">AI & LLM</div>
-      <div class="p-3 space-y-2 font-mono text-[12px]">
-        <div class="flex items-center gap-1.5"><span class="text-secondary">▸</span>LLM APIs</div>
-        <div class="flex items-center gap-1.5"><span class="text-secondary">▸</span>Agentic Workflows</div>
-        <div class="flex items-center gap-1.5"><span class="text-secondary">▸</span>JSON-Schema Extraction</div>
-        <div class="flex items-center gap-1.5"><span class="text-secondary">▸</span>Prompt Engineering</div>
-      </div>
-    </div>
-    <div class="bg-surface border border-outline-variant rounded-lg overflow-hidden">
-      <div class="bg-surface-low border-b border-outline-variant px-3 py-2 font-mono text-[9.5px] uppercase tracking-wider text-outline">Data & State</div>
-      <div class="p-3 space-y-2 font-mono text-[12px]">
-        <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>PostgreSQL</div>
-        <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>Oracle / PL-SQL</div>
-        <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>DynamoDB</div>
-      </div>
-    </div>
-    <div class="bg-surface border border-outline-variant rounded-lg overflow-hidden">
-      <div class="bg-surface-low border-b border-outline-variant px-3 py-2 font-mono text-[9.5px] uppercase tracking-wider text-outline">Infra & Observability</div>
-      <div class="p-3 space-y-2 font-mono text-[12px]">
-        <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>AWS / GCP</div>
-        <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>Kubernetes</div>
-        <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>Terraform</div>
-        <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>OTel / Grafana</div>
-        <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>Docker / GitLab CI</div>
-      </div>
-    </div>
-    <div class="bg-surface border border-outline-variant rounded-lg overflow-hidden">
-      <div class="bg-surface-low border-b border-outline-variant px-3 py-2 font-mono text-[9.5px] uppercase tracking-wider text-outline">System Design</div>
-      <div class="p-3 space-y-2 font-mono text-[12px]">
-        <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>Clean Architecture</div>
-        <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>Domain-Driven Design</div>
-        <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>Hexagonal Architecture</div>
-        <div class="flex items-center gap-1.5"><span class="text-primary">▸</span>Event-Driven / TDD</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="flex flex-wrap gap-2.5">
-    <a href="https://github.com/jjvnz/transaction-event-processor" target="_blank" rel="noopener" class="inline-flex items-center gap-2 font-mono text-[11px] text-on-surface-variant bg-surface border border-outline-variant rounded-md px-3 py-2 hover:border-primary hover:text-primary transition-colors">
-      <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>transaction-event-processor — Clean Arch + DDD
-    </a>
-    <a href="https://github.com/jjvnz/CarnicosGoETL" target="_blank" rel="noopener" class="inline-flex items-center gap-2 font-mono text-[11px] text-on-surface-variant bg-surface border border-outline-variant rounded-md px-3 py-2 hover:border-primary hover:text-primary transition-colors">
-      <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>CarnicosGoETL — star-schema warehouse
-    </a>
-    <a href="https://github.com/jjvnz/chilean-holidays" target="_blank" rel="noopener" class="inline-flex items-center gap-2 font-mono text-[11px] text-on-surface-variant bg-surface border border-outline-variant rounded-md px-3 py-2 hover:border-primary hover:text-primary transition-colors">
-      <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>chilean-holidays — Hexagonal Architecture
-    </a>
-    <a href="https://github.com/jjvnz/order-system" target="_blank" rel="noopener" class="inline-flex items-center gap-2 font-mono text-[11px] text-on-surface-variant bg-surface border border-outline-variant rounded-md px-3 py-2 hover:border-primary hover:text-primary transition-colors">
-      <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>order-system — Event-Driven, Clojure
-    </a>
-  </div>
+<div class="cmdline"><span class="prompt">jair@backend</span><span class="dim">:</span><span class="path">~</span><span class="prompt">$</span> git log --oneline -- ci-pipeline/</div>
+<pre>e01a9c2 add dependency-graph analysis for affected-only builds
+5c3f0b1 wire remote artifact caching into GitHub Actions
+2d891aa parallelize pipeline stages, right-size K8s via Terraform audit
+9a02ef3 result: 1 build/day -> 20+ builds/day, same quota</pre>
 </section>
 
-<svg class="signal-divider" viewBox="0 0 1000 32" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M0 16 L180 16 L195 9 L210 23 L225 16 L400 16 L415 4 L430 28 L445 16 L620 16 L635 11 L650 21 L665 16 L840 16 L855 6 L870 26 L885 16 L1000 16" fill="none" stroke-width="1.5"/>
-</svg>
+<hr>
 
-<section id="trajectory" class="py-20 border-t border-outline-variant">
-  <span class="font-mono text-[11px] uppercase tracking-widest text-secondary block mb-3">// git log --oneline career</span>
-  <h2 class="font-display font-semibold text-[26px] text-on-background mb-2">Production delivery timeline</h2>
-  <p class="text-on-surface-variant max-w-lg mb-12">From QA to backend to distributed systems and AI orchestration — six years of shipped work, sourced straight from LinkedIn.</p>
+<section id="stack">
+<div class="cmdline"><span class="prompt">jair@backend</span><span class="dim">:</span><span class="path">~</span><span class="prompt">$</span> cat go.mod</div>
+<pre>module jair.dev/backend
 
-  <div class="relative pl-8 border-l-2 border-outline-variant max-w-2xl">
-    <div class="mb-9 relative">
-      <div class="absolute -left-[41px] top-1 w-3.5 h-3.5 rounded-full bg-primary border-4 border-background"></div>
-      <div class="font-mono text-[10.5px] text-primary mb-1">Jun 2026 — Present</div>
-      <h3 class="font-semibold text-[15px] text-on-background">Ingeniero de Integración de Software</h3>
-      <p class="text-[12.5px] text-outline mb-3">PersonalSoft · Medellín</p>
-      <div class="flex flex-wrap gap-1.5">
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">Go</span>
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">Java</span>
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">REST/SOAP</span>
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">PL/SQL</span>
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">GitLab CI</span>
-      </div>
-    </div>
-    <div class="mb-9 relative">
-      <div class="absolute -left-[41px] top-1 w-3.5 h-3.5 rounded-full bg-outline-variant border-4 border-background"></div>
-      <div class="font-mono text-[10.5px] text-outline mb-1">May 2021 — Jun 2026 · 5y 2m</div>
-      <h3 class="font-semibold text-[15px] text-on-background">Backend Software Engineer</h3>
-      <p class="text-[12.5px] text-outline mb-3">Upwork · Independent Consulting, Colombia</p>
-      <div class="flex flex-wrap gap-1.5">
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">Go</span>
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-secondary-soft border border-outline-variant text-secondary">AI Orchestration</span>
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">GitHub Actions</span>
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">Terraform</span>
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">Kubernetes</span>
-      </div>
-    </div>
-    <div class="mb-9 relative">
-      <div class="absolute -left-[41px] top-1 w-3.5 h-3.5 rounded-full bg-outline-variant border-4 border-background"></div>
-      <div class="font-mono text-[10.5px] text-outline mb-1">Nov 2024 — May 2025 · 7m</div>
-      <h3 class="font-semibold text-[15px] text-on-background">Backend Engineer</h3>
-      <p class="text-[12.5px] text-outline mb-3">IPCOM · CPaaS & Real-Time Messaging</p>
-      <div class="flex flex-wrap gap-1.5">
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">Go</span>
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">NATS</span>
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">PJSIP</span>
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">Redis</span>
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">K8s</span>
-      </div>
-    </div>
-    <div class="mb-9 relative">
-      <div class="absolute -left-[41px] top-1 w-3.5 h-3.5 rounded-full bg-outline-variant border-4 border-background"></div>
-      <div class="font-mono text-[10.5px] text-outline mb-1">Nov 2022 — Jul 2023 · 9m</div>
-      <h3 class="font-semibold text-[15px] text-on-background">Backend Engineer</h3>
-      <p class="text-[12.5px] text-outline mb-3">BYONDIT · Fintech Wallet, Panamá</p>
-      <div class="flex flex-wrap gap-1.5">
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">Go</span>
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">SOAP/REST</span>
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">DynamoDB</span>
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">Oracle</span>
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">AWS</span>
-      </div>
-    </div>
-    <div class="mb-9 relative">
-      <div class="absolute -left-[41px] top-1 w-3.5 h-3.5 rounded-full bg-outline-variant border-4 border-background"></div>
-      <div class="font-mono text-[10.5px] text-outline mb-1">Jun 2020 — Nov 2020 · 6m</div>
-      <h3 class="font-semibold text-[15px] text-on-background">Software QA Tester</h3>
-      <p class="text-[12.5px] text-outline mb-3">Elemento 43 · Quality Assurance</p>
-      <div class="flex flex-wrap gap-1.5">
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">Cypress</span>
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">Cucumber</span>
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">Postman</span>
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">JavaScript</span>
-      </div>
-    </div>
-    <div class="relative">
-      <div class="absolute -left-[41px] top-1 w-3.5 h-3.5 rounded-full bg-outline-variant border-4 border-background"></div>
-      <div class="font-mono text-[10.5px] text-outline mb-1">Jan 2020 — Sep 2026 · optante a grado</div>
-      <h3 class="font-semibold text-[15px] text-on-background">B.Sc. Ingeniería de Sistemas</h3>
-      <p class="text-[12.5px] text-outline mb-3">Fundación Universitaria Tecnológico Comfenalco</p>
-      <div class="flex flex-wrap gap-1.5">
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">A.S. Software Dev. 2020–2024</span>
-        <span class="font-mono text-[10px] px-2 py-1 rounded bg-surface-low border border-outline-variant text-on-surface-variant">SENA 2017</span>
-      </div>
-    </div>
-  </div>
+go 1.24
+
+require (
+    distributed-systems     // NATS, Kafka, Redis, gRPC
+    cloud-native             // AWS, GCP, Kubernetes, Terraform
+    security                 // OIDC, OAuth2, PCI-DSS, zero-trust
+    ai-orchestration         // LLM APIs, agentic workflows, JSON-schema extraction
+    observability            // OpenTelemetry, Grafana
+)
+
+// complementary
+require (
+    python-fastapi
+    java-spring
+    krakend-plugins
+)</pre>
+</section>
+
+<hr>
+
+<section id="log">
+<div class="cmdline"><span class="prompt">jair@backend</span><span class="dim">:</span><span class="path">~</span><span class="prompt">$</span> git log --oneline --all --date-order</div>
+<pre>a3f9c1e (HEAD -> main) PersonalSoft — Go/Java, REST&lt;-&gt;SOAP integration        Jun 2026 – present
+7b21d40 Upwork — Go backends, AI orchestration, CI/CD 1x -> 20x                May 2021 – Jun 2026
+c48e902 IPCOM — CPaaS messaging core, 1M+ msgs/day, -35% MTTR                  Nov 2024 – May 2025
+91ac773 BYONDIT — SOAP->REST fintech bridge, 3 LATAM markets, 0 downtime      Nov 2022 – Jul 2023
+0d4e1aa Elemento 43 — QA engineer, Cypress/Postman                            Jun 2020 – Nov 2020
+5f0021b Comfenalco — B.Sc. Ingeniería de Sistemas (en curso)                   2020 – 2026</pre>
+</section>
+
+<hr>
+
+<section id="contact">
+<div class="cmdline"><span class="prompt">jair@backend</span><span class="dim">:</span><span class="path">~</span><span class="prompt">$</span> cat contact.env</div>
+<pre>EMAIL=<a href="mailto:jjvnz.dev@gmail.com">jjvnz.dev@gmail.com</a>
+LINKEDIN=<a href="https://www.linkedin.com/in/jjvnz" target="_blank" rel="noopener">linkedin.com/in/jjvnz</a>
+GITHUB=<a href="https://github.com/jjvnz" target="_blank" rel="noopener">github.com/jjvnz</a>
+LOCATION=Cartagena, Bolívar, Colombia (remote, LATAM timezone)</pre>
+
+<div class="cmdline"><span class="prompt">jair@backend</span><span class="dim">:</span><span class="path">~</span><span class="prompt">$</span> echo $STATUS</div>
+<pre>Open to Backend / Platform Engineering roles — remote, LATAM timezone.</pre>
 </section>
 
 </main>
-
-<footer id="footer" class="border-t border-outline-variant py-16 mt-4">
-  <div class="max-w-5xl mx-auto px-5 md:px-6">
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
-      <div>
-        <h3 class="font-display font-semibold text-[22px] text-on-background mb-1">Open to the right conversation.</h3>
-        <p class="text-on-surface-variant text-[14px]">Architecture reviews, technical deep-dives, or just talking distributed systems and AI orchestration — your call.</p>
-      </div>
-      <div class="flex gap-3 flex-wrap">
-        <a href="https://www.linkedin.com/in/jjvnz" target="_blank" rel="noopener" class="border border-outline-variant text-on-background px-5 py-2.5 rounded-lg font-mono text-[12px] hover:border-primary hover:text-primary transition-colors">LinkedIn ↗</a>
-        <a href="https://github.com/jjvnz" target="_blank" rel="noopener" class="border border-outline-variant text-on-background px-5 py-2.5 rounded-lg font-mono text-[12px] hover:border-primary hover:text-primary transition-colors">GitHub ↗</a>
-        <a href="mailto:jjvnz.dev@gmail.com" class="bg-primary text-background px-5 py-2.5 rounded-lg font-mono text-[12px] font-semibold hover:bg-primary-container transition-colors">Talk Code →</a>
-      </div>
-    </div>
-    <div class="font-mono text-[11px] text-outline mb-6">
-      255 contributions in the past year <span class="mx-2 opacity-50">·</span> GitHub Pro <span class="mx-2 opacity-50">·</span> 5 pinned repos, Go/Python/Clojure
-    </div>
-    <div class="pt-6 border-t border-outline-variant flex flex-col sm:flex-row justify-between gap-2 font-mono text-[10.5px] text-outline">
-      <span>Jair Villalobos · Backend & Distributed Systems Engineer</span>
-      <span>Cartagena, Bolívar, Colombia · LATAM, Remote-friendly</span>
-    </div>
-  </div>
-</footer>
-
-<script>
-  // Nav active-section highlighting (unrelated to animation library)
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('nav a[href^="#"]');
-  const navObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        navLinks.forEach(l => l.classList.toggle('text-primary', l.getAttribute('href') === '#' + entry.target.id));
-      }
-    });
-  }, { rootMargin: '-40% 0px -55% 0px' });
-  sections.forEach(s => navObserver.observe(s));
-</script>
-
-<script type="module">
-  import { animate, stagger, onScroll, utils } from 'https://cdn.jsdelivr.net/npm/animejs@4/+esm';
-
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (reduceMotion) {
-    utils.set('.reveal, #hero .inline-flex, #hero h1, #hero p, #hero .flex.flex-wrap.gap-3, #hero .grid > div', { opacity: 1 });
-  } else {
-    // Hero entrance sequence — plays once on load
-    animate('#hero .inline-flex', { opacity: [0, 1], translateY: [12, 0], duration: 500, ease: 'outQuad' });
-    animate('#hero h1', { opacity: [0, 1], translateY: [18, 0], duration: 650, delay: 100, ease: 'outQuad' });
-    animate('#hero p', { opacity: [0, 1], translateY: [18, 0], duration: 650, delay: 220, ease: 'outQuad' });
-    animate('#hero .flex.flex-wrap.gap-3', { opacity: [0, 1], translateY: [18, 0], duration: 650, delay: 340, ease: 'outQuad' });
-    animate('#hero .grid > div', {
-      opacity: [0, 1],
-      translateY: [14, 0],
-      duration: 550,
-      delay: stagger(90, { start: 460 }),
-      ease: 'outQuad',
-    });
-
-    // Scroll-triggered reveals for philosophy / AI orchestration / proof-of-work cards
-    document.querySelectorAll('.reveal').forEach((el) => {
-      animate(el, {
-        opacity: [0, 1],
-        translateY: [24, 0],
-        duration: 700,
-        ease: 'outQuad',
-        autoplay: onScroll({ target: el, enter: 'bottom-=10% top', once: true }),
-      });
-    });
-
-    // Signature moment: signal-divider waveforms trace themselves in, like a live trace sweeping across a dashboard
-    document.querySelectorAll('.signal-divider path').forEach((path) => {
-      const length = path.getTotalLength();
-      utils.set(path, { strokeDasharray: length, strokeDashoffset: length });
-      animate(path, {
-        strokeDashoffset: [length, 0],
-        duration: 1100,
-        ease: 'inOutSine',
-        autoplay: onScroll({ target: path.closest('.signal-divider'), enter: 'bottom-=5% top', once: true }),
-      });
-    });
-  }
-</script>
 </body>
 </html>
