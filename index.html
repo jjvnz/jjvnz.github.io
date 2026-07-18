@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -100,6 +99,92 @@ tailwind.config = {
       linear-gradient(90deg,rgba(240,242,246,.012) 1px,transparent 1px);
     background-size:48px 48px;
   }
+
+  /* ── CRT GRAIN OVERLAY ──────────────────────── */
+  .grain-overlay{
+    position:fixed;inset:-60px;pointer-events:none;z-index:2;
+    opacity:.05;mix-blend-mode:overlay;will-change:transform;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size:140px 140px;
+  }
+  .grain-overlay::after{
+    content:'';position:absolute;inset:0;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.4) 0,rgba(0,0,0,.4) 1px,transparent 1px,transparent 3px);
+    opacity:.25;
+  }
+  @media(prefers-reduced-motion:reduce){.grain-overlay{animation:none!important}}
+
+  /* ── RECRUITER TOGGLE ("help --human") ──────── */
+  .recruiter-toggle{
+    font-family:'JetBrains Mono',monospace;font-size:13px;
+    color:#7C8294;background:transparent;border:1px solid #1F232C;
+    padding:6px 14px;border-radius:2px 8px 4px 6px;cursor:pointer;
+    transition:all .25s ease;display:inline-flex;align-items:center;gap:8px;
+  }
+  .recruiter-toggle:hover{border-color:rgba(217,129,74,.4);color:#D9814A}
+  .recruiter-toggle[aria-expanded="true"]{border-color:#D9814A;color:#D9814A;background:rgba(217,129,74,.06)}
+  .recruiter-panel{
+    max-height:0;overflow:hidden;opacity:0;
+    transition:max-height .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,margin .4s ease;
+  }
+  .recruiter-panel.open{max-height:400px;opacity:1;margin-top:20px}
+
+  /* ── STICKY RESILIENCE CTA ──────────────────── */
+  .sticky-cta{
+    position:fixed;left:50%;bottom:24px;transform:translate(-50%,140%);
+    z-index:50;display:flex;align-items:center;gap:14px;
+    background:#13161E;border:1px solid #D9814A;
+    padding:12px 18px 12px 20px;border-radius:8px 3px 10px 4px;
+    font-family:'JetBrains Mono',monospace;font-size:14px;
+    box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 30px rgba(217,129,74,.06);
+    transition:transform .45s cubic-bezier(.34,1.2,.64,1);
+  }
+  .sticky-cta.visible{transform:translate(-50%,0)}
+  .sticky-cta .cta-dot{width:8px;height:8px;border-radius:50%;background:#52AC8C;flex-shrink:0}
+  .sticky-cta a{
+    color:#0A0C12;background:#D9814A;font-weight:500;
+    padding:8px 16px;border-radius:4px 10px 4px 10px;
+    text-decoration:none;white-space:nowrap;
+    animation:cta-pulse 2.6s ease-in-out infinite;
+  }
+  .sticky-cta a:hover{background:#E8A87C}
+  .sticky-cta .cta-close{
+    color:#7C8294;background:none;border:none;cursor:pointer;font-size:16px;
+    padding:2px 4px;line-height:1;
+  }
+  .sticky-cta .cta-close:hover{color:#D47A7A}
+  @keyframes cta-pulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(217,129,74,.35)}
+    50%{box-shadow:0 0 0 8px rgba(217,129,74,0)}
+  }
+  @media(max-width:640px){
+    .sticky-cta{left:16px;right:16px;transform:translateY(140%);bottom:16px;width:auto}
+    .sticky-cta.visible{transform:translateY(0)}
+    .sticky-cta span.cta-text{display:none}
+  }
+
+  /* ── POST-MORTEM LOG ─────────────────────────── */
+  .postmortem{
+    border:1px solid #1F232C;border-radius:6px 14px 4px 12px;
+    background:#0D0F16;overflow:hidden;
+    transition:border-color .3s;
+  }
+  .postmortem:hover{border-color:rgba(212,122,122,.25)}
+  .pm-head{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    padding:18px 24px;border-bottom:1px solid #1F232C;font-family:'JetBrains Mono',monospace;
+  }
+  .pm-sev{
+    font-size:11px;letter-spacing:.08em;padding:3px 9px;border-radius:2px 6px 2px 6px;
+    text-transform:uppercase;font-weight:500;
+  }
+  .pm-sev.sev-2{background:rgba(212,122,122,.12);color:#D47A7A;border:1px solid rgba(212,122,122,.25)}
+  .pm-sev.sev-3{background:rgba(217,129,74,.12);color:#D9814A;border:1px solid rgba(217,129,74,.25)}
+  .pm-body{padding:22px 24px;font-family:'JetBrains Mono',monospace;font-size:14.5px;color:#7C8294;line-height:1.85}
+  .pm-body .lbl{color:#D9814A;display:inline-block;min-width:96px}
+  .pm-body .fix{color:#52AC8C}
+  .pm-body p{margin-bottom:12px}
+  .pm-body p:last-child{margin-bottom:0}
 
   /* ── FLOATING KINETIC ───────────────────────── */
   .float-kinetic{
@@ -302,6 +387,9 @@ tailwind.config = {
     .healthz{padding:20px;font-size:14px;overflow-x:auto}
 
     .commit-msg{font-size:17px}
+    .pm-body{padding:18px}
+    .pm-body .lbl{display:block;min-width:0;margin-bottom:2px}
+    .pm-head{padding:14px 18px}
   }
   @media(prefers-reduced-motion:reduce){
     *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
@@ -315,15 +403,25 @@ tailwind.config = {
 
 <a href="#main-content" class="skip-link">Saltar al contenido</a>
 
+<div class="grain-overlay" aria-hidden="true"></div>
+
 <nav class="dot-nav" aria-label="Navegación de secciones">
   <a href="#about" aria-label="Ir a About"><span class="dot-label">about</span></a>
   <a href="#experience" aria-label="Ir a Experience"><span class="dot-label">experience</span></a>
+  <a href="#postmortems" aria-label="Ir a Post-Mortems"><span class="dot-label">post-mortems</span></a>
   <a href="#projects" aria-label="Ir a Projects"><span class="dot-label">projects</span></a>
   <a href="#stack" aria-label="Ir a Stack"><span class="dot-label">stack</span></a>
   <a href="#contact" aria-label="Ir a Contact"><span class="dot-label">contact</span></a>
 </nav>
 
 <div class="glow-orb fixed top-[-200px] left-1/2 -translate-x-1/2" style="z-index:0"></div>
+
+<div class="sticky-cta" id="sticky-cta" role="complementary" aria-label="Resilience review call to action">
+  <span class="cta-dot" aria-hidden="true"></span>
+  <span class="cta-text text-[#E0E4EC]">Shipping under load? Let's talk architecture.</span>
+  <a href="mailto:jjvnz.dev@gmail.com?subject=Resilience%20Review">Book a Resilience Review</a>
+  <button class="cta-close" id="cta-close" aria-label="Dismiss">&times;</button>
+</div>
 
 <main id="main-content" class="flow-grid max-w-[1320px] mx-auto px-6 relative" style="z-index:1">
 
@@ -346,6 +444,20 @@ tailwind.config = {
         <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mt-6 text-[15px] font-mono">
           <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-[#52AC8C] animate-pulse"></span><span class="text-[#52AC8C]">open</span> <span class="text-[#7C8294]">— remote Backend / Platform Engineering · LATAM</span></span>
           <span class="text-[#7C8294]">Go · distributed systems · 6+ yr fintech & CPaaS</span>
+        </div>
+
+        <div class="mt-7">
+          <button class="recruiter-toggle" id="recruiter-toggle" aria-expanded="false" aria-controls="recruiter-panel">
+            <span class="text-[#D9814A]">$</span> help --human
+          </button>
+          <div class="recruiter-panel" id="recruiter-panel">
+            <div class="border border-[#1F232C] rounded-[4px_10px_4px_10px] bg-[#0D0F16] px-6 py-5">
+              <div class="text-[12px] font-mono text-[#7C8294] mb-3 tracking-wide">// plain-english summary for humans in a hurry</div>
+              <p class="text-[16px] leading-[1.7] text-[#E0E4EC] font-[300] mb-3">Backend engineer, 6+ years, based in Cartagena, Colombia. I build the parts of a system that stay standing when something goes wrong — payment rails, real-time messaging, event pipelines.</p>
+              <p class="text-[16px] leading-[1.7] text-[#E0E4EC] font-[300] mb-3">Deepest experience in <strong class="text-[#F0F2F6] font-[500]">Go</strong>, working across fintech (digital wallets, LATAM) and CPaaS (real-time messaging at 1M+ msgs/day). Comfortable owning something end-to-end: design, build, observe, and be the one who gets paged for it.</p>
+              <p class="text-[15px] text-[#7C8294] font-mono">Looking for: remote backend / platform roles · async-friendly · direct ownership over a service or system, not just tickets.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -484,6 +596,72 @@ tailwind.config = {
             <span class="text-[#7C8294]">Jun 2020 – Nov 2020</span>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="my-28"></div>
+
+  <!-- ════════════════════════════════════════════════
+       POST-MORTEMS — System Log of Real Failures
+       ════════════════════════════════════════════════ -->
+  <section id="postmortems" class="relative" aria-labelledby="postmortems-heading">
+    <h2 id="postmortems-heading" class="sr-only">Post-Mortems</h2>
+    <div class="flex items-center gap-3 mb-8 font-mono text-sm text-[#7C8294]">
+      <span class="text-[#D9814A]">$</span> <span>grep -A4 "INCIDENT" ./var/log/postmortems.log</span>
+    </div>
+
+    <div class="grid grid-cols-12 gap-6">
+      <div class="col-span-12 lg:col-span-10 lg:col-start-2 flex flex-col gap-6">
+
+        <div class="postmortem float-kinetic" style="--rot:.2deg">
+          <div class="pm-head">
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="pm-sev sev-2">SEV-2</span>
+              <span class="text-[#F0F2F6] font-[500] text-[16px]">Idempotency gap under retry storm</span>
+            </div>
+            <span class="text-[13px] text-[#7C8294]">IPCOM · CPaaS messaging fleet</span>
+          </div>
+          <div class="pm-body">
+            <p><span class="lbl">symptom:</span> duplicate SMS/voice events billed twice during a carrier retry storm — client-facing invoices didn't reconcile.</p>
+            <p><span class="lbl">root cause:</span> the ingestion handler treated every retry as a new event. No dedup key, no lock — just first-come-first-processed against Postgres, which meant two goroutines could both "win" the race.</p>
+            <p><span class="lbl">fix:</span> <span class="fix">SetNX-based distributed lock keyed on carrier event ID, TTL-bounded to the retry window, backed by a gobreaker circuit breaker so a slow downstream doesn't cascade into a lock pileup.</span></p>
+            <p><span class="lbl">lesson:</span> "exactly-once" doesn't exist at the network boundary. Build for at-least-once delivery and make idempotency a first-class part of the schema, not an afterthought bolted on after the first incident.</p>
+          </div>
+        </div>
+
+        <div class="postmortem float-kinetic" style="--rot:-.25deg">
+          <div class="pm-head">
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="pm-sev sev-3">SEV-3</span>
+              <span class="text-[#F0F2F6] font-[500] text-[16px]">Shared session token enabled account takeover surface</span>
+            </div>
+            <span class="text-[13px] text-[#7C8294]">BYONDIT · digital wallets, 3 LATAM markets</span>
+          </div>
+          <div class="pm-body">
+            <p><span class="lbl">symptom:</span> security review flagged that a session token issued on one device remained valid on any device — no per-device binding, no forced logout on suspicious activity.</p>
+            <p><span class="lbl">root cause:</span> the legacy SOAP core banking layer was built for a single-device era and exposed session state directly to mobile clients without an intermediary gateway to enforce device-level policy.</p>
+            <p><span class="lbl">fix:</span> <span class="fix">KrakenD custom plugins to bridge SOAP↔REST behind OAuth2/OIDC via AWS Cognito, with per-device PIN binding and automatic lockout after failed attempts — rolled out with zero downtime across all 3 markets.</span></p>
+            <p><span class="lbl">lesson:</span> legacy protocol boundaries are also trust boundaries. Modernizing the transport (SOAP → REST) is only half the job — the harder half is deciding what the gateway is allowed to assume about the client.</p>
+          </div>
+        </div>
+
+        <div class="postmortem float-kinetic" style="--rot:.15deg">
+          <div class="pm-head">
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="pm-sev sev-3">SEV-3</span>
+              <span class="text-[#F0F2F6] font-[500] text-[16px]">CI quota exhausted before the team's day started</span>
+            </div>
+            <span class="text-[13px] text-[#7C8294]">Independent contract · platform tooling</span>
+          </div>
+          <div class="pm-body">
+            <p><span class="lbl">symptom:</span> a single full rebuild took ~6 hours and consumed the entire daily CI quota — one build per day, and if it failed, the team lost the rest of the day.</p>
+            <p><span class="lbl">root cause:</span> the pipeline rebuilt every package on every commit regardless of what actually changed. No dependency graph, no caching, no way to tell "affected" from "everything."</p>
+            <p><span class="lbl">fix:</span> <span class="fix">dependency-graph analysis to isolate affected packages, combined with remote artifact caching and stage parallelization — went from 1 build/day to 20+ incremental builds on the same quota and cost.</span></p>
+            <p><span class="lbl">lesson:</span> throughput problems are often graph problems in disguise. Before adding more compute, ask what the build actually depends on — most CI time is spent rebuilding things nothing downstream needed.</p>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -824,9 +1002,50 @@ tailwind.config = {
     }
   }
 
+  // ── RECRUITER TOGGLE ("help --human") ─────────
+  const recToggle = document.getElementById('recruiter-toggle');
+  const recPanel = document.getElementById('recruiter-panel');
+  if (recToggle && recPanel) {
+    recToggle.addEventListener('click', () => {
+      const isOpen = recPanel.classList.toggle('open');
+      recToggle.setAttribute('aria-expanded', String(isOpen));
+      recToggle.innerHTML = isOpen
+        ? '<span style="color:#D9814A">$</span> help --human <span style="color:#7C8294">--close</span>'
+        : '<span style="color:#D9814A">$</span> help --human';
+    });
+  }
+
+  // ── STICKY RESILIENCE CTA ──────────────────────
+  const stickyCta = document.getElementById('sticky-cta');
+  const ctaClose = document.getElementById('cta-close');
+  let ctaDismissed = false;
+  if (stickyCta) {
+    const heroEl = document.querySelector('header');
+    const contactEl = document.getElementById('contact');
+    const ctaObserver = new IntersectionObserver(entries => {
+      if (ctaDismissed) return;
+      entries.forEach(entry => {
+        if (entry.target === heroEl) {
+          stickyCta.classList.toggle('visible', !entry.isIntersecting);
+        }
+        if (entry.target === contactEl && entry.isIntersecting) {
+          stickyCta.classList.remove('visible');
+        }
+      });
+    }, { threshold: 0.05 });
+    if (heroEl) ctaObserver.observe(heroEl);
+    if (contactEl) ctaObserver.observe(contactEl);
+  }
+  if (ctaClose) {
+    ctaClose.addEventListener('click', () => {
+      ctaDismissed = true;
+      stickyCta.classList.remove('visible');
+    });
+  }
+
   // ── DOT NAV SCROLL-SPY ─────────────────────────
   const dotLinks = document.querySelectorAll('.dot-nav a');
-  const navSections = ['about','experience','projects','stack','contact']
+  const navSections = ['about','experience','postmortems','projects','stack','contact']
     .map(id => document.getElementById(id)).filter(Boolean);
   if (dotLinks.length && navSections.length) {
     const spyObserver = new IntersectionObserver(entries => {
