@@ -4,50 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jair Villalobos — Backend Engineer</title>
-<meta name="description" content="Jair Villalobos — Backend Engineer especializado en Go y sistemas distribuidos. 6+ años en fintech y CPaaS, LATAM. Diseño para modos de fallo, no solo para el happy path.">
+<meta name="description" content="Jair Villalobos — Backend Engineer en Go y sistemas distribuidos. Fintech y CPaaS en LATAM: APIs de alta concurrencia, resiliencia y observabilidad.">
 <meta property="og:title" content="Jair Villalobos — Backend Engineer">
-<meta property="og:description" content="Sistemas backend donde los modos de fallo son la parte más interesante del diseño. Go · sistemas distribuidos · 6+ años en fintech & CPaaS.">
+<meta property="og:description" content="Backend Engineer en Go — sistemas distribuidos, fintech y CPaaS en LATAM. Diseño para modos de fallo, resiliencia real en producción.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="profile.jpg">
+<meta property="og:url" content="https://jjvnz.github.io/">
+<meta property="og:image" content="https://jjvnz.github.io/jdev-og.jpg">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jjvnz.github.io/jdev-og.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230A0C12'/%3E%3Ctext x='16' y='23' font-family='monospace' font-size='18' font-weight='700' fill='%23D9814A' text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@350;400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        carbon:  '#0A0C12',
-        crust:   '#13161E',
-        edge:    '#1F232C',
-        copper:  '#D9814A',
-        cloud:   '#F0F2F6',
-        mist:    '#E0E4EC',
-        shale:   '#7C8294',
-        magenta: '#A78BFA',
-        verd:    '#52AC8C',
-        rust:    '#D47A7A',
-      },
-      fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
-      },
-
-    }
-  }
-}
-</script>
+<link rel="stylesheet" href="tailwind.css">
+<script defer src="https://cdn.jsdelivr.net/npm/animejs/dist/bundles/anime.umd.min.js"></script>
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth;scrollbar-color:#1F232C transparent;scrollbar-width:thin}
+  section[id],main[id]{scroll-margin-top:84px}
   :focus-visible{outline:2px solid #D9814A;outline-offset:2px}
 
   body{
-    background:#0A0C12;color:#E0E4EC;
+    background:#0D1017;color:#E0E4EC;
     font-family:'Inter',system-ui,sans-serif;
-    font-size:18px;line-height:1.75;
+    font-size:19px;line-height:1.75;
     -webkit-font-smoothing:antialiased;
     overflow-x:clip;
   }
@@ -63,33 +42,40 @@ tailwind.config = {
     position:fixed;top:-100px;left:16px;z-index:100;
     background:#13161E;color:#F0F2F6;border:1px solid #D9814A;
     padding:10px 18px;border-radius:6px 2px 8px 4px;
-    font-family:'JetBrains Mono',monospace;font-size:14px;
+    font-family:'JetBrains Mono',monospace;font-size:15px;
     transition:top .2s ease;
   }
   .skip-link:focus{top:16px}
 
-  /* ── SECTION DOT NAV ─────────────────────────── */
-  .dot-nav{
-    position:fixed;right:28px;top:50%;transform:translateY(-50%);
-    z-index:40;display:flex;flex-direction:column;gap:16px;
+  /* ── TOP NAV ─────────────────────────────────── */
+  .topnav{
+    position:sticky;top:0;z-index:60;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:12px 24px;
+    background:rgba(13,16,23,.85);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid #1F232C;
   }
-  .dot-nav a{
-    width:9px;height:9px;border-radius:50%;
-    border:1px solid #1F232C;background:transparent;
-    display:block;transition:all .3s ease;position:relative;
+  .topnav-brand{
+    font-family:'Inter',sans-serif;font-weight:600;font-size:17px;color:#F0F2F6;
+    text-decoration:none;letter-spacing:-.01em;
   }
-  .dot-nav a:hover,.dot-nav a:focus-visible,.dot-nav a.active{
-    background:#D9814A;border-color:#D9814A;
-    box-shadow:0 0 10px rgba(217,129,74,.4);
+  .topnav-links{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+  .topnav-links a{
+    font-size:15px;color:#9AA3B8;text-decoration:none;
+    padding:6px 12px;border-radius:6px;transition:color .2s,background .2s;
   }
-  .dot-nav a .dot-label{
-    position:absolute;right:20px;top:50%;transform:translateY(-50%);
-    font-family:'JetBrains Mono',monospace;font-size:12px;color:#7C8294;
-    white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s ease;
-    background:#13161E;border:1px solid #1F232C;padding:3px 8px;border-radius:4px 2px 6px 3px;
+  .topnav-links a:hover{color:#F0F2F6;background:#13161E}
+  .topnav-links a.active{color:#D9814A}
+  .topnav-links a.topnav-cta{
+    color:#0A0C12;background:#D9814A;font-weight:500;margin-left:8px;
   }
-  .dot-nav a:hover .dot-label,.dot-nav a:focus-visible .dot-label{opacity:1}
-  @media(max-width:1024px){.dot-nav{display:none}}
+  .topnav-links a.topnav-cta:hover{background:#E8A87C;color:#0A0C12}
+  @media(max-width:640px){
+    .topnav{padding:10px 16px;flex-wrap:wrap;row-gap:8px}
+    .topnav-links{width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px}
+    .topnav-links a{white-space:nowrap;padding:8px 14px}
+  }
 
   /* ── TENSION MATRIX ─────────────────────────── */
   .tension-grid::before{
@@ -103,21 +89,16 @@ tailwind.config = {
   /* ── CRT GRAIN OVERLAY ──────────────────────── */
   .grain-overlay{
     position:fixed;inset:-60px;pointer-events:none;z-index:2;
-    opacity:.05;mix-blend-mode:overlay;will-change:transform;
+    opacity:.025;mix-blend-mode:overlay;will-change:transform;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-size:140px 140px;
-  }
-  .grain-overlay::after{
-    content:'';position:absolute;inset:0;
-    background:repeating-linear-gradient(0deg,rgba(0,0,0,.4) 0,rgba(0,0,0,.4) 1px,transparent 1px,transparent 3px);
-    opacity:.25;
   }
   @media(prefers-reduced-motion:reduce){.grain-overlay{animation:none!important}}
 
   /* ── RECRUITER TOGGLE ("help --human") ──────── */
   .recruiter-toggle{
-    font-family:'JetBrains Mono',monospace;font-size:13px;
-    color:#7C8294;background:transparent;border:1px solid #1F232C;
+    font-family:'JetBrains Mono',monospace;font-size:14px;
+    color:#9AA3B8;background:transparent;border:1px solid #1F232C;
     padding:6px 14px;border-radius:2px 8px 4px 6px;cursor:pointer;
     transition:all .25s ease;display:inline-flex;align-items:center;gap:8px;
   }
@@ -135,7 +116,7 @@ tailwind.config = {
     z-index:50;display:flex;align-items:center;gap:14px;
     background:#13161E;border:1px solid #D9814A;
     padding:12px 18px 12px 20px;border-radius:8px 3px 10px 4px;
-    font-family:'JetBrains Mono',monospace;font-size:14px;
+    font-family:'JetBrains Mono',monospace;font-size:15px;
     box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 30px rgba(217,129,74,.06);
     transition:transform .45s cubic-bezier(.34,1.2,.64,1);
   }
@@ -149,7 +130,7 @@ tailwind.config = {
   }
   .sticky-cta a:hover{background:#E8A87C}
   .sticky-cta .cta-close{
-    color:#7C8294;background:none;border:none;cursor:pointer;font-size:16px;
+    color:#9AA3B8;background:none;border:none;cursor:pointer;font-size:16px;
     padding:2px 4px;line-height:1;
   }
   .sticky-cta .cta-close:hover{color:#D47A7A}
@@ -175,12 +156,12 @@ tailwind.config = {
     padding:18px 24px;border-bottom:1px solid #1F232C;font-family:'JetBrains Mono',monospace;
   }
   .pm-sev{
-    font-size:11px;letter-spacing:.08em;padding:3px 9px;border-radius:2px 6px 2px 6px;
+    font-size:12px;letter-spacing:.08em;padding:3px 9px;border-radius:2px 6px 2px 6px;
     text-transform:uppercase;font-weight:500;
   }
   .pm-sev.sev-2{background:rgba(212,122,122,.12);color:#D47A7A;border:1px solid rgba(212,122,122,.25)}
   .pm-sev.sev-3{background:rgba(217,129,74,.12);color:#D9814A;border:1px solid rgba(217,129,74,.25)}
-  .pm-body{padding:22px 24px;font-family:'JetBrains Mono',monospace;font-size:14.5px;color:#7C8294;line-height:1.85}
+  .pm-body{padding:22px 24px;font-family:'Inter',sans-serif;font-size:16.5px;color:#C4CAD6;line-height:1.7}
   .pm-body .lbl{color:#D9814A;display:inline-block;min-width:96px}
   .pm-body .fix{color:#52AC8C}
   .pm-body p{margin-bottom:12px}
@@ -291,16 +272,16 @@ tailwind.config = {
   .commit::before{
     content:'';position:absolute;left:-7px;top:6px;
     width:12px;height:12px;border-radius:50%;
-    background:#0A0C12;border:2px solid #D9814A;
+    background:#0D1017;border:2px solid #D9814A;
     transition:background .3s,border-color .3s,box-shadow .3s;
   }
   .commit:hover::before{
     background:#D9814A;box-shadow:0 0 16px rgba(217,129,74,.2);
   }
   .commit:last-child{padding-bottom:0}
-  .commit-hash{font-family:'JetBrains Mono',monospace;font-size:14px;color:#7C8294;letter-spacing:-.02em}
-  .commit-msg{font-size:20px;color:#E0E4EC;margin:4px 0 8px;font-weight:400}
-  .commit-diff{font-size:15px;color:#7C8294;line-height:1.7}
+  .commit-hash{font-family:'JetBrains Mono',monospace;font-size:15px;color:#9AA3B8;letter-spacing:-.02em}
+  .commit-msg{font-size:21px;color:#E0E4EC;margin:4px 0 8px;font-weight:400}
+  .commit-diff{font-size:16px;color:#9AA3B8;line-height:1.7}
 
   /* ── NODE PROJECTS ──────────────────────────── */
   .proj-node{
@@ -328,9 +309,9 @@ tailwind.config = {
     box-shadow:0 4px 20px rgba(0,0,0,.2);
   }
   .proj-node .tag{
-    font-family:'JetBrains Mono',monospace;font-size:13px;
+    font-family:'JetBrains Mono',monospace;font-size:14px;
     padding:2px 10px;border:1px solid #1F232C;border-radius:2px 8px 4px 6px;
-    display:inline-block;color:#7C8294;
+    display:inline-block;color:#9AA3B8;
   }
   .proj-node .tag.active{border-color:rgba(82,172,140,.3);color:#52AC8C}
 
@@ -338,7 +319,7 @@ tailwind.config = {
   .constellation{position:relative;}
   .star{
     position:absolute;
-    font-family:'JetBrains Mono',monospace;font-size:14px;color:#7C8294;
+    font-family:'JetBrains Mono',monospace;font-size:15px;color:#9AA3B8;
     padding:6px 14px;border:1px solid #1F232C;
     border-radius:10px 2px 8px 4px;
     background:#13161E;white-space:nowrap;
@@ -351,14 +332,14 @@ tailwind.config = {
   }
   .star.cat-label{
     border:none;background:transparent;color:#D9814A;
-    font-family:'Inter',sans-serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+    font-family:'Inter',sans-serif;font-size:14px;letter-spacing:.12em;text-transform:uppercase;
     padding:0;border-radius:0;cursor:default;
   }
   .star.cat-label:hover{transform:none;background:transparent;border-color:transparent;color:#D9814A}
 
   /* ── HEALTHZ RESPONSE ────────────────────────── */
   .healthz{
-    font-family:'JetBrains Mono',monospace;font-size:16px;line-height:2;
+    font-family:'JetBrains Mono',monospace;font-size:17px;line-height:2;
     border:1px solid #1F232C;
     border-radius:6px 14px 4px 12px;
     padding:32px 40px;
@@ -370,7 +351,7 @@ tailwind.config = {
   .healthz .key{color:#D9814A}
   .healthz .str{color:#52AC8C}
   .healthz .bool{color:#A78BFA}
-  .healthz .null{color:#7C8294}
+  .healthz .null{color:#9AA3B8}
 
   /* ── RESPONSIVE FLOW ─────────────────────────── */
   @media(max-width:1024px){
@@ -384,9 +365,9 @@ tailwind.config = {
   }
   @media(max-width:768px){
     .gauge-val{font-size:36px}
-    .healthz{padding:20px;font-size:14px;overflow-x:auto}
+    .healthz{padding:20px;font-size:15px;overflow-x:auto}
 
-    .commit-msg{font-size:17px}
+    .commit-msg{font-size:18px}
     .pm-body{padding:18px}
     .pm-body .lbl{display:block;min-width:0;margin-bottom:2px}
     .pm-head{padding:14px 18px}
@@ -401,20 +382,23 @@ tailwind.config = {
 </head>
 <body class="tension-grid">
 
-<a href="#main-content" class="skip-link">Saltar al contenido</a>
+<a href="#main-content" class="skip-link">Skip to content</a>
 
 <div class="grain-overlay" aria-hidden="true"></div>
 
-<nav class="dot-nav" aria-label="Navegación de secciones">
-  <a href="#about" aria-label="Ir a About"><span class="dot-label">about</span></a>
-  <a href="#experience" aria-label="Ir a Experience"><span class="dot-label">experience</span></a>
-  <a href="#postmortems" aria-label="Ir a Post-Mortems"><span class="dot-label">post-mortems</span></a>
-  <a href="#projects" aria-label="Ir a Projects"><span class="dot-label">projects</span></a>
-  <a href="#stack" aria-label="Ir a Stack"><span class="dot-label">stack</span></a>
-  <a href="#contact" aria-label="Ir a Contact"><span class="dot-label">contact</span></a>
+<nav class="topnav" aria-label="Primary">
+  <a href="#main-content" class="topnav-brand">Jair Villalobos</a>
+  <div class="topnav-links">
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#postmortems">Post-Mortems</a>
+    <a href="#projects">Projects</a>
+    <a href="#stack">Stack</a>
+    <a href="#contact" class="topnav-cta">Contact</a>
+  </div>
 </nav>
 
-<div class="glow-orb fixed top-[-200px] left-1/2 -translate-x-1/2" style="z-index:0"></div>
+<div class="glow-orb fixed top-[-200px] left-1/2" style="z-index:0;margin-left:-300px" aria-hidden="true"></div>
 
 <div class="sticky-cta" id="sticky-cta" role="complementary" aria-label="Resilience review call to action">
   <span class="cta-dot" aria-hidden="true"></span>
@@ -434,16 +418,26 @@ tailwind.config = {
         <span class="terminal-dot" style="background:#D47A7A"></span>
         <span class="terminal-dot" style="background:#D9814A"></span>
         <span class="terminal-dot" style="background:#52AC8C"></span>
-        <span class="text-[13px] text-[#7C8294] font-mono ml-2">jair@portfolio — bash</span>
+        <span class="text-[14px] text-[#9AA3B8] font-mono ml-2">jair@portfolio — bash</span>
       </div>
       <div class="px-6 py-8 md:px-10 md:py-12">
-        <div class="text-[13px] font-mono text-[#7C8294] tracking-wide mb-3 md:mb-4">jair.villalobos · backend engineer · cartagena, colombia</div>
-        <h1 class="text-[clamp(28px,5vw,56px)] font-[500] leading-[1.15] text-[#F0F2F6] tracking-[-.02em] max-w-[880px]">
-          I build backend systems where <span class="text-[#D9814A]">failure modes</span> are the most interesting part of the design.
+        <div class="text-[14px] font-mono text-[#9AA3B8] tracking-wide mb-3 md:mb-4">Jair Villalobos · Cartagena, Colombia · remote LATAM</div>
+        <h1 class="text-[clamp(30px,5.5vw,60px)] font-[600] leading-[1.08] text-[#F0F2F6] tracking-[-.02em] max-w-[900px]">
+          Backend Engineer — <span class="text-[#D9814A]">Go</span>, distributed systems, fintech &amp; CPaaS
         </h1>
-        <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mt-6 text-[15px] font-mono">
-          <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-[#52AC8C] animate-pulse"></span><span class="text-[#52AC8C]">open</span> <span class="text-[#7C8294]">— remote Backend / Platform Engineering · LATAM</span></span>
-          <span class="text-[#7C8294]">Go · distributed systems · 6+ yr fintech & CPaaS</span>
+        <p class="text-[clamp(18px,2.1vw,23px)] leading-[1.6] text-[#E0E4EC] font-[400] max-w-[720px] mt-5">
+          I build the parts of a system that stay standing when something goes wrong — payment rails, real-time messaging, event pipelines.
+        </p>
+        <div class="flex flex-wrap gap-x-8 gap-y-2 mt-6 text-[16px] font-mono text-[#E0E4EC]">
+          <span><span class="text-[#D9814A] font-[500]">−35%</span> <span class="text-[#9AA3B8]">MTTR</span></span>
+          <span><span class="text-[#D9814A] font-[500]">1M+</span> <span class="text-[#9AA3B8]">msgs/day sustained</span></span>
+          <span><span class="text-[#D9814A] font-[500]">0</span> <span class="text-[#9AA3B8]">downtime cutover</span></span>
+          <span><span class="text-[#D9814A] font-[500]">5+</span> <span class="text-[#9AA3B8]">yr backend</span></span>
+        </div>
+        <div class="flex flex-wrap items-center gap-4 mt-8">
+          <a href="mailto:jjvnz.dev@gmail.com" class="inline-flex items-center gap-2 bg-[#D9814A] text-[#0A0C12] font-[500] px-6 py-3 rounded-[6px_3px_8px_4px] text-[16px] hover:bg-[#E8A87C] transition-colors no-underline">Contact me →</a>
+          <a href="#experience" class="inline-flex items-center gap-2 border border-[#1F232C] text-[#E0E4EC] px-6 py-3 rounded-[6px_3px_8px_4px] text-[16px] hover:border-[#D9814A] hover:text-[#D9814A] transition-colors no-underline">See experience</a>
+          <span class="flex items-center gap-2 text-[15px] font-mono text-[#9AA3B8]"><span class="w-2 h-2 rounded-full bg-[#52AC8C] animate-pulse"></span> open to remote Backend / Platform roles</span>
         </div>
 
         <div class="mt-7">
@@ -452,16 +446,16 @@ tailwind.config = {
           </button>
           <div class="recruiter-panel" id="recruiter-panel">
             <div class="border border-[#1F232C] rounded-[4px_10px_4px_10px] bg-[#0D0F16] px-6 py-5">
-              <div class="text-[12px] font-mono text-[#7C8294] mb-3 tracking-wide">// plain-english summary for humans in a hurry</div>
-              <p class="text-[16px] leading-[1.7] text-[#E0E4EC] font-[300] mb-3">Backend engineer, 6+ years, based in Cartagena, Colombia. I build the parts of a system that stay standing when something goes wrong — payment rails, real-time messaging, event pipelines.</p>
-              <p class="text-[16px] leading-[1.7] text-[#E0E4EC] font-[300] mb-3">Deepest experience in <strong class="text-[#F0F2F6] font-[500]">Go</strong>, working across fintech (digital wallets, LATAM) and CPaaS (real-time messaging at 1M+ msgs/day). Comfortable owning something end-to-end: design, build, observe, and be the one who gets paged for it.</p>
-              <p class="text-[15px] text-[#7C8294] font-mono">Looking for: remote backend / platform roles · async-friendly · direct ownership over a service or system, not just tickets.</p>
+              <div class="text-[13px] font-mono text-[#9AA3B8] mb-3 tracking-wide">// plain-english summary for humans in a hurry</div>
+              <p class="text-[17px] leading-[1.7] text-[#E0E4EC] font-[400] mb-3">Backend engineer, 5+ years, based in Cartagena, Colombia. I build the parts of a system that stay standing when something goes wrong — payment rails, real-time messaging, event pipelines.</p>
+              <p class="text-[17px] leading-[1.7] text-[#E0E4EC] font-[400] mb-3">Deepest experience in <strong class="text-[#F0F2F6] font-[500]">Go</strong>, working across fintech (digital wallets, LATAM) and CPaaS (real-time messaging at 1M+ msgs/day). Comfortable owning something end-to-end: design, build, observe, and be the one who gets paged for it.</p>
+              <p class="text-[16px] text-[#9AA3B8] font-mono">Looking for: remote backend / platform roles · async-friendly · direct ownership over a service or system, not just tickets.</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="text-right mt-[-12px] mr-[4%] text-[13px] font-mono text-[#7C8294] tracking-wider">
+    <div class="text-right mt-[-12px] mr-[4%] text-[14px] font-mono text-[#9AA3B8] tracking-wider">
       <span class="bg-[#13161E] px-3 py-1 border border-[#1F232C] rounded-[6px_2px_8px_4px]">./enter.sh</span>
     </div>
   </header>
@@ -472,8 +466,8 @@ tailwind.config = {
        ABOUT + METRICS — Log Stream & Gauges
        ════════════════════════════════════════════════ -->
   <section class="relative" id="about" aria-labelledby="about-heading">
-    <h2 id="about-heading" class="sr-only">About</h2>
-    <div class="flex items-center gap-3 mb-8 font-mono text-sm text-[#7C8294]">
+    <h2 id="about-heading" class="text-[clamp(26px,3.4vw,36px)] font-[600] text-[#F0F2F6] tracking-[-.01em] mb-2">About</h2>
+    <div class="flex items-center gap-3 mb-8 font-mono text-sm text-[#9AA3B8]">
       <span class="text-[#D9814A]">$</span> <span>tail -f about.log</span>
     </div>
 
@@ -482,18 +476,18 @@ tailwind.config = {
       <div class="col-span-12 md:col-span-7 lg:col-span-8 relative z-10">
         <div class="prose max-w-[680px]" id="log-stream">
           <div class="log-line">
-            <img src="jdev.png" alt="Jair Villalobos" loading="lazy" width="160" height="160"
+            <img src="jdev-avatar.webp" alt="Jair Villalobos" loading="lazy" width="160" height="160"
                  class="w-[120px] h-[120px] md:w-[160px] md:h-[160px] float-right ml-6 mb-4 object-cover
                         border border-[#1F232C] rounded-[6px_14px_4px_12px]
                         transition-all duration-500 hover:scale-[1.02] hover:border-[#D9814A]"
                  style="shape-outside:margin-box;filter:grayscale(.4) contrast(1.05)">
           </div>
-          <p class="log-line text-[clamp(18px,2.2vw,24px)] leading-[1.8] text-[#E0E4EC] font-[300]">I write backend systems the way a carpenter measures twice. Not because I'm slow — because cutting too early is what creates the technical debt nobody wants to talk about.</p>
-          <p class="log-line text-[clamp(18px,2.2vw,24px)] leading-[1.8] text-[#E0E4EC] font-[300]">To me, code is a conviction, not a transaction. Every endpoint, every migration, every decision about how to handle a failure mode — it's a choice between <span class="text-[#F0F2F6] font-[400]">"this works now"</span> and <span class="text-[#F0F2F6] font-[400]">"this will still make sense in six months"</span>. I've spent the last six years learning to choose the second one.</p>
-          <p class="log-line text-[clamp(18px,2.2vw,24px)] leading-[1.8] text-[#E0E4EC] font-[300]">I show my work. The bugs, the dead ends, the refactors that didn't pay off. Not as a flex, but because the most honest thing I can put in a portfolio is the process, not just the result.</p>
-          <p class="log-line text-[clamp(18px,2.2vw,24px)] leading-[1.8] text-[#E0E4EC] font-[300]">I work primarily in <strong class="font-[500] text-[#F0F2F6]">Go</strong>, with detours into Clojure (for the concurrency model that changed how I think about state) and Java (because legacy infrastructure pays the bills and teaches you patience).</p>
-          <p class="log-line text-[clamp(18px,2.2vw,24px)] leading-[1.8] text-[#E0E4EC] font-[300]">Behind every deployment, there's a person who double-checks the rollback strategy before hitting publish. That's me. I build systems that fail gracefully, and I talk about failure the same way — openly, without the corporate gloss.</p>
-          <p class="log-line text-[clamp(18px,2.2vw,24px)] leading-[1.8] text-[#E0E4EC] font-[300]">If any of this resonates, I'd like to hear what you're building. No job title pitch needed — just a conversation about systems, trade-offs, and what keeps you up at night.</p>
+          <p class="log-line text-[clamp(19px,2.3vw,25px)] leading-[1.8] text-[#E0E4EC] font-[400]">I write backend systems the way a carpenter measures twice. Not because I'm slow — because cutting too early is what creates the technical debt nobody wants to talk about.</p>
+          <p class="log-line text-[clamp(19px,2.3vw,25px)] leading-[1.8] text-[#E0E4EC] font-[400]">To me, code is a conviction, not a transaction. Every endpoint, every migration, every decision about how to handle a failure mode — it's a choice between <span class="text-[#F0F2F6] font-[400]">"this works now"</span> and <span class="text-[#F0F2F6] font-[400]">"this will still make sense in six months"</span>. I've spent the last five years learning to choose the second one.</p>
+          <p class="log-line text-[clamp(19px,2.3vw,25px)] leading-[1.8] text-[#E0E4EC] font-[400]">I show my work. The bugs, the dead ends, the refactors that didn't pay off. Not as a flex, but because the most honest thing I can put in a portfolio is the process, not just the result.</p>
+          <p class="log-line text-[clamp(19px,2.3vw,25px)] leading-[1.8] text-[#E0E4EC] font-[400]">I work primarily in <strong class="font-[500] text-[#F0F2F6]">Go</strong>, with detours into Clojure (for the concurrency model that changed how I think about state) and Java (because legacy infrastructure pays the bills and teaches you patience).</p>
+          <p class="log-line text-[clamp(19px,2.3vw,25px)] leading-[1.8] text-[#E0E4EC] font-[400]">Behind every deployment, there's a person who double-checks the rollback strategy before hitting publish. That's me. I build systems that fail gracefully, and I talk about failure the same way — openly, without the corporate gloss.</p>
+          <p class="log-line text-[clamp(19px,2.3vw,25px)] leading-[1.8] text-[#E0E4EC] font-[400]">If any of this resonates, I'd like to hear what you're building. No job title pitch needed — just a conversation about systems, trade-offs, and what keeps you up at night.</p>
         </div>
       </div>
 
@@ -503,17 +497,17 @@ tailwind.config = {
           <div class="gauge float-kinetic" role="listitem" style="--rot:-.3deg">
             <div class="gauge-val" data-target="35" data-prefix="−" data-suffix="%">−35%</div>
             <div class="text-base text-[#F0F2F6] mt-1 font-[400]">MTTR reduction</div>
-            <div class="text-[14px] text-[#7C8294] mt-1 leading-relaxed">OTel / Grafana observability layer · IPCOM</div>
+            <div class="text-[15px] text-[#9AA3B8] mt-1 leading-relaxed">OTel / Grafana observability layer · IPCOM</div>
           </div>
           <div class="gauge float-kinetic" role="listitem" style="--rot:.4deg;margin-left:12px">
             <div class="gauge-val" data-target="20" data-suffix="×">20×</div>
             <div class="text-base text-[#F0F2F6] mt-1 font-[400]">CI builds per day</div>
-            <div class="text-[14px] text-[#7C8294] mt-1 leading-relaxed">dep-graph analysis + artifact caching · same quota</div>
+            <div class="text-[15px] text-[#9AA3B8] mt-1 leading-relaxed">dep-graph analysis + artifact caching · same quota</div>
           </div>
           <div class="gauge float-kinetic" role="listitem" style="--rot:-.5deg;margin-left:-8px">
             <div class="gauge-val" data-target="3">3</div>
             <div class="text-base text-[#F0F2F6] mt-1 font-[400]">LATAM markets</div>
-            <div class="text-[14px] text-[#7C8294] mt-1 leading-relaxed">Tigo Money wallet APIs · zero-downtime cutover</div>
+            <div class="text-[15px] text-[#9AA3B8] mt-1 leading-relaxed">Tigo Money wallet APIs · zero-downtime cutover</div>
           </div>
           <!-- decorative connector line -->
           <svg class="absolute top-0 left-[-40px] w-[60px] h-full pointer-events-none hidden lg:block" style="z-index:-1" aria-hidden="true">
@@ -532,8 +526,8 @@ tailwind.config = {
        EXPERIENCE — Git Commit Timeline
        ════════════════════════════════════════════════ -->
   <section id="experience" class="relative" aria-labelledby="experience-heading">
-    <h2 id="experience-heading" class="sr-only">Experience</h2>
-    <div class="flex items-center gap-3 mb-8 font-mono text-sm text-[#7C8294]">
+    <h2 id="experience-heading" class="text-[clamp(26px,3.4vw,36px)] font-[600] text-[#F0F2F6] tracking-[-.01em] mb-2">Experience</h2>
+    <div class="flex items-center gap-3 mb-8 font-mono text-sm text-[#9AA3B8]">
       <span class="text-[#D9814A]">$</span> <span>git log --format=diff --follow ./experience</span>
     </div>
 
@@ -541,11 +535,13 @@ tailwind.config = {
       <div class="col-span-12 md:col-span-10 md:col-start-2 lg:col-span-8 lg:col-start-3">
         <div class="commit">
           <div class="commit-hash"><span class="text-[#D9814A]">*</span> 2a8f1e4</div>
-          <div class="commit-msg">PersonalSoft · Intermediate Software Developer</div>
+          <div class="commit-msg">PersonalSoft · Backend Integration Engineer — Client: Grupo Unicomer</div>
           <div class="commit-diff">
-            <span class="text-[#52AC8C]">+</span> Go + Java — REST ↔ SOAP integration for regional retail and credit infrastructure.<br>
-            <span class="text-[#52AC8C]">+</span> Legacy PL/SQL data layers, Docker packaging, GitHub Actions deployment pipelines.<br>
-            <span class="text-[#7C8294]">Jun 2026 – present</span>
+            <span class="text-[#52AC8C]">+</span> Java + Go microservices for Grupo Unicomer's regional retail & credit platforms.<br>
+            <span class="text-[#52AC8C]">+</span> REST APIs (Apigee/OpenAPI) bridging legacy SOAP core banking — zero-downtime integration.<br>
+            <span class="text-[#52AC8C]">+</span> SQL/PL/SQL transactional data layers tuned for high availability.<br>
+            <span class="text-[#52AC8C]">+</span> Docker packaging + GitLab CI/CD pipelines, integration testing, Scrum.<br>
+            <span class="text-[#9AA3B8]">Jun 2026 – present</span>
           </div>
         </div>
 
@@ -557,7 +553,7 @@ tailwind.config = {
             <span class="text-[#52AC8C]">+</span> PJSIP migration — SIP legacy decoupled into resilient Go microservices<br>
             <span class="text-[#52AC8C]">+</span> OTel / Grafana matrix — proactive bottleneck detection in low-latency loops<br>
             <span class="text-[#D9814A]">→</span> −35% MTTR · −40% DB load · 1M+ msgs/day sustained<br>
-            <span class="text-[#7C8294]">Nov 2024 – May 2025</span>
+            <span class="text-[#9AA3B8]">Nov 2024 – May 2025</span>
           </div>
         </div>
 
@@ -570,7 +566,7 @@ tailwind.config = {
             <span class="text-[#52AC8C]">+</span> KrakenD custom plugins bridging SOAP ↔ REST across 3 LATAM markets<br>
             <span class="text-[#52AC8C]">+</span> OAuth2 / OIDC via AWS Cognito · per-device PIN + auto lockout<br>
             <span class="text-[#D9814A]">→</span> 0 downtime cutover · −30% integration time · PCI-DSS compliant<br>
-            <span class="text-[#7C8294]">Nov 2022 – Jul 2023</span>
+            <span class="text-[#9AA3B8]">Nov 2022 – Jul 2023</span>
           </div>
         </div>
 
@@ -582,8 +578,8 @@ tailwind.config = {
             <span class="text-[#52AC8C]">+</span> dependency graph analysis — affected-only builds<br>
             <span class="text-[#52AC8C]">+</span> remote artifact caching + stage parallelization<br>
             <span class="text-[#D9814A]">→</span> 1 build/day → 20+ incremental builds, same quota, same cost<br>
-            <span class="text-[#7C8294]">Also: Go / Clojure distributed systems · K8s right-sizing via Terraform audits · AI pipelines</span><br>
-            <span class="text-[#7C8294]">May 2021 – Jun 2026</span>
+            <span class="text-[#9AA3B8]">Also: Go / Clojure distributed systems · K8s right-sizing via Terraform audits · AI pipelines</span><br>
+            <span class="text-[#9AA3B8]">May 2021 – Jun 2026</span>
           </div>
         </div>
 
@@ -593,7 +589,7 @@ tailwind.config = {
           <div class="commit-diff">
             <span class="text-[#52AC8C]">+</span> E2E testing with Cypress / Cucumber · REST API validation with Postman<br>
             <span class="text-[#52AC8C]">+</span> POM pattern — learned to break things before shipping them<br>
-            <span class="text-[#7C8294]">Jun 2020 – Nov 2020</span>
+            <span class="text-[#9AA3B8]">Jun 2020 – Nov 2020</span>
           </div>
         </div>
       </div>
@@ -606,8 +602,8 @@ tailwind.config = {
        POST-MORTEMS — System Log of Real Failures
        ════════════════════════════════════════════════ -->
   <section id="postmortems" class="relative" aria-labelledby="postmortems-heading">
-    <h2 id="postmortems-heading" class="sr-only">Post-Mortems</h2>
-    <div class="flex items-center gap-3 mb-8 font-mono text-sm text-[#7C8294]">
+    <h2 id="postmortems-heading" class="text-[clamp(26px,3.4vw,36px)] font-[600] text-[#F0F2F6] tracking-[-.01em] mb-2">Post-Mortems</h2>
+    <div class="flex items-center gap-3 mb-8 font-mono text-sm text-[#9AA3B8]">
       <span class="text-[#D9814A]">$</span> <span>grep -A4 "INCIDENT" ./var/log/postmortems.log</span>
     </div>
 
@@ -618,9 +614,9 @@ tailwind.config = {
           <div class="pm-head">
             <div class="flex items-center gap-3 flex-wrap">
               <span class="pm-sev sev-2">SEV-2</span>
-              <span class="text-[#F0F2F6] font-[500] text-[16px]">Idempotency gap under retry storm</span>
+              <span class="text-[#F0F2F6] font-[500] text-[17px]">Idempotency gap under retry storm</span>
             </div>
-            <span class="text-[13px] text-[#7C8294]">IPCOM · CPaaS messaging fleet</span>
+            <span class="text-[14px] text-[#9AA3B8]">IPCOM · CPaaS messaging fleet</span>
           </div>
           <div class="pm-body">
             <p><span class="lbl">symptom:</span> duplicate SMS/voice events billed twice during a carrier retry storm — client-facing invoices didn't reconcile.</p>
@@ -634,9 +630,9 @@ tailwind.config = {
           <div class="pm-head">
             <div class="flex items-center gap-3 flex-wrap">
               <span class="pm-sev sev-3">SEV-3</span>
-              <span class="text-[#F0F2F6] font-[500] text-[16px]">Shared session token enabled account takeover surface</span>
+              <span class="text-[#F0F2F6] font-[500] text-[17px]">Shared session token enabled account takeover surface</span>
             </div>
-            <span class="text-[13px] text-[#7C8294]">BYONDIT · digital wallets, 3 LATAM markets</span>
+            <span class="text-[14px] text-[#9AA3B8]">BYONDIT · digital wallets, 3 LATAM markets</span>
           </div>
           <div class="pm-body">
             <p><span class="lbl">symptom:</span> security review flagged that a session token issued on one device remained valid on any device — no per-device binding, no forced logout on suspicious activity.</p>
@@ -650,9 +646,9 @@ tailwind.config = {
           <div class="pm-head">
             <div class="flex items-center gap-3 flex-wrap">
               <span class="pm-sev sev-3">SEV-3</span>
-              <span class="text-[#F0F2F6] font-[500] text-[16px]">CI quota exhausted before the team's day started</span>
+              <span class="text-[#F0F2F6] font-[500] text-[17px]">CI quota exhausted before the team's day started</span>
             </div>
-            <span class="text-[13px] text-[#7C8294]">Independent contract · platform tooling</span>
+            <span class="text-[14px] text-[#9AA3B8]">Independent contract · platform tooling</span>
           </div>
           <div class="pm-body">
             <p><span class="lbl">symptom:</span> a single full rebuild took ~6 hours and consumed the entire daily CI quota — one build per day, and if it failed, the team lost the rest of the day.</p>
@@ -672,8 +668,8 @@ tailwind.config = {
        PROJECTS — Data Flow Graph
        ════════════════════════════════════════════════ -->
   <section id="projects" class="relative" aria-labelledby="projects-heading">
-    <h2 id="projects-heading" class="sr-only">Projects</h2>
-    <div class="flex items-center gap-3 mb-8 font-mono text-sm text-[#7C8294]">
+    <h2 id="projects-heading" class="text-[clamp(26px,3.4vw,36px)] font-[600] text-[#F0F2F6] tracking-[-.01em] mb-2">Projects</h2>
+    <div class="flex items-center gap-3 mb-8 font-mono text-sm text-[#9AA3B8]">
       <span class="text-[#D9814A]">$</span> <span>cat ./architecture | dot -Tsvg</span>
     </div>
 
@@ -690,16 +686,15 @@ tailwind.config = {
 
       <!-- CENTRAL NODE (largest) — transaction-event-processor -->
       <div class="proj-node central node-pulse" id="node-central"
-           data-graph-x="50%" data-graph-y="55%" data-graph-w="44%"
            style="left:28%;top:30%;width:44%;border-radius:8px 2px 14px 4px">
         <div class="flex items-baseline justify-between gap-3 flex-wrap mb-2">
-          <span class="text-[clamp(18px,2vw,24px)] font-[500] text-[#F0F2F6]">transaction-event-processor</span>
+          <span class="text-[clamp(19px,2.1vw,25px)] font-[500] text-[#F0F2F6]">transaction-event-processor</span>
           <span class="tag active">active · Go</span>
         </div>
-        <div class="text-[15px] text-[#7C8294] leading-relaxed mb-3 font-mono">
+        <div class="text-[16px] text-[#9AA3B8] leading-relaxed mb-3 font-mono">
           <span class="text-[#D9814A]">Architecture:</span> non-blocking ingestion — HTTP 202, async goroutine worker pool
         </div>
-        <div class="flex flex-wrap gap-2 text-[13px] text-[#E0E4EC]">
+        <div class="flex flex-wrap gap-2 text-[14px] text-[#E0E4EC]">
           <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">Go</span>
           <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">Echo</span>
           <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">PostgreSQL</span>
@@ -707,10 +702,10 @@ tailwind.config = {
           <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">gobreaker</span>
         </div>
         <div class="mt-3 pt-3 border-t border-[#1F232C] flex justify-between items-center">
-          <span class="text-[13px] text-[#7C8294] font-mono">SetNX lock · TTL-bounded · circuit breaker</span>
+          <span class="text-[14px] text-[#9AA3B8] font-mono">SetNX lock · TTL-bounded · circuit breaker</span>
           <a href="https://github.com/jjvnz/transaction-event-processor" target="_blank" rel="noopener"
-             class="text-[14px] text-[#A78BFA] hover:text-[#D9814A] transition-colors font-mono"
-             data-repo="jjvnz/transaction-event-processor">github → <span class="gh-stars text-[#7C8294]"></span></a>
+             class="text-[15px] text-[#A78BFA] hover:text-[#D9814A] transition-colors font-mono"
+             data-repo="jjvnz/transaction-event-processor">github → <span class="gh-stars text-[#9AA3B8]"></span></a>
         </div>
       </div>
 
@@ -718,46 +713,46 @@ tailwind.config = {
       <div class="proj-node satellite" id="node-ai"
            style="left:60%;top:2%;width:32%;border-radius:10px 3px 6px 12px">
         <div class="flex items-baseline justify-between gap-2 flex-wrap mb-2">
-          <span class="text-[17px] font-[500] text-[#F0F2F6]">AI orchestration layer</span>
+          <span class="text-[18px] font-[500] text-[#F0F2F6]">AI orchestration layer</span>
           <span class="tag active">production</span>
         </div>
-        <div class="text-[14px] text-[#7C8294] leading-relaxed mb-3 font-mono">
+        <div class="text-[15px] text-[#9AA3B8] leading-relaxed mb-3 font-mono">
           JSON Schema output contracts at the LLM boundary. Go orchestrator, FastAPI model-facing.
         </div>
-        <div class="flex flex-wrap gap-1.5 text-[12px] text-[#E0E4EC]">
+        <div class="flex flex-wrap gap-1.5 text-[13px] text-[#E0E4EC]">
           <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">Go</span>
           <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">FastAPI</span>
           <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">K8s</span>
           <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">Terraform</span>
         </div>
-        <div class="text-[12px] text-[#7C8294] mt-2 font-mono">architecture on request</div>
+        <div class="text-[13px] text-[#9AA3B8] mt-2 font-mono">architecture on request</div>
       </div>
 
       <!-- SATELLITE 2 — order-system (bottom-left) -->
       <div class="proj-node satellite" id="node-order"
            style="left:6%;bottom:2%;width:34%;border-radius:4px 12px 8px 3px">
         <div class="flex items-baseline justify-between gap-2 flex-wrap mb-2">
-          <span class="text-[17px] font-[500] text-[#F0F2F6]">order-system</span>
+          <span class="text-[18px] font-[500] text-[#F0F2F6]">order-system</span>
           <span class="tag active">active · Clojure</span>
         </div>
-        <div class="text-[14px] text-[#7C8294] leading-relaxed mb-3 font-mono">
+        <div class="text-[15px] text-[#9AA3B8] leading-relaxed mb-3 font-mono">
           Clojure STM · event-driven state without locks. Clean Architecture + DDD in a functional paradigm.
         </div>
-        <div class="flex flex-wrap gap-1.5 text-[12px] text-[#E0E4EC]">
+        <div class="flex flex-wrap gap-1.5 text-[13px] text-[#E0E4EC]">
           <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">Clojure</span>
           <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">DDD</span>
           <span class="bg-[#1F232C] px-2 py-1 rounded-[4px_2px_6px_3px]">STM</span>
         </div>
         <div class="mt-3 pt-3 border-t border-[#1F232C]">
           <a href="https://github.com/jjvnz/order-system" target="_blank" rel="noopener"
-             class="text-[14px] text-[#A78BFA] hover:text-[#D9814A] transition-colors font-mono"
-             data-repo="jjvnz/order-system">github → <span class="gh-stars text-[#7C8294]"></span></a>
+             class="text-[15px] text-[#A78BFA] hover:text-[#D9814A] transition-colors font-mono"
+             data-repo="jjvnz/order-system">github → <span class="gh-stars text-[#9AA3B8]"></span></a>
         </div>
       </div>
     </div>
 
     <!-- LEGEND -->
-    <div class="flex flex-wrap gap-6 mt-6 text-[13px] font-mono text-[#7C8294]">
+    <div class="flex flex-wrap gap-6 mt-6 text-[14px] font-mono text-[#9AA3B8]">
       <span class="flex items-center gap-2"><span class="w-5 h-[1.5px] bg-[rgba(240,242,246,.08)]" style="border-top:1.5px dashed rgba(240,242,246,.08)"></span> event-driven</span>
       <span class="flex items-center gap-2"><span class="w-5 h-[1.5px] bg-[rgba(240,242,246,.08)]"></span> direct call</span>
       <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-[#D9814A]"></span> central node</span>
@@ -770,8 +765,8 @@ tailwind.config = {
        STACK — Tech Constellation
        ════════════════════════════════════════════════ -->
   <section id="stack" class="relative" aria-labelledby="stack-heading">
-    <h2 id="stack-heading" class="sr-only">Stack</h2>
-    <div class="flex items-center gap-3 mb-8 font-mono text-sm text-[#7C8294]">
+    <h2 id="stack-heading" class="text-[clamp(26px,3.4vw,36px)] font-[600] text-[#F0F2F6] tracking-[-.01em] mb-2">Stack</h2>
+    <div class="flex items-center gap-3 mb-8 font-mono text-sm text-[#9AA3B8]">
       <span class="text-[#D9814A]">$</span> <span>cat stacks.json | jq '.radar'</span>
     </div>
 
@@ -824,8 +819,8 @@ tailwind.config = {
        CONTACT — Health Check Endpoint
        ════════════════════════════════════════════════ -->
   <section id="contact" class="relative" aria-labelledby="contact-heading">
-    <h2 id="contact-heading" class="sr-only">Contact</h2>
-    <div class="flex items-center gap-3 mb-8 font-mono text-sm text-[#7C8294]">
+    <h2 id="contact-heading" class="text-[clamp(26px,3.4vw,36px)] font-[600] text-[#F0F2F6] tracking-[-.01em] mb-2">Contact</h2>
+    <div class="flex items-center gap-3 mb-8 font-mono text-sm text-[#9AA3B8]">
       <span class="text-[#D9814A]">$</span> <span>curl -s https://jair.dev/healthz | jq</span>
     </div>
 
@@ -840,7 +835,7 @@ tailwind.config = {
       <div><span class="key">"uptime"</span>: <span class="null">~6 years</span></div>
     </div>
 
-    <div class="mt-8 text-center text-[14px] font-mono text-[#7C8294]">
+    <div class="mt-8 text-center text-[15px] font-mono text-[#9AA3B8]">
       <span class="inline-flex items-center gap-2 px-4 py-2 border border-[#1F232C] rounded-[6px_2px_8px_4px] bg-[#13161E]">
         <span class="w-2 h-2 rounded-full bg-[#52AC8C] animate-pulse"></span>
         ready for connections · <a href="mailto:jjvnz.dev@gmail.com" class="text-[#D9814A] hover:underline">reach out</a>
@@ -853,7 +848,7 @@ tailwind.config = {
   <!-- ════════════════════════════════════════════════
        TERMINAL PROMPT
        ════════════════════════════════════════════════ -->
-  <footer role="contentinfo" class="border-t border-[#1F232C] pt-6 pb-12 text-[14px] font-mono text-[#7C8294] flex items-center gap-2">
+  <footer role="contentinfo" class="border-t border-[#1F232C] pt-6 pb-12 text-[15px] font-mono text-[#9AA3B8] flex items-center gap-2">
     <span class="text-[#D9814A]">jair@portfolio:~$</span>
     <span class="w-2 h-5 bg-[#D9814A] animate-pulse" style="animation-duration:1.2s" aria-hidden="true"></span>
     <span class="sr-only">Jair Villalobos — Backend Engineer</span>
@@ -973,35 +968,6 @@ tailwind.config = {
     window.addEventListener('resize', layoutGraph);
   }
 
-  // ── TYPEWRITER (preserva HTML interno) ─────────
-  if (!prefersReduced) {
-    const hook = document.querySelector('h1');
-    if (hook && !hook.dataset.typed) {
-      hook.dataset.typed = 'true';
-      const walker = document.createTreeWalker(hook, NodeFilter.SHOW_TEXT, null, false);
-      const textNodes = [], originals = [];
-      while (walker.nextNode()) {
-        textNodes.push(walker.currentNode);
-        originals.push(walker.currentNode.textContent);
-        walker.currentNode.textContent = '';
-      }
-      let nIdx = 0, cIdx = 0;
-      function typeNext() {
-        if (nIdx >= textNodes.length) return;
-        const node = textNodes[nIdx], full = originals[nIdx];
-        cIdx++;
-        if (cIdx >= full.length) {
-          node.textContent = full;
-          nIdx++; cIdx = 0;
-        } else {
-          node.textContent = full.substring(0, cIdx);
-        }
-        setTimeout(typeNext, 22 + Math.random() * 14);
-      }
-      setTimeout(typeNext, 600);
-    }
-  }
-
   // ── RECRUITER TOGGLE ("help --human") ─────────
   const recToggle = document.getElementById('recruiter-toggle');
   const recPanel = document.getElementById('recruiter-panel');
@@ -1010,7 +976,7 @@ tailwind.config = {
       const isOpen = recPanel.classList.toggle('open');
       recToggle.setAttribute('aria-expanded', String(isOpen));
       recToggle.innerHTML = isOpen
-        ? '<span style="color:#D9814A">$</span> help --human <span style="color:#7C8294">--close</span>'
+        ? '<span style="color:#D9814A">$</span> help --human <span style="color:#9AA3B8">--close</span>'
         : '<span style="color:#D9814A">$</span> help --human';
     });
   }
@@ -1043,15 +1009,15 @@ tailwind.config = {
     });
   }
 
-  // ── DOT NAV SCROLL-SPY ─────────────────────────
-  const dotLinks = document.querySelectorAll('.dot-nav a');
+  // ── NAV SCROLL-SPY ─────────────────────────────
+  const navLinks = document.querySelectorAll('.topnav-links a');
   const navSections = ['about','experience','postmortems','projects','stack','contact']
     .map(id => document.getElementById(id)).filter(Boolean);
-  if (dotLinks.length && navSections.length) {
+  if (navLinks.length && navSections.length) {
     const spyObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          dotLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + entry.target.id));
+          navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + entry.target.id));
         }
       });
     }, { threshold: 0.4, rootMargin: '-10% 0px -10% 0px' });
@@ -1076,6 +1042,84 @@ tailwind.config = {
     }
   }
   loadGitHubStats();
+
+  // ── ANIME.JS MOTION ────────────────────────────
+  // Entrance + scroll reveals via anime v4 (UMD).
+  // Guarded: reduced-motion users or a CDN failure get no hidden content.
+  const initMotion = () => {
+    if (prefersReduced || typeof anime === 'undefined' || !anime.animate) return;
+    const { animate, stagger } = anime;
+
+    const clean = els => els.forEach(el => {
+      el.style.opacity = '';
+      el.style.transform = '';
+    });
+
+    // Hero entrance (above the fold): staggered fade-up on load.
+    const heroBlock = document.querySelector('header .terminal-frame .px-6');
+    const heroItems = heroBlock ? Array.from(heroBlock.children) : [];
+    if (heroItems.length) {
+      heroItems.forEach(el => { el.style.opacity = '0'; });
+      animate(heroItems, {
+        opacity: [0, 1],
+        translateY: [26, 0],
+        duration: 680,
+        ease: 'out(3)',
+        delay: stagger(95, { start: 140 }),
+        onComplete: () => clean(heroItems),
+      });
+    }
+
+    // Scroll-reveal groups: fade-up with stagger per section.
+    const groups = [
+      { root: '#experience .grid > div', sel: '.commit', step: 80 },
+      { root: '#postmortems .flex-col', sel: '.postmortem', step: 110 },
+      { root: '#project-graph', sel: '.proj-node', step: 90 },
+      { root: '#project-graph', sel: '#project-graph-svg line', step: 60 },
+      { root: '#tech-radar', sel: '.star', step: 40 },
+      { root: '#contact', sel: '.healthz', step: 0 },
+      { root: '#about', sel: '.gauge', step: 90 },
+    ];
+
+    groups.forEach(g => {
+      const root = document.querySelector(g.root);
+      if (!root) return;
+      const targets = Array.from(root.querySelectorAll(g.sel));
+      if (!targets.length) return;
+      targets.forEach(el => { el.style.opacity = '0'; });
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          obs.disconnect();
+          animate(targets, {
+            opacity: [0, 1],
+            translateY: [22, 0],
+            duration: 620,
+            ease: 'out(3)',
+            delay: stagger(g.step, { start: 40 }),
+            onComplete: () => clean(targets),
+          });
+        });
+      }, { threshold: 0.15 });
+      obs.observe(root);
+    });
+
+    // Ambient drift: very slow, decorative only (behind content).
+    const orb = document.querySelector('.glow-orb');
+    if (orb) {
+      animate(orb, {
+        translateX: [0, 44],
+        translateY: [0, 30],
+        duration: 16000,
+        ease: 'inOut(2)',
+        alternate: true,
+        loop: true,
+      });
+    }
+  };
+
+  if (document.readyState !== 'loading') initMotion();
+  else document.addEventListener('DOMContentLoaded', initMotion);
 })();
 </script>
 </body>
